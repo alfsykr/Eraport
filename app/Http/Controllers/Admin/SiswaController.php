@@ -37,6 +37,21 @@ class SiswaController extends Controller
             $data_kelas_terendah = Kelas::where('tapel_id', $tapel->id)->where('tingkatan_kelas', $tingkatan_terendah)->orderBy('nama_kelas', 'ASC')->get();
             $data_kelas_all = Kelas::where('tapel_id', $tapel->id)->orderBy('tingkatan_kelas', 'ASC')->get();
             $data_siswa = Siswa::where('status', 1)->orderBy('nis', 'ASC')->get();
+
+            // ✅ FIX: Tambah data kelas terakhir dari anggota_kelas untuk setiap siswa
+            foreach ($data_siswa as $siswa) {
+                // Ambil kelas terakhir dari anggota_kelas (berdasarkan id terbaru)
+                $anggota_terakhir = AnggotaKelas::where('siswa_id', $siswa->id)
+                    ->orderBy('id', 'DESC')
+                    ->first();
+
+                if ($anggota_terakhir) {
+                    $siswa->kelas_terakhir = Kelas::find($anggota_terakhir->kelas_id);
+                } else {
+                    $siswa->kelas_terakhir = null;
+                }
+            }
+
             return view('admin.siswa.index', compact('title', 'data_kelas_all', 'data_kelas_terendah', 'data_siswa', 'tingkatan_akhir'));
         }
     }

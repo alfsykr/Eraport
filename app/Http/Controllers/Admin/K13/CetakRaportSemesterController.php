@@ -71,7 +71,6 @@ class CetakRaportSemesterController extends Controller
             return $kelengkapan_raport->stream('KELENGKAPAN RAPORT ' . $anggota_kelas->siswa->nama_lengkap . ' (' . $anggota_kelas->kelas->nama_kelas . ').pdf');
         } elseif ($request->data_type == 2) {
             $title = 'Cetak Raport';
-            $deskripsi_sikap = K13DeskripsiSikapSiswa::where('anggota_kelas_id', $anggota_kelas->id)->first();
 
             $data_id_mapel_semester_ini = Mapel::where('tapel_id', session()->get('tapel_id'))->get('id');
             $data_id_mapel_kelompok_a = K13MappingMapel::whereIn('mapel_id', $data_id_mapel_semester_ini)->where('kelompok', 'A')->get('mapel_id');
@@ -92,7 +91,6 @@ class CetakRaportSemesterController extends Controller
             $rata_rata_terbilang = $rata_rata_nilai_akhir > 0 ? trim(terbilang(round($rata_rata_nilai_akhir))) : '-';
 
             $data_id_ekstrakulikuler = Ekstrakulikuler::where('tapel_id', session()->get('tapel_id'))->get('id');
-
             $data_anggota_ekstrakulikuler = AnggotaEkstrakulikuler::whereIn('ekstrakulikuler_id', $data_id_ekstrakulikuler)->where('anggota_kelas_id', $anggota_kelas->id)->get();
             foreach ($data_anggota_ekstrakulikuler as $anggota_ekstrakulikuler) {
                 $cek_nilai_ekstra = NilaiEkstrakulikuler::where('anggota_ekstrakulikuler_id', $anggota_ekstrakulikuler->id)->first();
@@ -117,7 +115,6 @@ class CetakRaportSemesterController extends Controller
                     'title',
                     'sekolah',
                     'anggota_kelas',
-                    'deskripsi_sikap',
                     'data_nilai_kelompok_a',
                     'data_nilai_kelompok_b',
                     'data_anggota_ekstrakulikuler',
@@ -141,35 +138,34 @@ class CetakRaportSemesterController extends Controller
         $jumlah_mapel = 0;
 
         foreach ($collection as $item) {
-            $nilai_pengetahuan = $item->nilai_pengetahuan ?? 0;
-            $nilai_keterampilan = $item->nilai_keterampilan ?? 0;
-            $nilai_akhir = round(($nilai_pengetahuan + $nilai_keterampilan) / 2, 0);
-            $item->nilai_akhir = $nilai_akhir;
-
-            $range = (100 - $item->kkm) / 3;
-            if ($nilai_akhir >= $item->kkm + ($range * 2)) {
-                $predikat = 'A';
-            } elseif ($nilai_akhir >= $item->kkm + $range) {
-                $predikat = 'B';
-            } elseif ($nilai_akhir >= $item->kkm) {
-                $predikat = 'C';
+            // Gunakan nilai_akhir langsung jika ada, fallback ke rata-rata pengetahuan+keterampilan
+            if (!is_null($item->nilai_akhir) && $item->nilai_akhir > 0) {
+                $nilai_akhir = $item->nilai_akhir;
             } else {
-                $predikat = 'D';
+                $nilai_pengetahuan = $item->nilai_pengetahuan ?? 0;
+                $nilai_keterampilan = $item->nilai_keterampilan ?? 0;
+                $nilai_akhir = round(($nilai_pengetahuan + $nilai_keterampilan) / 2, 0);
+                $item->nilai_akhir = $nilai_akhir;
             }
 
-            $item->predikat_akhir = $predikat;
+            // Gunakan predikat_akhir langsung jika ada, hitung ulang jika tidak
+            if (!is_null($item->predikat_akhir)) {
+                $predikat = $item->predikat_akhir;
+            } else {
+                $range = (100 - $item->kkm) / 3;
+                if ($nilai_akhir >= $item->kkm + ($range * 2)) {
+                    $predikat = 'A';
+                } elseif ($nilai_akhir >= $item->kkm + $range) {
+                    $predikat = 'B';
+                } elseif ($nilai_akhir >= $item->kkm) {
+                    $predikat = 'C';
+                } else {
+                    $predikat = 'D';
+                }
+                $item->predikat_akhir = $predikat;
+            }
+
             $item->nilai_akhir_terbilang = $nilai_akhir > 0 ? trim(terbilang($nilai_akhir)) : '-';
-
-            $deskripsi = [];
-            if (!is_null($item->k13_deskripsi_nilai_siswa)) {
-                if (!empty($item->k13_deskripsi_nilai_siswa->deskripsi_pengetahuan)) {
-                    $deskripsi[] = 'Pengetahuan: ' . $item->k13_deskripsi_nilai_siswa->deskripsi_pengetahuan;
-                }
-                if (!empty($item->k13_deskripsi_nilai_siswa->deskripsi_keterampilan)) {
-                    $deskripsi[] = 'Keterampilan: ' . $item->k13_deskripsi_nilai_siswa->deskripsi_keterampilan;
-                }
-            }
-            $item->deskripsi_akhir = implode("\n", $deskripsi);
 
             $jumlah_nilai += $nilai_akhir;
             $jumlah_mapel++;

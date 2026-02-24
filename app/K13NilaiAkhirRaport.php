@@ -11,6 +11,8 @@ class K13NilaiAkhirRaport extends Model
         'pembelajaran_id',
         'anggota_kelas_id',
         'kkm',
+        'nilai_akhir',
+        'predikat_akhir',
         'nilai_pengetahuan',
         'predikat_pengetahuan',
         'nilai_keterampilan',

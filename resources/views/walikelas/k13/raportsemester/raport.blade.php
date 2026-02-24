@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <!-- Page 1 Sikap -->
+    <!-- Page 1: Nilai Hasil Belajar -->
     <div class="invoice-box">
         <div class="header">
             <table>
@@ -44,7 +44,7 @@
                 </tr>
                 <tr>
                     <td style="width: 19%;">Nama Peserta Didik</td>
-                    <td style="width: 52%;">: {{ ucwords(strtolower($siswa->nama_lengkap)) }} </td>
+                    <td style="width: 52%;">: {{ ucwords(strtolower($anggota_kelas->siswa->nama_lengkap)) }} </td>
                     <td style="width: 16%;">Tahun Pelajaran</td>
                     <td style="width: 13%;">: {{ $anggota_kelas->kelas->tapel->tahun_pelajaran }}</td>
                 </tr>
@@ -57,68 +57,58 @@
         </div>
 
         <div class="content">
-            <h3><strong>PENCAPAIAN KOMPETENSI PESERTA DIDIK</strong></h3>
             <table cellspacing="0">
                 <tr>
-                    <td colspan="2"><strong>A. SIKAP</strong></td>
-                </tr>
-
-                <tr>
-                    <td colspan="2" style="height: 30px;"><strong>1. Sikap Spiritual</strong></td>
+                    <td colspan="5" style="height: 30px;"><strong>NILAI HASIL BELAJAR</strong></td>
                 </tr>
                 <tr class="heading">
-                    <td style="width: 20%;">Predikat</td>
-                    <td>Deskripsi</td>
+                    <td style="width: 5%;">NO</td>
+                    <td style="width: 45%;">Mata Pelajaran</td>
+                    <td style="width: 10%;">KKM</td>
+                    <td style="width: 25%;">Nilai Akhir</td>
+                    <td style="width: 15%;">Predikat</td>
                 </tr>
-                <tr class="sikap">
-                    @if (!is_null($deskripsi_sikap))
-                        <td class="predikat">
-                            @if ($deskripsi_sikap->nilai_spiritual == 4)
-                                <b>Sangat Baik</b>
-                            @elseif($deskripsi_sikap->nilai_spiritual == 3)
-                                <b>Baik</b>
-                            @elseif($deskripsi_sikap->nilai_spiritual == 2)
-                                <b>Cukup</b>
-                            @elseif($deskripsi_sikap->nilai_spiritual == 1)
-                                <b>Kurang</b>
-                            @endif
-                        </td>
-                        <td class="description">
-                            <span>{!! nl2br($deskripsi_sikap->deskripsi_spiritual) !!}</span>
-                        </td>
-                    @else
-                        <td></td>
-                        <td></td>
-                    @endif
+                <tr class="nilai">
+                    <td colspan="5"><strong>Kelompok A</strong></td>
                 </tr>
 
-                <tr>
-                    <td colspan="2" style="height: 30px;"><strong>2. Sikap Sosial</strong></td>
+                <?php $no = 0; ?>
+                @foreach ($data_nilai_kelompok_a->sortBy('pembelajaran.mapel.k13_mapping_mapel.nomor_urut') as $nilai_kelompok_a)
+                    <?php    $no++; ?>
+                    <tr class="nilai">
+                        <td class="center">{{ $no }}</td>
+                        <td>{{ $nilai_kelompok_a->pembelajaran->mapel->nama_mapel }}</td>
+                        <td class="center">{{ $nilai_kelompok_a->kkm }}</td>
+                        <td class="center">{{ $nilai_kelompok_a->nilai_akhir }}</td>
+                        <td class="center">{{ $nilai_kelompok_a->predikat_akhir }}</td>
+                    </tr>
+                @endforeach
+
+                @if ($data_nilai_kelompok_b->count() > 0)
+                    <tr class="nilai">
+                        <td colspan="5"><strong>Kelompok B</strong></td>
+                    </tr>
+                    @foreach ($data_nilai_kelompok_b->sortBy('pembelajaran.mapel.k13_mapping_mapel.nomor_urut') as $nilai_kelompok_b)
+                        <?php        $no++; ?>
+                        <tr class="nilai">
+                            <td class="center">{{ $no }}</td>
+                            <td>{{ $nilai_kelompok_b->pembelajaran->mapel->nama_mapel }}</td>
+                            <td class="center">{{ $nilai_kelompok_b->kkm }}</td>
+                            <td class="center">{{ $nilai_kelompok_b->nilai_akhir }}</td>
+                            <td class="center">{{ $nilai_kelompok_b->predikat_akhir }}</td>
+                        </tr>
+                    @endforeach
+                @endif
+
+                <tr class="nilai">
+                    <td colspan="3"><strong>Jumlah</strong></td>
+                    <td class="center"><strong>{{ $total_nilai_akhir }}</strong></td>
+                    <td class="center"></td>
                 </tr>
-                <tr class="heading">
-                    <td style="width: 20%;">Predikat</td>
-                    <td>Deskripsi</td>
-                </tr>
-                <tr class="sikap">
-                    @if (!is_null($deskripsi_sikap))
-                        <td class="predikat">
-                            @if ($deskripsi_sikap->nilai_sosial == 4)
-                                <b>Sangat Baik</b>
-                            @elseif($deskripsi_sikap->nilai_sosial == 3)
-                                <b>Baik</b>
-                            @elseif($deskripsi_sikap->nilai_sosial == 2)
-                                <b>Cukup</b>
-                            @elseif($deskripsi_sikap->nilai_sosial == 1)
-                                <b>Kurang</b>
-                            @endif
-                        </td>
-                        <td class="description">
-                            <span>{!! nl2br($deskripsi_sikap->deskripsi_sosial) !!}</span>
-                        </td>
-                    @else
-                        <td></td>
-                        <td></td>
-                    @endif
+                <tr class="nilai">
+                    <td colspan="3"><strong>Rata-rata</strong></td>
+                    <td class="center"><strong>{{ $rata_rata_nilai_akhir }}</strong></td>
+                    <td class="center"></td>
                 </tr>
             </table>
         </div>
@@ -126,7 +116,7 @@
         <div
             style="padding-left:60%; padding-top:1rem; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;">
             {{ $anggota_kelas->kelas->tapel->k13_tgl_raport->tempat_penerbitan }},
-            {{ $anggota_kelas->kelas->tapel->k13_tgl_raport->tanggal_pembagian->isoFormat('D MMMM Y') }}<br>
+            {{ \Carbon\Carbon::now()->locale('id')->isoFormat('D MMMM Y') }}<br>
             Wali Kelas, <br><br><br><br>
             <b><u>{{ $anggota_kelas->kelas->guru->nama_lengkap }},
                     {{ $anggota_kelas->kelas->guru->gelar }}</u></b><br>
@@ -139,124 +129,7 @@
     </div>
     <div class="page-break"></div>
 
-    <!-- Page 2 Nilai Hasil Belajar -->
-    <div class="invoice-box">
-        <div class="header">
-            <table>
-                <tr>
-                    <td style="width: 19%;">Nama Sekolah</td>
-                    <td style="width: 52%;">: {{ $sekolah->nama_sekolah }}</td>
-                    <td style="width: 16%;">Kelas</td>
-                    <td style="width: 13%;">: {{ $anggota_kelas->kelas->nama_kelas }}</td>
-                </tr>
-                <tr>
-                    <td style="width: 19%;">Alamat</td>
-                    <td style="width: 52%;">: {{ $sekolah->alamat }}</td>
-                    <td style="width: 16%;">Semester</td>
-                    <td style="width: 13%;">:
-                        @if ($anggota_kelas->kelas->tapel->semester == 1)
-                            1 (Ganjil)
-                        @else
-                            2 (Genap)
-                        @endif
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width: 19%;">Nama Peserta Didik</td>
-                    <td style="width: 52%;">: {{ $anggota_kelas->siswa->nama_lengkap }} </td>
-                    <td style="width: 16%;">Tahun Pelajaran</td>
-                    <td style="width: 13%;">: {{ $anggota_kelas->kelas->tapel->tahun_pelajaran }}</td>
-                </tr>
-                <tr>
-                    <td style="width: 19%;">Nomor Induk/NISN</td>
-                    <td style="width: 52%;">: {{ $anggota_kelas->siswa->nis }} / {{ $anggota_kelas->siswa->nisn }}
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <div class="content">
-            <table cellspacing="0">
-                <tr>
-                    <td colspan="6" style="height: 30px;"><strong>B. NILAI HASIL BELAJAR</strong></td>
-                </tr>
-                <tr class="heading">
-                    <td rowspan="2" style="width: 5%;">NO</td>
-                    <td rowspan="2" style="width: 40%;">Mata Pelajaran</td>
-                    <td rowspan="2" style="width: 10%;">KKM</td>
-                    <td colspan="2" style="width: 35%;">Nilai Akhir</td>
-                    <td rowspan="2" style="width: 10%;">Predikat</td>
-                </tr>
-                <tr class="heading">
-                    <td style="width: 17.5%;">Angka</td>
-                    <td style="width: 17.5%;">Huruf</td>
-                </tr>
-                <tr class="nilai">
-                    <td colspan="6"><strong>Kelompok A</strong></td>
-                </tr>
-
-                <?php $no = 0; ?>
-                @foreach ($data_nilai_kelompok_a->sortBy('pembelajaran.mapel.k13_mapping_mapel.nomor_urut') as $nilai_kelompok_a)
-                    <?php $no++; ?>
-                    <tr class="nilai">
-                        <td class="center">{{ $no }}</td>
-                        <td>{{ $nilai_kelompok_a->pembelajaran->mapel->nama_mapel }}</td>
-                        <td class="center">{{ $nilai_kelompok_a->kkm }}</td>
-                        <td class="center">{{ $nilai_kelompok_a->nilai_akhir }}</td>
-                        <td class="center">{{ ucwords(strtolower($nilai_kelompok_a->nilai_akhir_terbilang)) }}</td>
-                        <td class="center">{{ $nilai_kelompok_a->predikat_akhir }}</td>
-                    </tr>
-                @endforeach
-
-                @if ($data_nilai_kelompok_b->count() > 0)
-                    <tr class="nilai">
-                        <td colspan="6"><strong>Kelompok B</strong></td>
-                    </tr>
-                    @foreach ($data_nilai_kelompok_b->sortBy('pembelajaran.mapel.k13_mapping_mapel.nomor_urut') as $nilai_kelompok_b)
-                        <?php $no++; ?>
-                        <tr class="nilai">
-                            <td class="center">{{ $no }}</td>
-                            <td>{{ $nilai_kelompok_b->pembelajaran->mapel->nama_mapel }}</td>
-                            <td class="center">{{ $nilai_kelompok_b->kkm }}</td>
-                            <td class="center">{{ $nilai_kelompok_b->nilai_akhir }}</td>
-                            <td class="center">{{ ucwords(strtolower($nilai_kelompok_b->nilai_akhir_terbilang)) }}</td>
-                            <td class="center">{{ $nilai_kelompok_b->predikat_akhir }}</td>
-                        </tr>
-                    @endforeach
-                @endif
-
-                <tr class="nilai">
-                    <td colspan="3"><strong>Jumlah</strong></td>
-                    <td class="center"><strong>{{ $total_nilai_akhir }}</strong></td>
-                    <td class="center"><strong>{{ ucwords(strtolower($total_nilai_akhir_terbilang)) }}</strong></td>
-                    <td class="center"></td>
-                </tr>
-                <tr class="nilai">
-                    <td colspan="3"><strong>Rata-rata</strong></td>
-                    <td class="center"><strong>{{ $rata_rata_nilai_akhir }}</strong></td>
-                    <td class="center"><strong>{{ ucwords(strtolower($rata_rata_terbilang)) }}</strong></td>
-                    <td class="center"></td>
-                </tr>
-            </table>
-        </div>
-
-        <div
-            style="padding-left:60%; padding-top:1rem; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;">
-            {{ $anggota_kelas->kelas->tapel->k13_tgl_raport->tempat_penerbitan }},
-            {{ $anggota_kelas->kelas->tapel->k13_tgl_raport->tanggal_pembagian->isoFormat('D MMMM Y') }}<br>
-            Wali Kelas, <br><br><br><br>
-            <b><u>{{ $anggota_kelas->kelas->guru->nama_lengkap }},
-                    {{ $anggota_kelas->kelas->guru->gelar }}</u></b><br>
-            NIP. {{ konversi_nip($anggota_kelas->kelas->guru->nip) }}
-        </div>
-        <div class="footer">
-            <i>{{ $anggota_kelas->kelas->nama_kelas }} | {{ $anggota_kelas->siswa->nama_lengkap }} |
-                {{ $anggota_kelas->siswa->nis }}</i> <b style="float: right;"><i>Halaman 2</i></b>
-        </div>
-    </div>
-    <div class="page-break"></div>
-
-    <!-- Page 3 Prestasi, Ketidakhadiran, dan Lainnya -->
+    <!-- Page 2: Prestasi, Ketidakhadiran, dan Lainnya -->
     <div class="invoice-box">
         <div class="header">
             <table>
@@ -295,34 +168,30 @@
         <div class="content">
             <table cellspacing="0">
 
-                <!-- Prestasi -->
+                <!-- A. Talents Mapping (was: Prestasi) -->
                 <tr>
-                    <td colspan="4" style="height: 25px; padding-top: 5px"><strong>C. PRESTASI</strong></td>
+                    <td colspan="4" style="height: 25px; padding-top: 5px"><strong>A. TALENTS MAPPING</strong></td>
                 </tr>
                 <tr class="heading">
                     <td style="width: 5%;">NO</td>
-                    <td style="width: 28%;">Jenis Prestasi</td>
+                    <td style="width: 28%;">Jenis Bakat</td>
                     <td colspan="2">Keterangan</td>
                 </tr>
                 @if (count($data_prestasi_siswa) == 0)
                     <tr class="nilai">
                         <td class="center">1</td>
                         <td></td>
-                        <td colspan="2" class="description">
-                            <span></span>
-                        </td>
+                        <td colspan="2" class="description"><span></span></td>
                     </tr>
                     <tr class="nilai">
                         <td class="center">2</td>
                         <td></td>
-                        <td colspan="2" class="description">
-                            <span></span>
-                        </td>
+                        <td colspan="2" class="description"><span></span></td>
                     </tr>
                 @elseif(count($data_prestasi_siswa) == 1)
-                    <?php $no = 0; ?>
+                    <?php    $no = 0; ?>
                     @foreach ($data_prestasi_siswa as $prestasi)
-                        <?php $no++; ?>
+                        <?php        $no++; ?>
                         <tr class="nilai">
                             <td class="center">{{ $no }}</td>
                             <td>
@@ -340,14 +209,12 @@
                     <tr class="nilai">
                         <td class="center">2</td>
                         <td></td>
-                        <td colspan="2" class="description">
-                            <span></span>
-                        </td>
+                        <td colspan="2" class="description"><span></span></td>
                     </tr>
                 @else
-                    <?php $no = 0; ?>
+                    <?php    $no = 0; ?>
                     @foreach ($data_prestasi_siswa as $prestasi)
-                        <?php $no++; ?>
+                        <?php        $no++; ?>
                         <tr class="nilai">
                             <td class="center">{{ $no }}</td>
                             <td>
@@ -363,11 +230,24 @@
                         </tr>
                     @endforeach
                 @endif
-                <!-- End Prestasi -->
+                <!-- End Talents Mapping -->
 
-                <!-- Ketidakhadiran  -->
+                <!-- B. Catatan (was: Ekstrakulikuler) -->
                 <tr>
-                    <td colspan="4" style="height: 25px; padding-top: 5px"><strong>D. KETIDAKHADIRAN</strong></td>
+                    <td colspan="4" style="height: 25px; padding-top: 5px"><strong>B. CATATAN</strong></td>
+                </tr>
+                <tr class="sikap">
+                    <td colspan="4" class="description" style="height: 60px;">
+                        @if (!is_null($catatan_wali_kelas))
+                            <i><b>{{ $catatan_wali_kelas->catatan }}</b></i>
+                        @endif
+                    </td>
+                </tr>
+                <!-- End Catatan -->
+
+                <!-- C. Ketidakhadiran -->
+                <tr>
+                    <td colspan="4" style="height: 25px; padding-top: 5px"><strong>C. KETIDAKHADIRAN</strong></td>
                 </tr>
                 @if (!is_null($kehadiran_siswa))
                     <tr class="nilai">
@@ -390,57 +270,37 @@
                         <td colspan="4"><b>Data kehadiran belum diinput</b></td>
                     </tr>
                 @endif
-                <!-- End Ketidakhadiran  -->
+                <!-- End Ketidakhadiran -->
 
-                <!-- Catatan Wali Kelas -->
+                <!-- Keputusan (tampil selalu, bukan hanya semester genap) -->
                 <tr>
-                    <td colspan="4" style="height: 25px; padding-top: 5px"><strong>E. CATATAN WALI KELAS</strong>
-                    </td>
+                    <td colspan="4" style="height: 15px; padding-top: 8px; border: none;"></td>
                 </tr>
-                <tr class="sikap">
-                    <td colspan="4" class="description" style="height: 50px;">
-                        @if (!is_null($catatan_wali_kelas))
-                            <i><b>{{ $catatan_wali_kelas->catatan }}</b></i>
+                <tr>
+                    <td colspan="4" style="padding: 8px 4px; border: none; line-height: 1.8;">
+                        <strong>Keputusan :</strong> Dengan mempertimbangkan<br>
+                        Hasil yang dicapai pada semester 1 dan 2<br>
+                        Maka Ananda
+                        <strong>{{ ucwords(strtolower($anggota_kelas->siswa->nama_lengkap)) }}</strong>
+                        ditetapkan :
+                        @if (!is_null($anggota_kelas->kenaikan_kelas))
+                            @if ($anggota_kelas->kenaikan_kelas->keputusan == 1)
+                                <strong>Naik</strong> / <s>Tidak Naik</s>
+                            @elseif($anggota_kelas->kenaikan_kelas->keputusan == 2)
+                                <s>Naik</s> / <strong>Tidak Naik</strong>
+                            @elseif($anggota_kelas->kenaikan_kelas->keputusan == 3)
+                                <strong>Lulus</strong>
+                            @elseif($anggota_kelas->kenaikan_kelas->keputusan == 4)
+                                <strong>Tidak Lulus</strong>
+                            @endif
+                            <br>
+                            Ke kelas : <strong>{{ $anggota_kelas->kenaikan_kelas->kelas_tujuan }}</strong>
+                        @else
+                            <strong>Naik</strong> / <s>Tidak Naik</s><br>
+                            Ke kelas : <strong>-</strong>
                         @endif
                     </td>
                 </tr>
-                <!-- End Catatan Wali Kelas -->
-
-                <!-- Tanggapan ORANG TUA/WALI -->
-                <tr>
-                    <td colspan="4" style="height: 25px; padding-top: 5px"><strong>F. TANGGAPAN ORANG
-                            TUA/WALI</strong></td>
-                </tr>
-                <tr class="sikap">
-                    <td colspan="4" class="description" style="height: 45px;">
-                    </td>
-                </tr>
-                <!-- End Tanggapan ORANG TUA/WALI -->
-
-                <!-- Keputusan -->
-                @if ($anggota_kelas->kelas->tapel->semester == 2)
-                    <tr>
-                        <td colspan="4" style="height: 25px; padding-top: 5px"><strong>G. KEPUTUSAN</strong></td>
-                    </tr>
-                    <tr class="sikap">
-                        <td colspan="4" class="description" style="height: 45px;">
-                            Berdasarkan hasil yang dicapai pada semester 1 dan 2, Peserta didik ditetapkan : <br>
-                            @if (!is_null($anggota_kelas->kenaikan_kelas))
-                                <b>
-                                    @if ($anggota_kelas->kenaikan_kelas->keputusan == 1)
-                                        NAIK KE KELAS : {{ $anggota_kelas->kenaikan_kelas->kelas_tujuan }}
-                                    @elseif($anggota_kelas->kenaikan_kelas->keputusan == 2)
-                                        TINGGAL DI KELAS : {{ $anggota_kelas->kenaikan_kelas->kelas_tujuan }}
-                                    @elseif($anggota_kelas->kenaikan_kelas->keputusan == 3)
-                                        LULUS
-                                    @elseif($anggota_kelas->kenaikan_kelas->keputusan == 4)
-                                        TIDAK LULUS
-                                    @endif
-                                </b>
-                            @endif
-                        </td>
-                    </tr>
-                @endif
                 <!-- End Keputusan -->
 
             </table>
@@ -457,7 +317,7 @@
                     <td style="width: 35%;"></td>
                     <td style="width: 35%;">
                         {{ $anggota_kelas->kelas->tapel->k13_tgl_raport->tempat_penerbitan }},
-                        {{ $anggota_kelas->kelas->tapel->k13_tgl_raport->tanggal_pembagian->isoFormat('D MMMM Y') }}<br>
+                        {{ \Carbon\Carbon::now()->locale('id')->isoFormat('D MMMM Y') }}<br>
                         Wali Kelas, <br><br><br><br>
                         <b><u>{{ $anggota_kelas->kelas->guru->nama_lengkap }},
                                 {{ $anggota_kelas->kelas->guru->gelar }}</u></b><br>
@@ -478,9 +338,10 @@
         </div>
         <div class="footer">
             <i>{{ $anggota_kelas->kelas->nama_kelas }} | {{ $anggota_kelas->siswa->nama_lengkap }} |
-                {{ $anggota_kelas->siswa->nis }}</i> <b style="float: right;"><i>Halaman 3</i></b>
+                {{ $anggota_kelas->siswa->nis }}</i> <b style="float: right;"><i>Halaman 2</i></b>
         </div>
     </div>
+
 </body>
 
 </html>

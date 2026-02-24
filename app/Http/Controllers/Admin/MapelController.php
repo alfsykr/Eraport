@@ -87,11 +87,86 @@ class MapelController extends Controller
     public function destroy($id)
     {
         $mapel = Mapel::findorfail($id);
+
+        // ✅ FIX: Validasi spesifik sebelum delete
+        // Cek apakah mata pelajaran masih digunakan di tabel lain
+
+        // 1. Cek di Pembelajaran (mata pelajaran yang diajarkan guru)
+        $pembelajaran_count = \App\Pembelajaran::where('mapel_id', $id)->count();
+        if ($pembelajaran_count > 0) {
+            return back()->with(
+                'toast_warning',
+                'Mata Pelajaran tidak dapat dihapus karena masih ada ' .
+                $pembelajaran_count . ' pembelajaran aktif. ' .
+                'Hapus pembelajaran terlebih dahulu.'
+            );
+        }
+
+        // 2. Cek di K13 Mapping Mapel
+        $k13_mapping_count = \App\K13MappingMapel::where('mapel_id', $id)->count();
+        if ($k13_mapping_count > 0) {
+            return back()->with(
+                'toast_warning',
+                'Mata Pelajaran tidak dapat dihapus karena sudah di-mapping ke ' .
+                $k13_mapping_count . ' kelompok mapel K13. ' .
+                'Hapus mapping terlebih dahulu di menu Mapping Mapel.'
+            );
+        }
+
+        // 3. Cek di KTSP Mapping Mapel
+        $ktsp_mapping_count = \App\KtspMappingMapel::where('mapel_id', $id)->count();
+        if ($ktsp_mapping_count > 0) {
+            return back()->with(
+                'toast_warning',
+                'Mata Pelajaran tidak dapat dihapus karena sudah di-mapping ke ' .
+                $ktsp_mapping_count . ' kelompok mapel KTSP. ' .
+                'Hapus mapping terlebih dahulu di menu Mapping Mapel.'
+            );
+        }
+
+        // 4. Cek di K13 KKM Mapel
+        $k13_kkm_count = \App\K13KkmMapel::where('mapel_id', $id)->count();
+        if ($k13_kkm_count > 0) {
+            return back()->with(
+                'toast_warning',
+                'Mata Pelajaran tidak dapat dihapus karena sudah memiliki ' .
+                $k13_kkm_count . ' data KKM K13. ' .
+                'Hapus data KKM terlebih dahulu.'
+            );
+        }
+
+        // 5. Cek di KTSP KKM Mapel
+        $ktsp_kkm_count = \App\KtspKkmMapel::where('mapel_id', $id)->count();
+        if ($ktsp_kkm_count > 0) {
+            return back()->with(
+                'toast_warning',
+                'Mata Pelajaran tidak dapat dihapus karena sudah memiliki ' .
+                $ktsp_kkm_count . ' data KKM KTSP. ' .
+                'Hapus data KKM terlebih dahulu.'
+            );
+        }
+
+        // 6. Cek di K13 KD Mapel
+        $k13_kd_count = \App\K13KdMapel::where('mapel_id', $id)->count();
+        if ($k13_kd_count > 0) {
+            return back()->with(
+                'toast_warning',
+                'Mata Pelajaran tidak dapat dihapus karena sudah memiliki ' .
+                $k13_kd_count . ' Kompetensi Dasar (KD). ' .
+                'Hapus KD terlebih dahulu di menu KD Mapel.'
+            );
+        }
+
+        // Jika semua validasi lolos, delete mata pelajaran
         try {
             $mapel->delete();
             return back()->with('toast_success', 'Mata Pelajaran berhasil dihapus');
         } catch (\Throwable $th) {
-            return back()->with('toast_warning', 'Data Mata Pelajaran tidak dapat dihapus');
+            // Fallback jika ada error lain yang tidak terduga
+            return back()->with(
+                'toast_error',
+                'Terjadi kesalahan: ' . $th->getMessage()
+            );
         }
     }
 

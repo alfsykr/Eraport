@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\K13;
 
 use App\AnggotaEkstrakulikuler;
+use App\AnggotaKelas;
 use App\Ekstrakulikuler;
 use App\Guru;
 use App\Http\Controllers\Controller;
@@ -31,12 +32,13 @@ class ValidasiController extends Controller
         $tapel = Tapel::findorfail(session()->get('tapel_id'));
 
         // Validasi Data Master
-        $count_guru =  Guru::count();
+        $count_guru = Guru::count();
         $count_mapel = Mapel::where('tapel_id', $tapel->id)->orderBy('nama_mapel', 'ASC')->count();
 
         $data_kelas = Kelas::where('tapel_id', $tapel->id)->orderBy('tingkatan_kelas', 'ASC')->get();
         foreach ($data_kelas as $kelas) {
-            $jumlah_anggota = Siswa::where('kelas_id', $kelas->id)->count();
+            // ✅ FIX: Hitung dari anggota_kelas untuk akurasi per tahun
+            $jumlah_anggota = AnggotaKelas::where('kelas_id', $kelas->id)->count();
             $kelas->jumlah_anggota = $jumlah_anggota;
 
             $jumlah_pembelajaran = Pembelajaran::where('kelas_id', $kelas->id)->whereNotNull('guru_id')->where('status', 1)->count();
@@ -45,7 +47,8 @@ class ValidasiController extends Controller
         $count_kelas = count($data_kelas);
 
         $count_siswa = Siswa::where('status', 1)->count();
-        $count_siswa_invalid = Siswa::where('status', 1)->where('kelas_id', null)->count();
+        // ✅ FIX: siswa_invalid dihapus karena kelas_id boleh null (tracking via anggota_kelas)
+        $count_siswa_invalid = 0; // Always 0, no longer relevant
 
         $data_ekstrakulikuler = Ekstrakulikuler::where('tapel_id', $tapel->id)->orderBy('nama_ekstrakulikuler', 'ASC')->get();
         foreach ($data_ekstrakulikuler as $ekstrakulikuler) {
@@ -57,7 +60,7 @@ class ValidasiController extends Controller
 
         // Validasi data Setting
         $id_mapel = Mapel::where('tapel_id', $tapel->id)->get('id');
-        $id_telah_mapping =  K13MappingMapel::whereIn('mapel_id', $id_mapel)->get('mapel_id');
+        $id_telah_mapping = K13MappingMapel::whereIn('mapel_id', $id_mapel)->get('mapel_id');
         $mapel_belum_mapping = Mapel::whereNotIn('id', $id_telah_mapping)->get();
         $count_mapel_belum_mapping = count($mapel_belum_mapping);
 

@@ -47,14 +47,13 @@ class KdMapelController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'mapel_id' => 'required',
-            'tingkatan_kelas' => 'required',
         ]);
         if ($validator->fails()) {
             return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
         } else {
-            $title = 'Tambah Kompetensi Dasar';
+            $title = 'Tambah Data Kisi-Kisi';
             $mapel_id = $request->mapel_id;
-            $tingkatan_kelas = $request->tingkatan_kelas;
+            $tingkatan_kelas = 0; // default, tidak dipakai
 
             $tapel = Tapel::findorfail(session()->get('tapel_id'));
             $data_mapel = Mapel::where('tapel_id', $tapel->id)->orderBy('nama_mapel', 'ASC')->get();
@@ -72,30 +71,27 @@ class KdMapelController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'jenis_kompetensi.*' => 'required',
-            'kode_kd.*' => 'required|min:2|max:10',
-            'kompetensi_dasar.*' => 'required|min:10|max:255',
-            'ringkasan_kompetensi.*' => 'required|min:10|max:150',
+            'kompetensi_dasar.*' => 'required|min:5|max:255',
         ]);
         if ($validator->fails()) {
             return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
         } else {
-            for ($count = 0; $count < count($request->jenis_kompetensi); $count++) {
+            for ($count = 0; $count < count($request->kompetensi_dasar); $count++) {
                 $data_kd = array(
-                    'mapel_id'  => $request->mapel_id,
-                    'tingkatan_kelas'  => $request->tingkatan_kelas,
-                    'semester'  => $request->semester,
-                    'jenis_kompetensi'  => $request->jenis_kompetensi[$count],
-                    'kode_kd'  => $request->kode_kd[$count],
-                    'kompetensi_dasar'  => $request->kompetensi_dasar[$count],
-                    'ringkasan_kompetensi'  => $request->ringkasan_kompetensi[$count],
-                    'created_at'  => Carbon::now(),
-                    'updated_at'  => Carbon::now(),
+                    'mapel_id' => $request->mapel_id,
+                    'tingkatan_kelas' => 0,   // default
+                    'semester' => $request->semester,
+                    'jenis_kompetensi' => 3,   // default: Pengetahuan (tidak relevan di sistem baru)
+                    'kode_kd' => '-', // default
+                    'kompetensi_dasar' => $request->kompetensi_dasar[$count],
+                    'ringkasan_kompetensi' => '-', // default
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
                 );
                 $store_data_kd[] = $data_kd;
             }
             K13KdMapel::insert($store_data_kd);
-            return redirect('admin/k13kd')->with('toast_success', 'Kompetensi dasar berhasil ditambahkan');
+            return redirect('admin/k13kd')->with('toast_success', 'Data kisi-kisi berhasil ditambahkan');
         }
     }
 
@@ -110,8 +106,7 @@ class KdMapelController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'kompetensi_dasar' => 'required|min:10|max:255',
-            'ringkasan_kompetensi' => 'required|min:10|max:150',
+            'kompetensi_dasar' => 'required|min:5|max:255',
         ]);
         if ($validator->fails()) {
             return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
@@ -119,10 +114,10 @@ class KdMapelController extends Controller
             $kd = K13KdMapel::findorfail($id);
             $data_kd = [
                 'kompetensi_dasar' => $request->kompetensi_dasar,
-                'ringkasan_kompetensi' => $request->ringkasan_kompetensi,
+                'ringkasan_kompetensi' => '-',
             ];
             $kd->update($data_kd);
-            return back()->with('toast_success', 'Kompetensi dasar berhasil diedit');
+            return back()->with('toast_success', 'Data kisi-kisi berhasil diedit');
         }
     }
 

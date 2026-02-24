@@ -55,12 +55,12 @@ class KehadiranSiswaController extends Controller
         } else {
             for ($cound_siswa = 0; $cound_siswa < count($request->anggota_kelas_id); $cound_siswa++) {
                 $data = array(
-                    'anggota_kelas_id'  => $request->anggota_kelas_id[$cound_siswa],
-                    'sakit'  => $request->sakit[$cound_siswa],
-                    'izin'  => $request->izin[$cound_siswa],
-                    'tanpa_keterangan'  => $request->tanpa_keterangan[$cound_siswa],
-                    'created_at'  => Carbon::now(),
-                    'updated_at'  => Carbon::now(),
+                    'anggota_kelas_id' => $request->anggota_kelas_id[$cound_siswa],
+                    'sakit' => $request->sakit[$cound_siswa],
+                    'izin' => $request->izin[$cound_siswa],
+                    'tanpa_keterangan' => $request->tanpa_keterangan[$cound_siswa],
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
                 );
                 $cek_data = KehadiranSiswa::where('anggota_kelas_id', $request->anggota_kelas_id[$cound_siswa])->first();
                 if (is_null($cek_data)) {
@@ -69,7 +69,7 @@ class KehadiranSiswaController extends Controller
                     $cek_data->update($data);
                 }
             }
-            return redirect('guru/kehadiran')->with('toast_success', 'Kehadiran siswa berhasil disimpan');
+            return redirect()->route('kehadiran.index')->with('toast_success', 'Kehadiran siswa berhasil disimpan');
         }
     }
 }

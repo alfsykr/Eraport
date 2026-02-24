@@ -30,7 +30,9 @@ class KelasController extends Controller
             $title = 'Data Kelas';
             $data_kelas = Kelas::where('tapel_id', $tapel->id)->orderBy('tingkatan_kelas', 'ASC')->get();
             foreach ($data_kelas as $kelas) {
-                $jumlah_anggota = Siswa::where('kelas_id', $kelas->id)->count();
+                // ✅ FIX: Hitung dari anggota_kelas, bukan dari siswa.kelas_id
+                // Karena siswa.kelas_id menunjuk ke kelas terakhir, tidak akurat per tahun
+                $jumlah_anggota = AnggotaKelas::where('kelas_id', $kelas->id)->count();
                 $kelas->jumlah_anggota = $jumlah_anggota;
             }
             $data_guru = Guru::orderBy('nama_lengkap', 'ASC')->get();
@@ -147,10 +149,10 @@ class KelasController extends Controller
             for ($count = 0; $count < count($siswa_id); $count++) {
                 $data = array(
                     'siswa_id' => $siswa_id[$count],
-                    'kelas_id'  => $request->kelas_id,
-                    'pendaftaran'  => $request->pendaftaran,
-                    'created_at'  => Carbon::now(),
-                    'updated_at'  => Carbon::now(),
+                    'kelas_id' => $request->kelas_id,
+                    'pendaftaran' => $request->pendaftaran,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
                 );
                 $insert_data[] = $data;
             }

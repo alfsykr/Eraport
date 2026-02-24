@@ -6,6 +6,8 @@ use App\AnggotaKelas;
 use App\Http\Controllers\Controller;
 use App\K13MappingMapel;
 use App\K13NilaiAkhirRaport;
+use App\K13RencanaKisi;
+use App\K13NilaiKisi;
 use App\Kelas;
 use App\Mapel;
 use App\Pembelajaran;
@@ -37,29 +39,46 @@ class PengelolaanNilaiController extends Controller
     public function store(Request $request)
     {
         $title = 'Hasil Pengelolaan Nilai';
-        $sekolah = Sekolah::first();
         $tapel = Tapel::findorfail(session()->get('tapel_id'));
         $data_kelas = Kelas::where('tapel_id', $tapel->id)->get();
 
         $kelas = Kelas::findorfail($request->kelas_id);
 
-        $data_id_mapel_semester_ini = Mapel::where('tapel_id', $tapel->id)->get('id');
-        $data_id_mapel_kelompok_a = K13MappingMapel::whereIn('mapel_id', $data_id_mapel_semester_ini)->where('kelompok', 'A')->get('mapel_id');
-        $data_id_mapel_kelompok_b = K13MappingMapel::whereIn('mapel_id', $data_id_mapel_semester_ini)->where('kelompok', 'B')->get('mapel_id');
+        // Ambil semua pembelajaran aktif di kelas ini
+        $data_pembelajaran = Pembelajaran::where('kelas_id', $kelas->id)
+            ->whereNotNull('guru_id')
+            ->where('status', 1)
+            ->with(['mapel', 'guru'])
+            ->get();
 
+        // Hitung jumlah anggota kelas (untuk cek nilai)
+        $jumlah_anggota = AnggotaKelas::where('kelas_id', $kelas->id)->count();
 
-        $data_anggota_kelas = AnggotaKelas::where('kelas_id', $kelas->id)->get();
-        foreach ($data_anggota_kelas as $anggota_kelas) {
-            $data_id_pembelajaran_a = Pembelajaran::where('kelas_id', $anggota_kelas->kelas_id)->whereIn('mapel_id', $data_id_mapel_kelompok_a)->get('id');
-            $data_id_pembelajaran_b = Pembelajaran::where('kelas_id', $anggota_kelas->kelas_id)->whereIn('mapel_id', $data_id_mapel_kelompok_b)->get('id');
+        foreach ($data_pembelajaran as $pembelajaran) {
+            // Status Rencana Kisi-Kisi
+            $jumlah_rencana = K13RencanaKisi::where('pembelajaran_id', $pembelajaran->id)->count();
+            $pembelajaran->jumlah_rencana_kisi = $jumlah_rencana;
 
-            $data_nilai_kelompok_a = K13NilaiAkhirRaport::whereIn('pembelajaran_id', $data_id_pembelajaran_a)->where('anggota_kelas_id', $anggota_kelas->id)->get();
-            $data_nilai_kelompok_b = K13NilaiAkhirRaport::whereIn('pembelajaran_id', $data_id_pembelajaran_b)->where('anggota_kelas_id', $anggota_kelas->id)->get();
+            // Status Input Nilai Kisi-Kisi (cek apakah ada nilai yang sudah diinput)
+            $jumlah_nilai = K13NilaiKisi::whereHas('rencana_kisi', function ($q) use ($pembelajaran) {
+                $q->where('pembelajaran_id', $pembelajaran->id);
+            })->count();
+            $pembelajaran->jumlah_nilai_kisi = $jumlah_nilai;
 
-            $anggota_kelas->data_nilai_kelompok_a = $data_nilai_kelompok_a;
-            $anggota_kelas->data_nilai_kelompok_b = $data_nilai_kelompok_b;
+            // Status Kirim Nilai Akhir (cek apakah nilai_akhir sudah terisi)
+            $jumlah_kirim = K13NilaiAkhirRaport::where('pembelajaran_id', $pembelajaran->id)
+                ->whereNotNull('nilai_akhir')
+                ->count();
+            $pembelajaran->jumlah_kirim_nilai = $jumlah_kirim;
+            $pembelajaran->jumlah_anggota = $jumlah_anggota;
         }
-        return view('admin.k13.pengelolaannilai.index', compact('title', 'kelas', 'data_kelas', 'sekolah', 'data_anggota_kelas'));
+
+        return view('admin.k13.pengelolaannilai.index', compact(
+            'title',
+            'kelas',
+            'data_kelas',
+            'data_pembelajaran'
+        ));
     }
 
     /**

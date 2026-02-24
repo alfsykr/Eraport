@@ -1,5 +1,5 @@
 @include('layouts.main.header')
-@include('layouts.sidebar.walikelas')
+@include('layouts.sidebar.guru')
 
 <div class="content-wrapper">
   <div class="content-header">

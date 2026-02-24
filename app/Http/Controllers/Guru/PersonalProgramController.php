@@ -7,12 +7,26 @@ use Illuminate\Http\Request;
 use App\PersonalProgram;
 use App\Siswa;
 use App\Guru;
+use App\Kelas;
+use App\Tapel;
 use Illuminate\Support\Facades\Auth;
 
 class PersonalProgramController extends Controller
 {
+    private function isWaliKelas()
+    {
+        $guru = Guru::where('user_id', Auth::id())->first();
+        $tapel = Tapel::find(session('tapel_id'));
+        if (!$guru || !$tapel)
+            return false;
+        return Kelas::where('tapel_id', $tapel->id)->where('guru_id', $guru->id)->exists();
+    }
+
     public function index()
     {
+        if (!$this->isWaliKelas()) {
+            return redirect()->route('dashboard')->with('toast_error', 'Fitur Personal Program hanya untuk Wali Kelas.');
+        }
         $title = 'Personal Program';
         $guru = Guru::where('user_id', Auth::id())->firstOrFail();
         $data_pp = PersonalProgram::with(['siswa', 'guru'])
@@ -31,6 +45,9 @@ class PersonalProgramController extends Controller
 
     public function store(Request $request)
     {
+        if (!$this->isWaliKelas()) {
+            return redirect()->route('dashboard')->with('toast_error', 'Fitur Personal Program hanya untuk Wali Kelas.');
+        }
         $request->validate([
             'siswa_id' => 'required|integer',
             'semester' => 'required|string|max:15',

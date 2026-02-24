@@ -125,12 +125,60 @@ class GuruController extends Controller
     {
         $guru = Guru::findorfail($id);
         $user = User::findorfail($guru->user_id);
+
+        // ✅ FIX: Validasi spesifik sebelum delete
+        // Cek apakah guru masih aktif mengajar atau menjadi wali kelas
+
+        // 1. Cek apakah guru sedang mengajar mata pelajaran
+        $pembelajaran = \App\Pembelajaran::where('guru_id', $id)
+            ->where('status', 1)
+            ->with('mapel', 'kelas')
+            ->get();
+
+        if ($pembelajaran->count() > 0) {
+            $mapel_list = $pembelajaran->map(function ($p) {
+                return $p->mapel->nama_mapel . ' (' . $p->kelas->nama_kelas . ')';
+            })->take(3)->implode(', ');
+
+            $more = $pembelajaran->count() > 3 ? ' dan ' . ($pembelajaran->count() - 3) . ' lainnya' : '';
+
+            return back()->with(
+                'toast_warning',
+                'Guru tidak dapat dihapus karena sedang mengajar ' .
+                $pembelajaran->count() . ' mata pelajaran: ' . $mapel_list . $more . '. ' .
+                'Hapus pembelajaran terlebih dahulu.'
+            );
+        }
+
+        // 2. Cek apakah guru menjadi wali kelas
+        $kelas = \App\Kelas::where('guru_id', $id)->with('tapel')->get();
+
+        if ($kelas->count() > 0) {
+            $kelas_list = $kelas->map(function ($k) {
+                return $k->nama_kelas . ' (' . $k->tapel->tahun_pelajaran . ')';
+            })->take(3)->implode(', ');
+
+            $more = $kelas->count() > 3 ? ' dan ' . ($kelas->count() - 3) . ' lainnya' : '';
+
+            return back()->with(
+                'toast_warning',
+                'Guru tidak dapat dihapus karena menjadi wali kelas di ' .
+                $kelas->count() . ' kelas: ' . $kelas_list . $more . '. ' .
+                'Ganti wali kelas terlebih dahulu.'
+            );
+        }
+
+        // Jika semua validasi lolos, delete guru dan user-nya
         try {
             $guru->delete();
             $user->delete();
             return back()->with('toast_success', 'Data guru berhasil dihapus');
         } catch (\Throwable $th) {
-            return back()->with('toast_error', 'Data guru tidak dapat dihapus');
+            // Fallback jika ada error lain yang tidak terduga
+            return back()->with(
+                'toast_error',
+                'Terjadi kesalahan: ' . $th->getMessage()
+            );
         }
     }
 

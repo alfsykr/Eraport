@@ -7,16 +7,8 @@ use App\Guru;
 use App\Http\Controllers\Controller;
 use App\K13KkmMapel;
 use App\K13NilaiAkhirRaport;
-use App\K13NilaiKeterampilan;
-use App\K13NilaiPengetahuan;
-use App\K13NilaiPtsPas;
-use App\K13NilaiSosial;
-use App\K13NilaiSpiritual;
-use App\K13RencanaBobotPenilaian;
-use App\K13RencanaNilaiKeterampilan;
-use App\K13RencanaNilaiPengetahuan;
-use App\K13RencanaNilaiSosial;
-use App\K13RencanaNilaiSpiritual;
+use App\K13NilaiKisi;
+use App\K13RencanaKisi;
 use App\Kelas;
 use App\Pembelajaran;
 use App\Tapel;
@@ -28,26 +20,32 @@ use Illuminate\Support\Facades\Validator;
 class KirimNilaiAkhirController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Daftar mapel yang diajar guru
      */
     public function index()
     {
         $title = 'Kirim Nilai Akhir';
         $tapel = Tapel::findorfail(session()->get('tapel_id'));
-
         $guru = Guru::where('user_id', Auth::user()->id)->first();
         $id_kelas = Kelas::where('tapel_id', $tapel->id)->get('id');
-        $data_pembelajaran = Pembelajaran::where('guru_id', $guru->id)->whereIn('kelas_id', $id_kelas)->where('status', 1)->orderBy('mapel_id', 'ASC')->orderBy('kelas_id', 'ASC')->get();
+
+        $data_pembelajaran = Pembelajaran::where('guru_id', $guru->id)
+            ->whereIn('kelas_id', $id_kelas)
+            ->where('status', 1)
+            ->orderBy('mapel_id', 'ASC')
+            ->orderBy('kelas_id', 'ASC')
+            ->get();
+
+        foreach ($data_pembelajaran as $pembelajaran) {
+            $pembelajaran->jumlah_rencana = K13RencanaKisi::where('pembelajaran_id', $pembelajaran->id)->count();
+            $pembelajaran->sudah_kirim = K13NilaiAkhirRaport::where('pembelajaran_id', $pembelajaran->id)->count();
+        }
 
         return view('guru.k13.kirimnilaiakhir.index', compact('title', 'data_pembelajaran'));
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Preview nilai akhir yang akan dikirim (auto-hitung dari rata-rata kisi-kisi)
      */
     public function create(Request $request)
     {
@@ -55,120 +53,119 @@ class KirimNilaiAkhirController extends Controller
             'pembelajaran_id' => 'required',
         ]);
         if ($validator->fails()) {
-            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
-        } else {
-            $pembelajaran = Pembelajaran::findorfail($request->pembelajaran_id);
-
-            $kkm = K13KkmMapel::where('mapel_id', $pembelajaran->mapel_id)->where('kelas_id', $pembelajaran->kelas_id)->first();
-            $bobot_penilaian = K13RencanaBobotPenilaian::where('pembelajaran_id', $pembelajaran->id)->first();
-
-            if (is_null($kkm)) {
-                return back()->with('toast_warning', 'KKM mata pelajaran belum ditentukan');
-            } elseif (is_null($bobot_penilaian)) {
-                return back()->with('toast_warning', 'Bobot penilaian belum ditentukan');
-            }
-
-            $rencana_nilai_pengetahuan = K13RencanaNilaiPengetahuan::where('pembelajaran_id', $pembelajaran->id)->get('id');
-            $rencana_nilai_keterampilan = K13RencanaNilaiKeterampilan::where('pembelajaran_id', $pembelajaran->id)->get('id');
-            $rencana_nilai_spiritual = K13RencanaNilaiSpiritual::where('pembelajaran_id', $pembelajaran->id)->get('id');
-            $rencana_nilai_sosial = K13RencanaNilaiSosial::where('pembelajaran_id', $pembelajaran->id)->get('id');
-
-            if (count($rencana_nilai_pengetahuan) == 0 || count($rencana_nilai_keterampilan) == 0 || count($rencana_nilai_spiritual) == 0 || count($rencana_nilai_sosial) == 0) {
-                return back()->with('toast_warning', 'Data rencana penilaian tidak ditemukan');
-            } else {
-                $nilai_pengetahuan = K13NilaiPengetahuan::whereIn('k13_rencana_nilai_pengetahuan_id', $rencana_nilai_pengetahuan)->groupBy('k13_rencana_nilai_pengetahuan_id')->get();
-                $nilai_keterampilan = K13NilaiKeterampilan::whereIn('k13_rencana_nilai_keterampilan_id', $rencana_nilai_keterampilan)->groupBy('k13_rencana_nilai_keterampilan_id')->get();
-                $nilai_spiritual = K13NilaiSpiritual::whereIn('k13_rencana_nilai_spiritual_id', $rencana_nilai_spiritual)->groupBy('k13_rencana_nilai_spiritual_id')->get();
-                $nilai_sosial = K13NilaiSosial::whereIn('k13_rencana_nilai_sosial_id', $rencana_nilai_sosial)->groupBy('k13_rencana_nilai_sosial_id')->get();
-
-                if (count($rencana_nilai_pengetahuan) != count($nilai_pengetahuan) || count($rencana_nilai_keterampilan) != count($nilai_keterampilan) || count($rencana_nilai_spiritual) != count($nilai_spiritual) || count($rencana_nilai_sosial) != count($nilai_sosial)) {
-                    return back()->with('toast_warning', 'Jumlah penilaian tidak sesuai dengan jumlah perencanaan');
-                } else {
-                    $data_nilai_pts_pas = K13NilaiPtsPas::where('pembelajaran_id', $pembelajaran->id)->get();
-
-                    if (count($data_nilai_pts_pas) == 0) {
-                        return back()->with('toast_warning', 'Nilai PTS & PAS tidak ditemukan');
-                    } else {
-
-                        // Data Master
-                        $title = 'Kirim Nilai Akhir';
-                        $tapel = Tapel::findorfail(session()->get('tapel_id'));
-
-                        $guru = Guru::where('user_id', Auth::user()->id)->first();
-                        $id_kelas = Kelas::where('tapel_id', $tapel->id)->get('id');
-                        $data_pembelajaran = Pembelajaran::where('guru_id', $guru->id)->whereIn('kelas_id', $id_kelas)->where('status', 1)->orderBy('mapel_id', 'ASC')->orderBy('kelas_id', 'ASC')->get();
-
-                        // Interval KKM
-                        $range = (100 - $kkm->kkm) / 3;
-                        $kkm->predikat_c = round($kkm->kkm, 0);
-                        $kkm->predikat_b = round($kkm->kkm + $range, 0);
-                        $kkm->predikat_a = round($kkm->kkm + ($range * 2), 0);
-
-                        // Data Nilai
-                        $data_anggota_kelas = AnggotaKelas::where('kelas_id', $pembelajaran->kelas_id)->get();
-                        foreach ($data_anggota_kelas as $anggota_kelas) {
-
-                            // Olah Nilai Pengetahuan
-                            $data_nilai_pengetahuan = K13NilaiPengetahuan::whereIn('k13_rencana_nilai_pengetahuan_id', $rencana_nilai_pengetahuan)->where('anggota_kelas_id', $anggota_kelas->id)->get();
-                            foreach ($data_nilai_pengetahuan as $nilai) {
-                                $bobot = K13RencanaNilaiPengetahuan::findorfail($nilai->k13_rencana_nilai_pengetahuan_id);
-                                $nilai->nilai_pengetahuan = $nilai->nilai * $bobot->bobot_teknik_penilaian;
-                                $nilai->bobot_penilaian = $bobot->bobot_teknik_penilaian;
-                            }
-
-                            $nilai_pts_pas = K13NilaiPtsPas::where('pembelajaran_id', $pembelajaran->id)->where('anggota_kelas_id', $anggota_kelas->id)->first();
-                            $rencana_bobot_penilaian = K13RencanaBobotPenilaian::where('pembelajaran_id', $pembelajaran->id)->first();
-
-                            $rata_nilai_pengetahuan = $data_nilai_pengetahuan->sum('nilai_pengetahuan') / $data_nilai_pengetahuan->sum('bobot_penilaian');
-                            $nilai_akhir_pengetahuan = (($rata_nilai_pengetahuan * $rencana_bobot_penilaian->bobot_ph) + ($nilai_pts_pas->nilai_pts * $rencana_bobot_penilaian->bobot_pts) + ($nilai_pts_pas->nilai_pas * $rencana_bobot_penilaian->bobot_pas)) / ($rencana_bobot_penilaian->bobot_ph + $rencana_bobot_penilaian->bobot_pts + $rencana_bobot_penilaian->bobot_pas);
-                            // Akhir Olah Nilai Pengetahuan
-
-                            $nilai_keterampilan = K13NilaiKeterampilan::whereIn('k13_rencana_nilai_keterampilan_id', $rencana_nilai_keterampilan)->where('anggota_kelas_id', $anggota_kelas->id)->avg('nilai');
-                            $nilai_spiritual = K13NilaiSpiritual::whereIn('k13_rencana_nilai_spiritual_id', $rencana_nilai_spiritual)->where('anggota_kelas_id', $anggota_kelas->id)->avg('nilai');
-                            $nilai_sosial = K13NilaiSosial::whereIn('k13_rencana_nilai_sosial_id', $rencana_nilai_sosial)->where('anggota_kelas_id', $anggota_kelas->id)->avg('nilai');
-
-                            $anggota_kelas->nilai_pengetahuan = round($nilai_akhir_pengetahuan, 0);
-                            $anggota_kelas->nilai_keterampilan = round($nilai_keterampilan, 0);
-                            $anggota_kelas->nilai_spiritual = round($nilai_spiritual, 0);
-                            $anggota_kelas->nilai_sosial = round($nilai_sosial, 0);
-                        }
-                        return view('guru.k13.kirimnilaiakhir.create', compact('title', 'data_pembelajaran', 'pembelajaran', 'kkm', 'data_anggota_kelas'));
-                    }
-                }
-            }
+            return back()->with('toast_error', $validator->errors()->first())->withInput();
         }
+
+        $pembelajaran = Pembelajaran::findorfail($request->pembelajaran_id);
+
+        // Cek KKM
+        $kkm = K13KkmMapel::where('mapel_id', $pembelajaran->mapel_id)
+            ->where('kelas_id', $pembelajaran->kelas_id)
+            ->first();
+        if (is_null($kkm)) {
+            return back()->with('toast_warning', 'KKM mata pelajaran belum ditentukan');
+        }
+
+        // Cek rencana kisi-kisi
+        $rencana_ids = K13RencanaKisi::where('pembelajaran_id', $pembelajaran->id)->pluck('id');
+        if ($rencana_ids->isEmpty()) {
+            return back()->with('toast_warning', 'Rencana penilaian kisi-kisi belum dibuat');
+        }
+
+        // Interval predikat
+        $range = (100 - $kkm->kkm) / 3;
+        $kkm->predikat_c = round($kkm->kkm, 0);
+        $kkm->predikat_b = round($kkm->kkm + $range, 0);
+        $kkm->predikat_a = round($kkm->kkm + ($range * 2), 0);
+
+        // Data siswa + hitung nilai akhir dari rata-rata kisi-kisi
+        $data_anggota_kelas = AnggotaKelas::where('kelas_id', $pembelajaran->kelas_id)->get();
+        foreach ($data_anggota_kelas as $anggota) {
+            $rata = K13NilaiKisi::whereIn('k13_rencana_kisi_id', $rencana_ids)
+                ->where('anggota_kelas_id', $anggota->id)
+                ->avg('nilai');
+
+            $anggota->nilai_akhir = $rata ? round($rata, 0) : 0;
+            $anggota->predikat = $this->hitungPredikat($anggota->nilai_akhir, $kkm);
+        }
+
+        // Data guru untuk dropdown
+        $guru = Guru::where('user_id', Auth::user()->id)->first();
+        $id_kelas = Kelas::where('tapel_id', session()->get('tapel_id'))->get('id');
+        $data_pembelajaran = Pembelajaran::where('guru_id', $guru->id)
+            ->whereIn('kelas_id', $id_kelas)
+            ->where('status', 1)
+            ->orderBy('mapel_id', 'ASC')
+            ->orderBy('kelas_id', 'ASC')
+            ->get();
+
+        $title = 'Kirim Nilai Akhir';
+        return view('guru.k13.kirimnilaiakhir.create', compact(
+            'title',
+            'data_pembelajaran',
+            'pembelajaran',
+            'kkm',
+            'data_anggota_kelas'
+        ));
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Simpan nilai akhir ke k13_nilai_akhir_raport
      */
     public function store(Request $request)
     {
-        for ($cound_siswa = 0; $cound_siswa < count($request->anggota_kelas_id); $cound_siswa++) {
-            $data_nilai = array(
-                'pembelajaran_id' => $request->pembelajaran_id,
-                'kkm' => $request->kkm,
-                'anggota_kelas_id'  => $request->anggota_kelas_id[$cound_siswa],
-                'nilai_pengetahuan'  => ltrim($request->nilai_pengetahuan[$cound_siswa]),
-                'predikat_pengetahuan'  => $request->predikat_pengetahuan[$cound_siswa],
-                'nilai_keterampilan'  => ltrim($request->nilai_keterampilan[$cound_siswa]),
-                'predikat_keterampilan'  => $request->predikat_keterampilan[$cound_siswa],
-                'nilai_spiritual'  => $request->nilai_spiritual[$cound_siswa],
-                'nilai_sosial'  => $request->nilai_sosial[$cound_siswa],
-                'created_at'  => Carbon::now(),
-                'updated_at'  => Carbon::now(),
-            );
+        $pembelajaran = Pembelajaran::findorfail($request->pembelajaran_id);
+        $kkm = K13KkmMapel::where('mapel_id', $pembelajaran->mapel_id)
+            ->where('kelas_id', $pembelajaran->kelas_id)
+            ->first();
 
-            $cek_nilai = K13NilaiAkhirRaport::where('pembelajaran_id', $request->pembelajaran_id)->where('anggota_kelas_id', $request->anggota_kelas_id[$cound_siswa])->first();
-            if (is_null($cek_nilai)) {
-                K13NilaiAkhirRaport::insert($data_nilai);
+        for ($i = 0; $i < count($request->anggota_kelas_id); $i++) {
+            $nilai_akhir = (int) $request->nilai_akhir[$i];
+            $predikat = $this->hitungPredikat($nilai_akhir, $kkm);
+
+            $data = [
+                'pembelajaran_id' => $request->pembelajaran_id,
+                'anggota_kelas_id' => $request->anggota_kelas_id[$i],
+                'kkm' => $kkm->kkm,
+                'nilai_akhir' => $nilai_akhir,
+                'predikat_akhir' => $predikat,
+                // backward compat
+                'nilai_pengetahuan' => $nilai_akhir,
+                'predikat_pengetahuan' => $predikat,
+                'nilai_keterampilan' => $nilai_akhir,
+                'predikat_keterampilan' => $predikat,
+                'nilai_spiritual' => 3,
+                'nilai_sosial' => 3,
+                'updated_at' => Carbon::now(),
+            ];
+
+            $cek = K13NilaiAkhirRaport::where('pembelajaran_id', $request->pembelajaran_id)
+                ->where('anggota_kelas_id', $request->anggota_kelas_id[$i])
+                ->first();
+
+            if (is_null($cek)) {
+                $data['created_at'] = Carbon::now();
+                K13NilaiAkhirRaport::insert($data);
             } else {
-                $cek_nilai->update($data_nilai);
+                $cek->update($data);
             }
         }
+
         return redirect('guru/kirimnilaiakhir')->with('toast_success', 'Nilai akhir raport berhasil dikirim');
+    }
+
+    /**
+     * Hitung predikat berdasarkan nilai dan KKM
+     */
+    private function hitungPredikat($nilai, $kkm)
+    {
+        $range = (100 - $kkm->kkm) / 3;
+        if ($nilai >= round($kkm->kkm + ($range * 2), 0))
+            return 'A';
+        if ($nilai >= round($kkm->kkm + $range, 0))
+            return 'B';
+        if ($nilai >= $kkm->kkm)
+            return 'C';
+        return 'D';
     }
 }

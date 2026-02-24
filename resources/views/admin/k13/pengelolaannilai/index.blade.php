@@ -38,10 +38,12 @@
                   <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Kelas</label>
                     <div class="col-sm-10">
-                      <select class="form-control select2" name="kelas_id" style="width: 100%;" required onchange="this.form.submit();">
+                      <select class="form-control select2" name="kelas_id" style="width: 100%;" required
+                        onchange="this.form.submit();">
                         <option value="" disabled>-- Pilih Kelas --</option>
                         @foreach($data_kelas->sortBy('tingkatan_kelas') as $kls)
-                        <option value="{{$kls->id}}" @if($kls->id == $kelas->id) selected @endif>{{$kls->nama_kelas}}</option>
+                          <option value="{{$kls->id}}" @if($kls->id == $kelas->id) selected @endif>{{$kls->nama_kelas}}
+                          </option>
                         @endforeach
                       </select>
                     </div>
@@ -51,146 +53,92 @@
 
               <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover">
-                  <thead class="bg-info">
+                  <thead class="bg-info text-white">
                     <tr>
-                      <th class="text-center" style="width: 5%;">No</th>
-                      <th class="text-center">NIS</th>
-                      <th class="text-center">NISN</th>
-                      <th class="text-center">Nama Siswa</th>
-                      <th class="text-center" style="width: 5%;">L/P</th>
-                      <th class="text-center" style="width: 15%;">Lihat Nilai Akhir Semester</th>
+                      <th class="text-center" rowspan="2" style="width:5%; vertical-align:middle;">No</th>
+                      <th class="text-center" rowspan="2" style="vertical-align:middle;">Mata Pelajaran</th>
+                      <th class="text-center" rowspan="2" style="vertical-align:middle;">Nama Guru</th>
+                      <th class="text-center" colspan="3">Status Kisi-Kisi</th>
+                    </tr>
+                    <tr>
+                      <th class="text-center" style="width:15%;">Rencana<br>Kisi-Kisi</th>
+                      <th class="text-center" style="width:15%;">Input<br>Nilai</th>
+                      <th class="text-center" style="width:15%;">Kirim<br>Nilai Akhir</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <?php $no_urut = 0; ?>
-                    @foreach($data_anggota_kelas->sortBy('siswa.nama_lengkap') as $anggota_kelas)
-                    <?php $no_urut++; ?>
-                    <tr>
-                      <td class="text-center">{{$no_urut}}</td>
-                      <td class="text-center">{{$anggota_kelas->siswa->nis}}</td>
-                      <td class="text-center">{{$anggota_kelas->siswa->nisn}}</td>
-                      <td>{{$anggota_kelas->siswa->nama_lengkap}}</td>
-                      <td class="text-center">{{$anggota_kelas->siswa->jenis_kelamin}}</td>
-                      <td class="text-center">
-                        <button type="button" class="btn btn-primary btn-sm mt-1" data-toggle="modal" data-target="#modal-show{{$anggota_kelas->id}}">
-                          <i class="fas fa-eye"></i> Lihat Nilai
-                        </button>
-                        <!-- Modal Show -->
-                        <div class="modal fade text-left" id="modal-show{{$anggota_kelas->id}}">
-                          <div class="modal-dialog modal-xl">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title">Nilai Akhir Semester Siswa</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-body">
-                                <!-- Header Info  -->
-                                <div class="row">
-                                  <div class="col-sm-2"><strong>Nama Sekolah</strong></div>
-                                  <div class="col-sm-6"><strong>: {{$sekolah->nama_sekolah}}</strong></div>
-                                  <div class="col-sm-2"><strong>Kelas</strong></div>
-                                  <div class="col-sm-2"><strong>: {{$anggota_kelas->kelas->nama_kelas}}</strong></div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-sm-2"><strong>Alamat</strong></div>
-                                  <div class="col-sm-6"><strong>: {{$sekolah->alamat}}</strong></div>
-                                  <div class="col-sm-2"><strong>Semester</strong></div>
-                                  <div class="col-sm-2"><strong>: {{$anggota_kelas->kelas->tapel->semester}}</strong></div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-sm-2"><strong>Nama</strong></div>
-                                  <div class="col-sm-6"><strong>: {{$anggota_kelas->siswa->nama_lengkap}}</strong></div>
-                                  <div class="col-sm-2"><strong>Tahun Pelajaran</strong></div>
-                                  <div class="col-sm-2"><strong>: {{$anggota_kelas->kelas->tapel->tahun_pelajaran}}</strong></div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-sm-2"><strong>Nomor Induk / NISN</strong></div>
-                                  <div class="col-sm-10"><strong>: {{$anggota_kelas->siswa->nis}} / {{$anggota_kelas->siswa->nisn}}</strong></div>
-                                </div>
-                                <!-- /. Header Info-->
+                    <?php $no = 0; ?>
+                    @forelse($data_pembelajaran->sortBy('mapel.nama_mapel') as $pembelajaran)
+                      <?php  $no++; ?>
+                      <tr>
+                        <td class="text-center">{{$no}}</td>
+                        <td>{{$pembelajaran->mapel->nama_mapel}}</td>
+                        <td>{{$pembelajaran->guru->nama_guru ?? '-'}}</td>
 
-                                <!-- Tabel Nilai  -->
-                                <div class="row mt-3">
-                                  <div class="col-sm-12">
-                                    <strong>NILAI AKHIR SEMESTER PENGETAHUAN DAN KETERAMPILAN</strong>
-                                  </div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-sm-12">
-                                    <div class="table-responsive">
-                                      <table class="table table-bordered">
-                                        <thead class="bg-info">
-                                          <tr>
-                                            <th class="text-center" rowspan="2" style="width: 5%;">No</th>
-                                            <th class="text-center" rowspan="2" style="width: 50%;">Mata Pelajaran</th>
-                                            <th class="text-center" rowspan="2" style="width: 5%;">KKM</th>
-                                            <th class="text-center" colspan="2" style="width: 20%;">Pengetahuan</th>
-                                            <th class="text-center" colspan="2" style="width: 20%;">Keterampilan</th>
-                                          </tr>
-                                          <tr>
-                                            <th class="text-center">Nilai</th>
-                                            <th class="text-center">Predikat</th>
-                                            <th class="text-center">Nilai</th>
-                                            <th class="text-center">Predikat</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                          <!-- Nilai Kelompok A  -->
-                                          <tr class="bg-light">
-                                            <td colspan="7"><strong>Kelompok A</strong></td>
-                                          </tr>
-                                          <?php $no = 0; ?>
-                                          @foreach($anggota_kelas->data_nilai_kelompok_a->sortBy('pembelajaran.mapel.k13_mapping_mapel.nomor_urut') as $nilai_kelompok_a)
-                                          <?php $no++; ?>
-                                          <tr class="bg-white">
-                                            <td class="text-center">{{$no}}</td>
-                                            <td>{{$nilai_kelompok_a->pembelajaran->mapel->nama_mapel}}</td>
-                                            <td class="text-center">{{$nilai_kelompok_a->kkm}}</td>
-                                            <td class="text-center">{{$nilai_kelompok_a->nilai_pengetahuan}}</td>
-                                            <td class="text-center">{{$nilai_kelompok_a->predikat_pengetahuan}}</td>
-                                            <td class="text-center">{{$nilai_kelompok_a->nilai_keterampilan}}</td>
-                                            <td class="text-center">{{$nilai_kelompok_a->predikat_keterampilan}}</td>
-                                          </tr>
-                                          @endforeach
-                                          <!-- End Nilai Kelompok A  -->
+                        {{-- Status Rencana Kisi-Kisi --}}
+                        <td class="text-center">
+                          @if($pembelajaran->jumlah_rencana_kisi > 0)
+                            <span class="badge badge-success p-2">
+                              <i class="fas fa-check"></i> {{ $pembelajaran->jumlah_rencana_kisi }} indikator
+                            </span>
+                          @else
+                            <span class="badge badge-danger p-2">
+                              <i class="fas fa-times"></i> Belum ada
+                            </span>
+                          @endif
+                        </td>
 
-                                          <!-- Nilai Kelompok B  -->
-                                          <tr class="bg-light">
-                                            <td colspan="7"><strong>Kelompok B</strong></td>
-                                          </tr>
-                                          <?php $no = 0; ?>
-                                          @foreach($anggota_kelas->data_nilai_kelompok_b->sortBy('pembelajaran.mapel.k13_mapping_mapel.nomor_urut') as $nilai_kelompok_b)
-                                          <?php $no++; ?>
-                                          <tr class="bg-white">
-                                            <td class="text-center">{{$no}}</td>
-                                            <td>{{$nilai_kelompok_b->pembelajaran->mapel->nama_mapel}}</td>
-                                            <td class="text-center">{{$nilai_kelompok_b->kkm}}</td>
-                                            <td class="text-center">{{$nilai_kelompok_b->nilai_pengetahuan}}</td>
-                                            <td class="text-center">{{$nilai_kelompok_b->predikat_pengetahuan}}</td>
-                                            <td class="text-center">{{$nilai_kelompok_b->nilai_keterampilan}}</td>
-                                            <td class="text-center">{{$nilai_kelompok_b->predikat_keterampilan}}</td>
-                                          </tr>
-                                          @endforeach
-                                          <!-- End Nilai Kelompok B  -->
-                                        </tbody>
-                                      </table>
-                                    </div>
-                                  </div>
-                                </div>
-                                <!-- /. Tabel Nilai  -->
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <!-- End Modal Show -->
-                      </td>
-                    </tr>
-                    @endforeach
+                        {{-- Status Input Nilai Kisi-Kisi --}}
+                        <td class="text-center">
+                          @if($pembelajaran->jumlah_nilai_kisi > 0)
+                            <span class="badge badge-success p-2">
+                              <i class="fas fa-check"></i> {{ $pembelajaran->jumlah_nilai_kisi }} nilai
+                            </span>
+                          @else
+                            <span class="badge badge-danger p-2">
+                              <i class="fas fa-times"></i> Belum ada
+                            </span>
+                          @endif
+                        </td>
+
+                        {{-- Status Kirim Nilai Akhir --}}
+                        <td class="text-center">
+                          @if($pembelajaran->jumlah_kirim_nilai > 0)
+                            @if($pembelajaran->jumlah_kirim_nilai >= $pembelajaran->jumlah_anggota)
+                              <span class="badge badge-success p-2">
+                                <i class="fas fa-check"></i> Selesai ({{ $pembelajaran->jumlah_kirim_nilai }})
+                              </span>
+                            @else
+                              <span class="badge badge-warning p-2">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                {{ $pembelajaran->jumlah_kirim_nilai }}/{{ $pembelajaran->jumlah_anggota }}
+                              </span>
+                            @endif
+                          @else
+                            <span class="badge badge-danger p-2">
+                              <i class="fas fa-times"></i> Belum ada
+                            </span>
+                          @endif
+                        </td>
+                      </tr>
+                    @empty
+                      <tr>
+                        <td colspan="6" class="text-center text-muted">Tidak ada data pembelajaran untuk kelas ini.</td>
+                      </tr>
+                    @endforelse
                   </tbody>
                 </table>
               </div>
+
+              {{-- Keterangan --}}
+              <div class="mt-2">
+                <small class="text-muted">
+                  <span class="badge badge-success">✓</span> Sudah diisi &nbsp;
+                  <span class="badge badge-warning">!</span> Sebagian &nbsp;
+                  <span class="badge badge-danger">✗</span> Belum diisi
+                </small>
+              </div>
+
             </div>
           </div>
           <!-- /.card -->

@@ -12,7 +12,7 @@
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item "><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
             <li class="breadcrumb-item active">{{$title}}</li>
           </ol>
         </div><!-- /.col -->
@@ -24,7 +24,6 @@
   <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
-      <!-- ./row -->
       <div class="row">
         <div class="col-12">
           <div class="card">
@@ -38,127 +37,82 @@
                   <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Kelas</label>
                     <div class="col-sm-10">
-                      <select class="form-control select2" name="kelas_id" style="width: 100%;" required onchange="this.form.submit();">
+                      <select class="form-control select2" name="kelas_id" style="width: 100%;" required
+                        onchange="this.form.submit();">
                         <option value="" disabled>-- Pilih Kelas --</option>
                         @foreach($data_kelas->sortBy('tingkatan_kelas') as $kls)
-                        <option value="{{$kls->id}}" @if($kelas->id == $kls->id) selected @endif>{{$kls->nama_kelas}}</option>
+                          <option value="{{$kls->id}}" @if($kelas->id == $kls->id) selected @endif>{{$kls->nama_kelas}}
+                          </option>
                         @endforeach
                       </select>
                     </div>
                   </div>
                 </form>
               </div>
+
               <div class="table-responsive">
                 <table class="table table-bordered table-striped">
-                  <thead class="bg-info">
+                  <thead class="bg-info text-white">
                     <tr>
-                      <th rowspan="2" class="text-center">No</th>
-                      <th rowspan="2" class="text-center">Mata Pelajaran</th>
-                      <th rowspan="2" class="text-center">Nama Guru</th>
-                      <th colspan="4" class="text-center" style="width: 200px;">Status Perencanaan</th>
-                      <th rowspan="2" class="text-center" style="width: 50px;">Bobot</th>
-                      <th colspan="4" class="text-center" style="width: 200px;">Status Penilaian</th>
-                      <th rowspan="2" class="text-center" style="width: 50px;">PTS & PAS</th>
-                      <th colspan="2" class="text-center" style="width: 100px;">Status Nilai Raport</th>
+                      <th rowspan="2" class="text-center align-middle" style="width:5%;">No</th>
+                      <th rowspan="2" class="text-center align-middle">Mata Pelajaran</th>
+                      <th rowspan="2" class="text-center align-middle">Nama Guru</th>
+                      <th colspan="3" class="text-center">Status Kisi-Kisi</th>
                     </tr>
                     <tr>
-                      <th class="text-center" style="width: 50px;">Peng</th>
-                      <th class="text-center" style="width: 50px;">Ket</th>
-                      <th class="text-center" style="width: 50px;">Skp Sprt</th>
-                      <th class="text-center" style="width: 50px;">Skp Sosial</th>
-
-                      <th class="text-center" style="width: 50px;">Peng</th>
-                      <th class="text-center" style="width: 50px;">Ket</th>
-                      <th class="text-center" style="width: 50px;">Skp Sprt</th>
-                      <th class="text-center" style="width: 50px;">Skp Sosial</th>
-
-                      <th class="text-center" style="width: 50px;">Kirim Nilai</th>
-                      <th class="text-center" style="width: 50px;">Proses Deskripsi</th>
+                      <th class="text-center" style="width:15%;">Rencana<br>Kisi-Kisi</th>
+                      <th class="text-center" style="width:15%;">Input<br>Nilai</th>
+                      <th class="text-center" style="width:15%;">Kirim<br>Nilai Akhir</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php $no = 0; ?>
-                    @foreach($data_pembelajaran_kelas as $pembelajaran)
-                    <?php $no++; ?>
-                    <tr>
-                      <td class="text-center">{{$no}}</td>
-                      <td>{{$pembelajaran->mapel->nama_mapel}}</td>
-                      <td>{{$pembelajaran->guru->nama_lengkap}}</td>
+                    @forelse($data_pembelajaran_kelas->sortBy('mapel.nama_mapel') as $pembelajaran)
+                      <?php  $no++; ?>
+                      <tr>
+                        <td class="text-center">{{$no}}</td>
+                        <td>{{$pembelajaran->mapel->nama_mapel}}</td>
+                        <td>{{$pembelajaran->guru->nama_guru ?? ($pembelajaran->guru->nama_lengkap ?? '-')}}</td>
 
-                      @if($pembelajaran->rencana_pengetahuan == 0)
-                      <td class="text-center bg-danger"><i class="fas fa-times"></i></td>
-                      @else
-                      <td class="text-center bg-success"><i class="fas fa-check"></i></td>
-                      @endif
+                        {{-- Status Rencana Kisi-Kisi --}}
+                        @if($pembelajaran->rencana_kisi > 0)
+                          <td class="text-center bg-success text-white">
+                            <i class="fas fa-check"></i> {{$pembelajaran->rencana_kisi}}
+                          </td>
+                        @else
+                          <td class="text-center bg-danger text-white">
+                            <i class="fas fa-times"></i>
+                          </td>
+                        @endif
 
-                      @if($pembelajaran->rencana_keterampilan == 0)
-                      <td class="text-center bg-danger"><i class="fas fa-times"></i></td>
-                      @else
-                      <td class="text-center bg-success"><i class="fas fa-check"></i></td>
-                      @endif
+                        {{-- Status Input Nilai Kisi-Kisi --}}
+                        @if($pembelajaran->nilai_kisi > 0)
+                          <td class="text-center bg-success text-white">
+                            <i class="fas fa-check"></i> {{$pembelajaran->nilai_kisi}}
+                          </td>
+                        @else
+                          <td class="text-center bg-danger text-white">
+                            <i class="fas fa-times"></i>
+                          </td>
+                        @endif
 
-                      @if($pembelajaran->rencana_spiritual == 0)
-                      <td class="text-center bg-danger"><i class="fas fa-times"></i></td>
-                      @else
-                      <td class="text-center bg-success"><i class="fas fa-check"></i></td>
-                      @endif
+                        {{-- Status Kirim Nilai Akhir --}}
+                        @if($pembelajaran->nilai_akhir_kisi > 0)
+                          <td class="text-center bg-success text-white">
+                            <i class="fas fa-check"></i> {{$pembelajaran->nilai_akhir_kisi}}
+                          </td>
+                        @else
+                          <td class="text-center bg-danger text-white">
+                            <i class="fas fa-times"></i>
+                          </td>
+                        @endif
 
-                      @if($pembelajaran->rencana_sosial == 0)
-                      <td class="text-center bg-danger"><i class="fas fa-times"></i></td>
-                      @else
-                      <td class="text-center bg-success"><i class="fas fa-check"></i></td>
-                      @endif
-
-                      @if($pembelajaran->rencana_bobot == 0)
-                      <td class="text-center bg-danger"><i class="fas fa-times"></i></td>
-                      @else
-                      <td class="text-center bg-success"><i class="fas fa-check"></i></td>
-                      @endif
-
-                      @if($pembelajaran->nilai_pengetahuan == 0)
-                      <td class="text-center bg-danger"><i class="fas fa-times"></i></td>
-                      @else
-                      <td class="text-center bg-success"><i class="fas fa-check"></i></td>
-                      @endif
-
-                      @if($pembelajaran->nilai_keterampilan == 0)
-                      <td class="text-center bg-danger"><i class="fas fa-times"></i></td>
-                      @else
-                      <td class="text-center bg-success"><i class="fas fa-check"></i></td>
-                      @endif
-
-                      @if($pembelajaran->nilai_spiritual == 0)
-                      <td class="text-center bg-danger"><i class="fas fa-times"></i></td>
-                      @else
-                      <td class="text-center bg-success"><i class="fas fa-check"></i></td>
-                      @endif
-
-                      @if($pembelajaran->nilai_sosial == 0)
-                      <td class="text-center bg-danger"><i class="fas fa-times"></i></td>
-                      @else
-                      <td class="text-center bg-success"><i class="fas fa-check"></i></td>
-                      @endif
-
-                      @if($pembelajaran->pts_pas == 0)
-                      <td class="text-center bg-danger"><i class="fas fa-times"></i></td>
-                      @else
-                      <td class="text-center bg-success"><i class="fas fa-check"></i></td>
-                      @endif
-
-                      @if($pembelajaran->nilai_akhir == 0)
-                      <td class="text-center bg-danger"><i class="fas fa-times"></i></td>
-                      @else
-                      <td class="text-center bg-success"><i class="fas fa-check"></i></td>
-                      @endif
-
-                      @if($pembelajaran->deskripsi == 0)
-                      <td class="text-center bg-danger"><i class="fas fa-times"></i></td>
-                      @else
-                      <td class="text-center bg-success"><i class="fas fa-check"></i></td>
-                      @endif
-
-                    </tr>
-                    @endforeach
+                      </tr>
+                    @empty
+                      <tr>
+                        <td colspan="6" class="text-center text-muted">Tidak ada data pembelajaran untuk kelas ini.</td>
+                      </tr>
+                    @endforelse
                   </tbody>
                 </table>
               </div>

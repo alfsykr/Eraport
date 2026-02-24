@@ -23,9 +23,9 @@
           <td style="width: 16%;">Semester</td>
           <td style="width: 13%;">:
             @if($anggota_kelas->kelas->tapel->semester == 1)
-            1 (Ganjil)
+              1 (Ganjil)
             @else
-            2 (Genap)
+              2 (Genap)
             @endif
           </td>
         </tr>
@@ -48,9 +48,9 @@
           LAPORAN HASIL <br>
           ULANGAN TENGAH SEMESTER
           @if($anggota_kelas->kelas->tapel->semester == 1)
-          GANJIL
+            GANJIL
           @else
-          GENAP
+            GENAP
           @endif
           <br>
           TAHUN PELAJARAN {{$anggota_kelas->kelas->tapel->tahun_pelajaran}}
@@ -76,15 +76,15 @@
 
         <?php $no = 0; ?>
         @foreach($data_pembelajaran_wajib->sortBy('mapel.ktsp_mapping_mapel.nomor_urut') as $pembelajaran_wajib)
-        <?php $no++; ?>
-        <tr class="nilai">
-          <td class="center">{{$no}}</td>
-          <td>{{$pembelajaran_wajib->mapel->nama_mapel}}</td>
-          <td class="center">{{$pembelajaran_wajib->kkm}}</td>
-          <td class="center">{{$pembelajaran_wajib->nilai_tugas}}</td>
-          <td class="center">{{$pembelajaran_wajib->nilai_uh}}</td>
-          <td class="center">{{$pembelajaran_wajib->nilai_uts}}</td>
-        </tr>
+          <?php  $no++; ?>
+          <tr class="nilai">
+            <td class="center">{{$no}}</td>
+            <td>{{$pembelajaran_wajib->mapel->nama_mapel}}</td>
+            <td class="center">{{$pembelajaran_wajib->kkm}}</td>
+            <td class="center">{{$pembelajaran_wajib->nilai_tugas}}</td>
+            <td class="center">{{$pembelajaran_wajib->nilai_uh}}</td>
+            <td class="center">{{$pembelajaran_wajib->nilai_uts}}</td>
+          </tr>
         @endforeach
 
         <!-- Nilai Mapel Pilihan  -->
@@ -93,28 +93,28 @@
         </tr>
 
         @if(count($data_pembelajaran_pilihan) == 0)
-        <tr class="nilai">
-          <td class="center">1</td>
-          <td>-</td>
-          <td class="center"></td>
-          <td class="center"></td>
-          <td class="center"></td>
-          <td class="center"></td>
-        </tr>
+          <tr class="nilai">
+            <td class="center">1</td>
+            <td>-</td>
+            <td class="center"></td>
+            <td class="center"></td>
+            <td class="center"></td>
+            <td class="center"></td>
+          </tr>
         @else
 
-        <?php $no = 0; ?>
-        @foreach($data_pembelajaran_pilihan->sortBy('mapel.ktsp_mapping_mapel.nomor_urut') as $pembelajaran_pilihan)
-        <?php $no++; ?>
-        <tr class="nilai">
-          <td class="center">{{$no}}</td>
-          <td>{{$pembelajaran_pilihan->mapel->nama_mapel}}</td>
-          <td class="center">{{$pembelajaran_pilihan->kkm}}</td>
-          <td class="center">{{$pembelajaran_pilihan->nilai_tugas}}</td>
-          <td class="center">{{$pembelajaran_pilihan->nilai_uh}}</td>
-          <td class="center">{{$pembelajaran_pilihan->nilai_uts}}</td>
-        </tr>
-        @endforeach
+          <?php  $no = 0; ?>
+          @foreach($data_pembelajaran_pilihan->sortBy('mapel.ktsp_mapping_mapel.nomor_urut') as $pembelajaran_pilihan)
+            <?php    $no++; ?>
+            <tr class="nilai">
+              <td class="center">{{$no}}</td>
+              <td>{{$pembelajaran_pilihan->mapel->nama_mapel}}</td>
+              <td class="center">{{$pembelajaran_pilihan->kkm}}</td>
+              <td class="center">{{$pembelajaran_pilihan->nilai_tugas}}</td>
+              <td class="center">{{$pembelajaran_pilihan->nilai_uh}}</td>
+              <td class="center">{{$pembelajaran_pilihan->nilai_uts}}</td>
+            </tr>
+          @endforeach
 
         @endif
 
@@ -124,42 +124,45 @@
         </tr>
 
         @if(count($data_pembelajaran_muatan_lokal) == 0)
-        <tr class="nilai">
-          <td class="center">1</td>
-          <td>-</td>
-          <td class="center"></td>
-          <td class="center"></td>
-          <td class="center"></td>
-          <td class="center"></td>
-        </tr>
+          <tr class="nilai">
+            <td class="center">1</td>
+            <td>-</td>
+            <td class="center"></td>
+            <td class="center"></td>
+            <td class="center"></td>
+            <td class="center"></td>
+          </tr>
         @else
 
-        <?php $no = 0; ?>
-        @foreach($data_pembelajaran_muatan_lokal->sortBy('mapel.ktsp_mapping_mapel.nomor_urut') as $pembelajaran_muatan_lokal)
-        <?php $no++; ?>
-        <tr class="nilai">
-          <td class="center">{{$no}}</td>
-          <td>{{$pembelajaran_muatan_lokal->mapel->nama_mapel}}</td>
-          <td class="center">{{$pembelajaran_muatan_lokal->kkm}}</td>
-          <td class="center">{{$pembelajaran_muatan_lokal->nilai_tugas}}</td>
-          <td class="center">{{$pembelajaran_muatan_lokal->nilai_uh}}</td>
-          <td class="center">{{$pembelajaran_muatan_lokal->nilai_uts}}</td>
-        </tr>
-        @endforeach
+          <?php  $no = 0; ?>
+          @foreach($data_pembelajaran_muatan_lokal->sortBy('mapel.ktsp_mapping_mapel.nomor_urut') as $pembelajaran_muatan_lokal)
+            <?php    $no++; ?>
+            <tr class="nilai">
+              <td class="center">{{$no}}</td>
+              <td>{{$pembelajaran_muatan_lokal->mapel->nama_mapel}}</td>
+              <td class="center">{{$pembelajaran_muatan_lokal->kkm}}</td>
+              <td class="center">{{$pembelajaran_muatan_lokal->nilai_tugas}}</td>
+              <td class="center">{{$pembelajaran_muatan_lokal->nilai_uh}}</td>
+              <td class="center">{{$pembelajaran_muatan_lokal->nilai_uts}}</td>
+            </tr>
+          @endforeach
 
         @endif
 
       </table>
     </div>
 
-    <div style="padding-left:60%; padding-top:1rem; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;">
-      {{$anggota_kelas->kelas->tapel->ktsp_tgl_raport->tempat_penerbitan}}, {{$anggota_kelas->kelas->tapel->ktsp_tgl_raport->tanggal_pembagian->isoFormat('D MMMM Y')}}<br>
+    <div
+      style="padding-left:60%; padding-top:1rem; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;">
+      {{$anggota_kelas->kelas->tapel->ktsp_tgl_raport->tempat_penerbitan}},
+      {{\Carbon\Carbon::now()->locale('id')->isoFormat('D MMMM Y')}}<br>
       Wali Kelas, <br><br><br><br>
       <b><u>{{$anggota_kelas->kelas->guru->nama_lengkap}}, {{$anggota_kelas->kelas->guru->gelar}}</u></b><br>
       NIP. {{konversi_nip($anggota_kelas->kelas->guru->nip)}}
     </div>
     <div class="footer">
-      <i>{{$anggota_kelas->kelas->nama_kelas}} | {{$anggota_kelas->siswa->nama_lengkap}} | {{$anggota_kelas->siswa->nis}}</i> <b style="float: right;"><i>Halaman 1</i></b>
+      <i>{{$anggota_kelas->kelas->nama_kelas}} | {{$anggota_kelas->siswa->nama_lengkap}} |
+        {{$anggota_kelas->siswa->nis}}</i> <b style="float: right;"><i>Halaman 1</i></b>
     </div>
   </div>
 </body>

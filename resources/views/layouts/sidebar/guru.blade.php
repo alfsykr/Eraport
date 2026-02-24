@@ -14,233 +14,290 @@
         <li class="nav-item">
           <a href="{{ route('dashboard') }}" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>
-              Dashboard
-            </p>
+            <p>Dashboard</p>
           </a>
         </li>
 
         @if(Session::get('kurikulum') == '2013')
 
-        <!-- Kurikulum 2013 -->
-        <li class="nav-header">RAPORT K-2013</li>
-        <li class="nav-item">
-          <a href="{{ route('kdk13.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-clipboard-list"></i>
-            <p>
-              Data Kompetensi Dasar
-            </p>
-          </a>
-        </li>
-        <li class="nav-item has-treeview">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-list-alt"></i>
-            <p>
-              Rencana Penilaian
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview bg-secondary">
-            <li class="nav-item">
-              <a href="{{ route('rencanapengetahuan.index') }}" class="nav-link">
-                <i class="fas fa-check-circle nav-icon"></i>
-                <p>Nilai Pengetahuan</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('rencanaketerampilan.index') }}" class="nav-link">
-                <i class="fas fa-check-circle nav-icon"></i>
-                <p>Nilai Keterampilan</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('rencanaspiritual.index') }}" class="nav-link">
-                <i class="fas fa-check-circle nav-icon"></i>
-                <p>Pilih KD/Butir Spiritual </p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('rencanasosial.index') }}" class="nav-link">
-                <i class="fas fa-check-circle nav-icon"></i>
-                <p>Pilih KD/Butir Sosial </p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('bobotnilai.index') }}" class="nav-link">
-                <i class="fas fa-check-circle nav-icon"></i>
-                <p>Bobot PH PTS dan PAS </p>
-              </a>
-            </li>
-          </ul>
-        </li>
+          <!-- Kurikulum 2013 - Guru Mapel -->
+          <li class="nav-header">RAPORT K-2013</li>
 
-        <li class="nav-item has-treeview">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-list-ol"></i>
-            <p>
-              Input Nilai
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview bg-secondary">
+          <li class="nav-item">
+            <a href="{{ route('rencanakisi.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-list-alt"></i>
+              <p>Rencana Penilaian</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{ route('nilaikisi.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>Input Nilai Kisi-kisi</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{ route('kirimnilaiakhir.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-paper-plane"></i>
+              <p>Kirim Nilai Akhir</p>
+            </a>
+          </li>
+
+          <!-- Wali Kelas Section (K13) - hanya tampil jika guru adalah wali kelas -->
+          @php
+            $guru_wk = \App\Guru::where('user_id', Auth::id())->first();
+            $tapel_wk = \App\Tapel::find(session('tapel_id'));
+            $is_walikelas = $guru_wk && $tapel_wk
+              ? \App\Kelas::where('tapel_id', $tapel_wk->id)->where('guru_id', $guru_wk->id)->exists()
+              : false;
+          @endphp
+
+          @if($is_walikelas)
+            <li class="nav-header" style="color: #aad4f5;">WALI KELAS</li>
+
             <li class="nav-item">
-              <a href="{{ route('nilaipengetahuan.index') }}" class="nav-link">
-                <i class="fas fa-edit nav-icon"></i>
-                <p>Nilai Pengetahuan</p>
+              <a href="{{ route('kehadiran.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-user-check"></i>
+                <p>Input Kehadiran Siswa</p>
               </a>
             </li>
+
             <li class="nav-item">
-              <a href="{{ route('nilaiketerampilan.index') }}" class="nav-link">
-                <i class="fas fa-edit nav-icon"></i>
-                <p>Nilai Keterampilan</p>
+              <a href="{{ route('prestasi.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-star"></i>
+                <p>Input Talents Mapping</p>
               </a>
             </li>
+
             <li class="nav-item">
-              <a href="{{ route('nilaispiritual.index') }}" class="nav-link">
-                <i class="fas fa-edit nav-icon"></i>
-                <p>Nilai Sikap Spiritual </p>
+              <a href="{{ route('catatan.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>Catatan Wali Kelas</p>
               </a>
             </li>
+
             <li class="nav-item">
-              <a href="{{ route('nilaisosial.index') }}" class="nav-link">
-                <i class="fas fa-edit nav-icon"></i>
-                <p>Nilai Sikap Sosial </p>
+              <a href="{{ route('kenaikan.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-layer-group"></i>
+                <p>Input Kenaikan Kelas</p>
               </a>
             </li>
+
             <li class="nav-item">
-              <a href="{{ route('nilaiptspas.index') }}" class="nav-link">
-                <i class="fas fa-edit nav-icon"></i>
-                <p>Nilai PTS dan PAS </p>
+              <a href="{{ route('terapi.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-notes-medical"></i>
+                <p>Perkembangan Terapi</p>
               </a>
             </li>
+
             <li class="nav-item">
               <a href="{{ route('personalprogram.index') }}" class="nav-link">
-                <i class="fas fa-user-edit nav-icon"></i>
+                <i class="nav-icon fas fa-user-edit"></i>
                 <p>Personal Program</p>
               </a>
             </li>
-          </ul>
-        </li>
 
-        <li class="nav-item has-treeview">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-clipboard-check"></i>
-            <p>
-              Nilai Akhir Raport
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview bg-secondary">
+            <li class="nav-header" style="color: #aad4f5;">CETAK RAPORT</li>
+
             <li class="nav-item">
-              <a href="{{ route('kirimnilaiakhir.index') }}" class="nav-link">
-                <i class="fas fa-paper-plane nav-icon"></i>
-                <p>Kirim Nilai Akhir</p>
+              <a href="{{ route('statusnilaiguru.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-check-circle"></i>
+                <p>Cek Status Penilaian</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('nilaiterkirim.index') }}" class="nav-link">
-                <i class="fas fa-eye nav-icon"></i>
-                <p>Lihat Nilai Terkirim</p>
+              <a href="{{ route('hasilnilai.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-check-square"></i>
+                <p>Hasil Pengelolaan Nilai</p>
               </a>
             </li>
-          </ul>
-        </li>
-
-        <li class="nav-item">
-          <a href="{{ route('prosesdeskripsi.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-file-alt"></i>
-            <p>
-              Proses Deskripsi Siswa
-            </p>
-          </a>
-        </li>
-
-
-
-        <!-- End Kurikulum 2013 -->
+            <li class="nav-item">
+              <a href="{{ route('prosesdeskripsisikap.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-file-alt"></i>
+                <p>Proses Deskripsi Sikap</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('leger.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-table"></i>
+                <p>Leger Nilai Siswa</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('raportpts.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-print"></i>
+                <p>Raport Tengah Semester</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('raportsemester.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-print"></i>
+                <p>Raport Semester</p>
+              </a>
+            </li>
+          @endif
+          <!-- End Wali Kelas Section K13 -->
 
         @elseif(Session::get('kurikulum') == '2006')
 
-        <!-- Kurikulum 2006 -->
-        <li class="nav-header">RAPORT KURIKULUM 2006</li>
-        <li class="nav-item">
-          <a href="{{ route('bobot.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-balance-scale"></i>
-            <p>
-              Bobot Penilaian
-            </p>
-          </a>
-        </li>
-        <li class="nav-item has-treeview">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-list-ol"></i>
-            <p>
-              Input Nilai
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview bg-secondary">
+          <!-- Kurikulum 2006 - Guru Mapel -->
+          <li class="nav-header">RAPORT KURIKULUM 2006</li>
+          <li class="nav-item">
+            <a href="{{ route('bobot.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-balance-scale"></i>
+              <p>Bobot Penilaian</p>
+            </a>
+          </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-list-ol"></i>
+              <p>
+                Input Nilai
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview bg-secondary">
+              <li class="nav-item">
+                <a href="{{ route('nilaitugas.index') }}" class="nav-link">
+                  <i class="fas fa-edit nav-icon"></i>
+                  <p>Rata-Rata Tugas</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('nilaiuh.index') }}" class="nav-link">
+                  <i class="fas fa-edit nav-icon"></i>
+                  <p>Rata-Rata UH</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('nilaiutsuas.index') }}" class="nav-link">
+                  <i class="fas fa-edit nav-icon"></i>
+                  <p>Nilai UTS & UAS</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-clipboard-check"></i>
+              <p>
+                Nilai Akhir Raport
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview bg-secondary">
+              <li class="nav-item">
+                <a href="{{ route('kirimnilai.index') }}" class="nav-link">
+                  <i class="fas fa-paper-plane nav-icon"></i>
+                  <p>Kirim Nilai Akhir</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('lihatnilai.index') }}" class="nav-link">
+                  <i class="fas fa-eye nav-icon"></i>
+                  <p>Lihat Nilai Terkirim</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('inputdeskripsi.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-file-alt"></i>
+              <p>Input Deskripsi Siswa</p>
+            </a>
+          </li>
+
+          <!-- Wali Kelas Section (KTSP) -->
+          @php
+            if (!isset($is_walikelas)) {
+              $guru_wk = \App\Guru::where('user_id', Auth::id())->first();
+              $tapel_wk = \App\Tapel::find(session('tapel_id'));
+              $is_walikelas = $guru_wk && $tapel_wk
+                ? \App\Kelas::where('tapel_id', $tapel_wk->id)->where('guru_id', $guru_wk->id)->exists()
+                : false;
+            }
+          @endphp
+
+          @if($is_walikelas)
+            <li class="nav-header" style="color: #aad4f5;">WALI KELAS</li>
+
             <li class="nav-item">
-              <a href="{{ route('nilaitugas.index') }}" class="nav-link">
-                <i class="fas fa-edit nav-icon"></i>
-                <p>Rata-Rata Tugas</p>
+              <a href="{{ route('kehadiran.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-user-check"></i>
+                <p>Input Kehadiran Siswa</p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="{{ route('prestasi.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-star"></i>
+                <p>Input Talents Mapping</p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="{{ route('catatan.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>Catatan Wali Kelas</p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="{{ route('kenaikan.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-layer-group"></i>
+                <p>Input Kenaikan Kelas</p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="{{ route('terapi.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-notes-medical"></i>
+                <p>Perkembangan Terapi</p>
+              </a>
+            </li>
+
+            <li class="nav-header" style="color: #aad4f5;">CETAK RAPORT</li>
+
+            <li class="nav-item">
+              <a href="{{ route('statuspenilaian.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-check-circle"></i>
+                <p>Cek Status Penilaian</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('nilaiuh.index') }}" class="nav-link">
-                <i class="fas fa-edit nav-icon"></i>
-                <p>Rata-Rata UH</p>
+              <a href="{{ route('hasilpenilaian.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-check-square"></i>
+                <p>Hasil Pengelolaan Nilai</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('nilaiutsuas.index') }}" class="nav-link">
-                <i class="fas fa-edit nav-icon"></i>
-                <p>Nilai UTS & UAS</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <li class="nav-item has-treeview">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-clipboard-check"></i>
-            <p>
-              Nilai Akhir Raport
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview bg-secondary">
-            <li class="nav-item">
-              <a href="{{ route('kirimnilai.index') }}" class="nav-link">
-                <i class="fas fa-paper-plane nav-icon"></i>
-                <p>Kirim Nilai Akhir</p>
+              <a href="{{ route('legernilai.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-table"></i>
+                <p>Leger Nilai Siswa</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('lihatnilai.index') }}" class="nav-link">
-                <i class="fas fa-eye nav-icon"></i>
-                <p>Lihat Nilai Terkirim</p>
+              <a href="{{ route('raportuts.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-print"></i>
+                <p>Raport Tengah Semester</p>
               </a>
             </li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a href="{{ route('inputdeskripsi.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-file-alt"></i>
-            <p>
-              Input Deskripsi Siswa
-            </p>
-          </a>
-        </li>
-        <!-- End Kurikulum 2006 -->
+            <li class="nav-item">
+              <a href="{{ route('raportuas.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-print"></i>
+                <p>Raport Semester</p>
+              </a>
+            </li>
+          @endif
+          <!-- End Wali Kelas Section KTSP -->
 
         @endif
 
         <li class="nav-item bg-danger mt-2">
           <a href="{{ route('logout') }}" class="nav-link" onclick="return confirm('Apakah anda yakin ingin keluar ?')">
             <i class="nav-icon fas fa-sign-out-alt"></i>
-            <p>
-              Keluar / Logout
-            </p>
+            <p>Keluar / Logout</p>
           </a>
         </li>
       </ul>

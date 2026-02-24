@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Admin\K13;
 
 use App\AnggotaKelas;
 use App\Http\Controllers\Controller;
-use App\K13NilaiKeterampilan;
-use App\K13NilaiPengetahuan;
-use App\K13RencanaNilaiKeterampilan;
-use App\K13RencanaNilaiPengetahuan;
+use App\K13NilaiKisi;
+use App\K13RencanaKisi;
 use App\K13TglRaport;
 use App\Kelas;
 use App\Pembelajaran;
@@ -40,7 +38,14 @@ class CetakRaportKisiController extends Controller
         $paper_size = $request->paper_size;
         $orientation = $request->orientation;
 
-        return view('admin.k13.raportkisi.index', compact('title', 'kelas', 'data_kelas', 'data_anggota_kelas', 'paper_size', 'orientation'));
+        return view('admin.k13.raportkisi.index', compact(
+            'title',
+            'kelas',
+            'data_kelas',
+            'data_anggota_kelas',
+            'paper_size',
+            'orientation'
+        ));
     }
 
     public function show(Request $request, $id)
@@ -53,7 +58,8 @@ class CetakRaportKisiController extends Controller
             return back()->with('toast_warning', 'Tanggal raport belum disetting oleh admin');
         }
 
-        $pembelajaran = Pembelajaran::with(['mapel.k13_mapping_mapel'])
+        // Ambil semua pembelajaran di kelas ini, urutkan berdasarkan mapping mapel
+        $pembelajaran_list = Pembelajaran::with(['mapel.k13_mapping_mapel'])
             ->where('kelas_id', $anggota_kelas->kelas_id)
             ->get()
             ->sortBy(function ($item) {
@@ -64,18 +70,17 @@ class CetakRaportKisiController extends Controller
 
         $data_mapel = [];
 
-        foreach ($pembelajaran as $mapel) {
-            $detail_pengetahuan = $this->kisiPengetahuan($mapel, $anggota_kelas->id);
-            $detail_keterampilan = $this->kisiKeterampilan($mapel, $anggota_kelas->id);
+        foreach ($pembelajaran_list as $pembelajaran) {
+            $detail_kisi = $this->getDetailKisi($pembelajaran, $anggota_kelas->id);
 
-            if (count($detail_pengetahuan) === 0 && count($detail_keterampilan) === 0) {
+            // Skip mapel yang tidak punya rencana kisi-kisi
+            if (empty($detail_kisi)) {
                 continue;
             }
 
             $data_mapel[] = [
-                'mapel' => $mapel->mapel->nama_mapel,
-                'pengetahuan' => $detail_pengetahuan,
-                'keterampilan' => $detail_keterampilan,
+                'mapel' => $pembelajaran->mapel->nama_mapel,
+                'detail' => $detail_kisi,
             ];
         }
 
@@ -87,69 +92,37 @@ class CetakRaportKisiController extends Controller
             'tanggal_raport' => $cek_tanggal_raport,
         ])->setPaper($request->paper_size, $request->orientation);
 
-        $filename = 'RAPORT KISI-KISI ' . ($anggota_kelas->siswa->nama_lengkap ?? 'SISWA') . ' (' . ($anggota_kelas->kelas->nama_kelas ?? '') . ').pdf';
+        $filename = 'RAPORT KISI-KISI ' . ($anggota_kelas->siswa->nama_lengkap ?? 'SISWA')
+            . ' (' . ($anggota_kelas->kelas->nama_kelas ?? '') . ').pdf';
+
         return $pdf->stream($filename);
     }
 
-    private function kisiPengetahuan($pembelajaran, $anggota_kelas_id)
+    /**
+     * Ambil detail kisi-kisi per siswa per pembelajaran (dari tabel baru)
+     */
+    private function getDetailKisi($pembelajaran, $anggota_kelas_id)
     {
-        $rencana = K13RencanaNilaiPengetahuan::with('k13_kd_mapel')
-            ->where('pembelajaran_id', $pembelajaran->id)
-            ->get()
-            ->groupBy('k13_kd_mapel_id');
+        $rencana_list = K13RencanaKisi::where('pembelajaran_id', $pembelajaran->id)
+            ->orderBy('urutan', 'ASC')
+            ->get();
 
-        $hasil = [];
-
-        foreach ($rencana as $kd_id => $items) {
-            $kd = $items->first()->k13_kd_mapel;
-
-            if (is_null($kd)) {
-                continue;
-            }
-
-            $nilai = K13NilaiPengetahuan::where('anggota_kelas_id', $anggota_kelas_id)
-                ->whereIn('k13_rencana_nilai_pengetahuan_id', $items->pluck('id'))
-                ->avg('nilai');
-
-            $hasil[] = [
-                'kode' => $kd->kode_kd,
-                'kompetensi' => $kd->kompetensi_dasar,
-                'nilai' => is_null($nilai) ? '-' : round($nilai, 0),
-            ];
+        if ($rencana_list->isEmpty()) {
+            return [];
         }
 
-        return $hasil;
-    }
-
-    private function kisiKeterampilan($pembelajaran, $anggota_kelas_id)
-    {
-        $rencana = K13RencanaNilaiKeterampilan::with('k13_kd_mapel')
-            ->where('pembelajaran_id', $pembelajaran->id)
-            ->get()
-            ->groupBy('k13_kd_mapel_id');
-
         $hasil = [];
-
-        foreach ($rencana as $kd_id => $items) {
-            $kd = $items->first()->k13_kd_mapel;
-
-            if (is_null($kd)) {
-                continue;
-            }
-
-            $nilai = K13NilaiKeterampilan::where('anggota_kelas_id', $anggota_kelas_id)
-                ->whereIn('k13_rencana_nilai_keterampilan_id', $items->pluck('id'))
-                ->avg('nilai');
+        foreach ($rencana_list as $rencana) {
+            $nilai_obj = K13NilaiKisi::where('k13_rencana_kisi_id', $rencana->id)
+                ->where('anggota_kelas_id', $anggota_kelas_id)
+                ->first();
 
             $hasil[] = [
-                'kode' => $kd->kode_kd,
-                'kompetensi' => $kd->kompetensi_dasar,
-                'nilai' => is_null($nilai) ? '-' : round($nilai, 0),
+                'deskripsi' => $rencana->deskripsi_penilaian,
+                'nilai' => $nilai_obj ? $nilai_obj->nilai : '-',
             ];
         }
 
         return $hasil;
     }
 }
-
-
