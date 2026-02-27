@@ -29,7 +29,8 @@ class Siswa extends Model
         'nama_wali',
         'pekerjaan_wali',
         'avatar',
-        'status'
+        'status',
+        'jenis_program'
     ];
     protected $dates = ['tanggal_lahir'];
 

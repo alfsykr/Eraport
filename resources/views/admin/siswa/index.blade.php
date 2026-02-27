@@ -255,6 +255,19 @@
                             placeholder="Pekerjaan Wali" value="{{old('pekerjaan_wali')}}">
                         </div>
                       </div>
+                      <div class="form-group row">
+                        <label for="jenis_program" class="col-sm-3 col-form-label">Program Siswa
+                          <small><i>(Opsional)</i></small></label>
+                        <div class="col-sm-9">
+                          <select class="form-control" name="jenis_program">
+                            <option value="">-- Belum Dipilih --</option>
+                            <option value="reguler" @if(old('jenis_program') == 'reguler') selected @endif>Reguler
+                            </option>
+                            <option value="inklusi" @if(old('jenis_program') == 'inklusi') selected @endif>Inklusi
+                            </option>
+                          </select>
+                        </div>
+                      </div>
                     </div>
                     <div class="modal-footer justify-content-end">
                       <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -278,6 +291,7 @@
                       <th>Tanggal Lahir</th>
                       <th>L/P</th>
                       <th>Kelas Saat Ini</th>
+                      <th>Program</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
@@ -298,6 +312,15 @@
                             <span class="badge light badge-warning">Belum masuk anggota kelas</span>
                           @else
                             {{$siswa->kelas_terakhir->nama_kelas}}
+                          @endif
+                        </td>
+                        <td class="text-center">
+                          @if($siswa->jenis_program == 'reguler')
+                            <span class="badge badge-success">Reguler</span>
+                          @elseif($siswa->jenis_program == 'inklusi')
+                            <span class="badge badge-info">Inklusi</span>
+                          @else
+                            <span class="badge badge-secondary">-</span>
                           @endif
                         </td>
                         <td>
@@ -563,6 +586,19 @@
                                   <div class="col-sm-4">
                                     <input type="text" class="form-control" id="pekerjaan_wali" name="pekerjaan_wali"
                                       placeholder="Pekerjaan Wali" value="{{$siswa->pekerjaan_wali}}">
+                                  </div>
+                                </div>
+                                <div class="form-group row">
+                                  <label for="jenis_program" class="col-sm-3 col-form-label">Program Siswa
+                                    <small><i>(Opsional)</i></small></label>
+                                  <div class="col-sm-9">
+                                    <select class="form-control" name="jenis_program">
+                                      <option value="">-- Belum Dipilih --</option>
+                                      <option value="reguler" @if($siswa->jenis_program == 'reguler') selected @endif>
+                                        Reguler</option>
+                                      <option value="inklusi" @if($siswa->jenis_program == 'inklusi') selected @endif>
+                                        Inklusi</option>
+                                    </select>
                                   </div>
                                 </div>
                               </div>

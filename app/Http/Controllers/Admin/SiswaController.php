@@ -124,6 +124,7 @@ class SiswaController extends Controller
                 'pekerjaan_wali' => $request->pekerjaan_wali,
                 'avatar' => 'default.png',
                 'status' => 1,
+                'jenis_program' => $request->jenis_program ?: null,
             ]);
             $siswa->save();
 
@@ -188,7 +189,8 @@ class SiswaController extends Controller
                 'pekerjaan_ayah' => $request->pekerjaan_ayah,
                 'pekerjaan_ibu' => $request->pekerjaan_ibu,
                 'nama_wali' => $request->nama_wali,
-                'pekerjaan_wali' => $request->pekerjaan_wali
+                'pekerjaan_wali' => $request->pekerjaan_wali,
+                'jenis_program' => $request->jenis_program ?: null,
             ];
             $siswa->update($data_siswa);
             return back()->with('toast_success', 'Siswa berhasil diedit');
