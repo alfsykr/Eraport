@@ -27,10 +27,8 @@ class MapingMapelController extends Controller
             foreach ($data_mapel as $mapel) {
                 $mapping = K13MappingMapel::where('mapel_id', $mapel->id)->first();
                 if (is_null($mapping)) {
-                    $mapel->kelompok = null;
                     $mapel->nomor_urut = null;
                 } else {
-                    $mapel->kelompok = $mapping->kelompok;
                     $mapel->nomor_urut = $mapping->nomor_urut;
                 }
             }
@@ -51,13 +49,13 @@ class MapingMapelController extends Controller
             if (is_null($mapel_mapping)) {
                 $mapping = new K13MappingMapel([
                     'mapel_id' => $request->mapel_id[$count],
-                    'kelompok' => $request->kelompok[$count],
+                    'kelompok' => 'A',
                     'nomor_urut' => $request->nomor_urut[$count],
                 ]);
                 $mapping->save();
             } else {
                 $update_mapping = [
-                    'kelompok' => $request->kelompok[$count],
+                    'kelompok' => 'A',
                     'nomor_urut' => $request->nomor_urut[$count],
                 ];
                 $mapel_mapping->update($update_mapping);

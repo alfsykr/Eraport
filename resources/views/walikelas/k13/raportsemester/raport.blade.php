@@ -68,9 +68,6 @@
                     <td style="width: 25%;">Nilai Akhir</td>
                     <td style="width: 15%;">Predikat</td>
                 </tr>
-                <tr class="nilai">
-                    <td colspan="5"><strong>Kelompok A</strong></td>
-                </tr>
 
                 <?php $no = 0; ?>
                 @foreach ($data_nilai_kelompok_a->sortBy('pembelajaran.mapel.k13_mapping_mapel.nomor_urut') as $nilai_kelompok_a)
@@ -83,22 +80,6 @@
                         <td class="center">{{ $nilai_kelompok_a->predikat_akhir }}</td>
                     </tr>
                 @endforeach
-
-                @if ($data_nilai_kelompok_b->count() > 0)
-                    <tr class="nilai">
-                        <td colspan="5"><strong>Kelompok B</strong></td>
-                    </tr>
-                    @foreach ($data_nilai_kelompok_b->sortBy('pembelajaran.mapel.k13_mapping_mapel.nomor_urut') as $nilai_kelompok_b)
-                        <?php        $no++; ?>
-                        <tr class="nilai">
-                            <td class="center">{{ $no }}</td>
-                            <td>{{ $nilai_kelompok_b->pembelajaran->mapel->nama_mapel }}</td>
-                            <td class="center">{{ $nilai_kelompok_b->kkm }}</td>
-                            <td class="center">{{ $nilai_kelompok_b->nilai_akhir }}</td>
-                            <td class="center">{{ $nilai_kelompok_b->predikat_akhir }}</td>
-                        </tr>
-                    @endforeach
-                @endif
 
                 <tr class="nilai">
                     <td colspan="3"><strong>Jumlah</strong></td>

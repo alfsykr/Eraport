@@ -88,11 +88,7 @@
           <td style="width: 8%;">Nilai</td>
           <td style="width: 12%;">Predikat</td>
         </tr>
-        <!-- Nilai A  -->
-        <tr class="nilai">
-          <td colspan="9"><strong>Kelompok A</strong></td>
-        </tr>
-
+        <!-- Nilai Mapel -->
         <?php $no = 0; ?>
         @foreach($data_pembelajaran_a->sortBy('mapel.k13_mapping_mapel.nomor_urut') as $nilai_kelompok_a)
           <?php  $no++; ?>
@@ -139,62 +135,6 @@
               @elseif($nilai_kelompok_a->nilai_pts >= $nilai_kelompok_a->predikat_b && $nilai_kelompok_a->nilai_pts < $nilai_kelompok_a->predikat_a)
                 B
               @elseif($nilai_kelompok_a->nilai_pts >= $nilai_kelompok_a->predikat_a)
-                A
-              @endif
-            </td>
-          </tr>
-        @endforeach
-
-        <!-- Nilai B  -->
-        <tr class="nilai">
-          <td colspan="9"><strong>Kelompok B</strong></td>
-        </tr>
-        <?php $no = 0; ?>
-        @foreach($data_pembelajaran_b->sortBy('mapel.k13_mapping_mapel.nomor_urut') as $nilai_kelompok_b)
-          <?php  $no++; ?>
-          <tr class="nilai">
-            <td class="center">{{$no}}</td>
-            <td>{{$nilai_kelompok_b->mapel->nama_mapel}}</td>
-            <td class="center">{{$nilai_kelompok_b->kkm}}</td>
-            <td class="center">{{$nilai_kelompok_b->rt_nilai_pengetahuan}}</td>
-            <td class="center">
-              @if($nilai_kelompok_b->rt_nilai_pengetahuan == 0)
-                -
-              @elseif($nilai_kelompok_b->rt_nilai_pengetahuan < $nilai_kelompok_b->predikat_c)
-                D
-              @elseif($nilai_kelompok_b->rt_nilai_pengetahuan >= $nilai_kelompok_b->predikat_c && $nilai_kelompok_b->rt_nilai_pengetahuan < $nilai_kelompok_b->predikat_b)
-                C
-              @elseif($nilai_kelompok_b->rt_nilai_pengetahuan >= $nilai_kelompok_b->predikat_b && $nilai_kelompok_b->rt_nilai_pengetahuan < $nilai_kelompok_b->predikat_a)
-                B
-              @elseif($nilai_kelompok_b->rt_nilai_pengetahuan >= $nilai_kelompok_b->predikat_a)
-                A
-              @endif
-            </td>
-            <td class="center">{{$nilai_kelompok_b->rt_nilai_keterampilan}}</td>
-            <td class="center">
-              @if($nilai_kelompok_b->rt_nilai_keterampilan == 0)
-                -
-              @elseif($nilai_kelompok_b->rt_nilai_keterampilan < $nilai_kelompok_b->predikat_c)
-                D
-              @elseif($nilai_kelompok_b->rt_nilai_keterampilan >= $nilai_kelompok_b->predikat_c && $nilai_kelompok_b->rt_nilai_keterampilan < $nilai_kelompok_b->predikat_b)
-                C
-              @elseif($nilai_kelompok_b->rt_nilai_keterampilan >= $nilai_kelompok_b->predikat_b && $nilai_kelompok_b->rt_nilai_keterampilan < $nilai_kelompok_b->predikat_a)
-                B
-              @elseif($nilai_kelompok_b->rt_nilai_keterampilan >= $nilai_kelompok_b->predikat_a)
-                A
-              @endif
-            </td>
-            <td class="center">{{$nilai_kelompok_b->nilai_pts}}</td>
-            <td class="center">
-              @if($nilai_kelompok_b->nilai_pts == 0)
-                -
-              @elseif($nilai_kelompok_b->nilai_pts < $nilai_kelompok_b->predikat_c)
-                D
-              @elseif($nilai_kelompok_b->nilai_pts >= $nilai_kelompok_b->predikat_c && $nilai_kelompok_b->nilai_pts < $nilai_kelompok_b->predikat_b)
-                C
-              @elseif($nilai_kelompok_b->nilai_pts >= $nilai_kelompok_b->predikat_b && $nilai_kelompok_b->nilai_pts < $nilai_kelompok_b->predikat_a)
-                B
-              @elseif($nilai_kelompok_b->nilai_pts >= $nilai_kelompok_b->predikat_a)
                 A
               @endif
             </td>
