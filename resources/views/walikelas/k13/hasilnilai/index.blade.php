@@ -41,13 +41,14 @@
                       <th class="text-center">NISN</th>
                       <th class="text-center">Nama Siswa</th>
                       <th class="text-center" style="width: 5%;">L/P</th>
-                      <th class="text-center" style="width: 15%;">Lihat Nilai Akhir Semester</th>
+                      <th class="text-center" style="width: 10%;">Rata-rata</th>
+                      <th class="text-center" style="width: 15%;">Lihat Nilai Mapel</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php $no_urut = 0; ?>
                     @foreach($data_anggota_kelas->sortBy('siswa.nama_lengkap') as $anggota_kelas)
-                      <?php  $no_urut++; ?>
+                      <?php $no_urut++; ?>
                       <tr>
                         <td class="text-center">{{$no_urut}}</td>
                         <td class="text-center">{{$anggota_kelas->siswa->nis}}</td>
@@ -55,22 +56,25 @@
                         <td>{{$anggota_kelas->siswa->nama_lengkap}}</td>
                         <td class="text-center">{{$anggota_kelas->siswa->jenis_kelamin}}</td>
                         <td class="text-center">
+                          <strong>{{$anggota_kelas->rata_rata_semua}}</strong>
+                        </td>
+                        <td class="text-center">
                           <button type="button" class="btn btn-primary btn-sm mt-1" data-toggle="modal"
                             data-target="#modal-show{{$anggota_kelas->id}}">
                             <i class="fas fa-eye"></i> Lihat Nilai
                           </button>
                           <!-- Modal Show -->
                           <div class="modal fade text-left" id="modal-show{{$anggota_kelas->id}}">
-                            <div class="modal-dialog modal-xl">
+                            <div class="modal-dialog modal-lg">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h5 class="modal-title">Nilai Akhir Semester Siswa</h5>
+                                  <h5 class="modal-title">Nilai Hasil Belajar — {{ $anggota_kelas->siswa->nama_lengkap }}</h5>
                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                   </button>
                                 </div>
                                 <div class="modal-body">
-                                  <!-- Header Info  -->
+                                  <!-- Header Info -->
                                   <div class="row">
                                     <div class="col-sm-2"><strong>Nama Sekolah</strong></div>
                                     <div class="col-sm-6"><strong>: {{$sekolah->nama_sekolah}}</strong></div>
@@ -78,30 +82,21 @@
                                     <div class="col-sm-2"><strong>: {{$anggota_kelas->kelas->nama_kelas}}</strong></div>
                                   </div>
                                   <div class="row">
-                                    <div class="col-sm-2"><strong>Alamat</strong></div>
-                                    <div class="col-sm-6"><strong>: {{$sekolah->alamat}}</strong></div>
-                                    <div class="col-sm-2"><strong>Semester</strong></div>
-                                    <div class="col-sm-2"><strong>: {{$anggota_kelas->kelas->tapel->semester}}</strong>
-                                    </div>
-                                  </div>
-                                  <div class="row">
                                     <div class="col-sm-2"><strong>Nama</strong></div>
                                     <div class="col-sm-6"><strong>: {{$anggota_kelas->siswa->nama_lengkap}}</strong></div>
                                     <div class="col-sm-2"><strong>Tahun Pelajaran</strong></div>
-                                    <div class="col-sm-2"><strong>:
-                                        {{$anggota_kelas->kelas->tapel->tahun_pelajaran}}</strong></div>
+                                    <div class="col-sm-2"><strong>: {{$anggota_kelas->kelas->tapel->tahun_pelajaran}}</strong></div>
                                   </div>
-                                  <div class="row">
+                                  <div class="row mb-2">
                                     <div class="col-sm-2"><strong>Nomor Induk / NISN</strong></div>
-                                    <div class="col-sm-10"><strong>: {{$anggota_kelas->siswa->nis}} /
-                                        {{$anggota_kelas->siswa->nisn}}</strong></div>
+                                    <div class="col-sm-10"><strong>: {{$anggota_kelas->siswa->nis}} / {{$anggota_kelas->siswa->nisn}}</strong></div>
                                   </div>
                                   <!-- /. Header Info-->
 
-                                  <!-- Tabel Nilai  -->
-                                  <div class="row mt-3">
+                                  <!-- Tabel Nilai -->
+                                  <div class="row mt-2">
                                     <div class="col-sm-12">
-                                      <strong>NILAI AKHIR SEMESTER PENGETAHUAN DAN KETERAMPILAN</strong>
+                                      <strong>NILAI HASIL BELAJAR (RATA-RATA KISI-KISI)</strong>
                                     </div>
                                   </div>
                                   <div class="row">
@@ -110,39 +105,35 @@
                                         <table class="table table-bordered">
                                           <thead class="bg-info">
                                             <tr>
-                                              <th class="text-center" rowspan="2" style="width: 5%;">No</th>
-                                              <th class="text-center" rowspan="2" style="width: 50%;">Mata Pelajaran</th>
-                                              <th class="text-center" rowspan="2" style="width: 5%;">KKM</th>
-                                              <th class="text-center" colspan="2" style="width: 20%;">Pengetahuan</th>
-                                              <th class="text-center" colspan="2" style="width: 20%;">Keterampilan</th>
-                                            </tr>
-                                            <tr>
-                                              <th class="text-center">Nilai</th>
-                                              <th class="text-center">Predikat</th>
-                                              <th class="text-center">Nilai</th>
-                                              <th class="text-center">Predikat</th>
+                                              <th class="text-center" style="width: 5%;">No</th>
+                                              <th class="text-center" style="width: 65%;">Mata Pelajaran</th>
+                                              <th class="text-center" style="width: 30%;">Nilai Rata-rata</th>
                                             </tr>
                                           </thead>
                                           <tbody>
-                                            <?php  $no_a = 0; ?>
-                                            @foreach($anggota_kelas->data_nilai_kelompok_a->sortBy('pembelajaran.mapel.k13_mapping_mapel.nomor_urut') as $nilai_kelompok_a)
-                                              <?php    $no_a++; ?>
+                                            <?php $no_a = 0; ?>
+                                            @forelse($anggota_kelas->data_nilai_mapel as $nilai)
+                                              <?php $no_a++; ?>
                                               <tr class="bg-white">
                                                 <td class="text-center">{{$no_a}}</td>
-                                                <td>{{$nilai_kelompok_a->pembelajaran->mapel->nama_mapel}}</td>
-                                                <td class="text-center">{{$nilai_kelompok_a->kkm}}</td>
-                                                <td class="text-center">{{$nilai_kelompok_a->nilai_pengetahuan}}</td>
-                                                <td class="text-center">{{$nilai_kelompok_a->predikat_pengetahuan}}</td>
-                                                <td class="text-center">{{$nilai_kelompok_a->nilai_keterampilan}}</td>
-                                                <td class="text-center">{{$nilai_kelompok_a->predikat_keterampilan}}</td>
+                                                <td>{{$nilai['nama_mapel']}}</td>
+                                                <td class="text-center"><strong>{{$nilai['nilai_akhir']}}</strong></td>
                                               </tr>
-                                            @endforeach
+                                            @empty
+                                              <tr>
+                                                <td colspan="3" class="text-center text-muted">Belum ada data nilai kisi-kisi</td>
+                                              </tr>
+                                            @endforelse
+                                            <tr class="bg-light">
+                                              <td colspan="2"><strong>Rata-rata Semua Mapel</strong></td>
+                                              <td class="text-center"><strong>{{$anggota_kelas->rata_rata_semua}}</strong></td>
+                                            </tr>
                                           </tbody>
                                         </table>
                                       </div>
                                     </div>
                                   </div>
-                                  <!-- /. Tabel Nilai  -->
+                                  <!-- /. Tabel Nilai -->
                                 </div>
                               </div>
                             </div>

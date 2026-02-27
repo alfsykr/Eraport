@@ -6,13 +6,12 @@ use App\AnggotaKelas;
 use App\CatatanWaliKelas;
 use App\Guru;
 use App\Http\Controllers\Controller;
-use App\K13DeskripsiSikapSiswa;
-use App\K13MappingMapel;
-use App\K13NilaiAkhirRaport;
+use App\K13KkmMapel;
+use App\K13NilaiKisi;
+use App\K13RencanaKisi;
 use App\K13TglRaport;
 use App\KehadiranSiswa;
 use App\Kelas;
-use App\Mapel;
 use App\Pembelajaran;
 use App\PrestasiSiswa;
 use App\Sekolah;
@@ -23,23 +22,12 @@ use PDF;
 
 class CetakRaportSemesterController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $title = 'Cetak Raport Semester';
         return view('walikelas.k13.raportsemester.setpaper', compact('title'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $title = 'Cetak Raport Semester';
@@ -54,12 +42,6 @@ class CetakRaportSemesterController extends Controller
         return view('walikelas.k13.raportsemester.index', compact('title', 'data_anggota_kelas', 'paper_size', 'orientation'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show(Request $request, $id)
     {
         $sekolah = Sekolah::first();
@@ -69,30 +51,95 @@ class CetakRaportSemesterController extends Controller
             $title = 'Kelengkapan Raport';
             $kelengkapan_raport = PDF::loadview('walikelas.k13.raportsemester.kelengkapanraport', compact('title', 'sekolah', 'anggota_kelas'))->setPaper($request->paper_size, $request->orientation);
             return $kelengkapan_raport->stream('KELENGKAPAN RAPORT ' . $anggota_kelas->siswa->nama_lengkap . ' (' . $anggota_kelas->kelas->nama_kelas . ').pdf');
+
         } elseif ($request->data_type == 2) {
             $title = 'Cetak Raport';
-            $deskripsi_sikap = K13DeskripsiSikapSiswa::where('anggota_kelas_id', $anggota_kelas->id)->first();
 
-            $data_id_mapel_semester_ini = Mapel::where('tapel_id', session()->get('tapel_id'))->get('id');
-            $data_id_mapel_kelompok_a = K13MappingMapel::whereIn('mapel_id', $data_id_mapel_semester_ini)->where('kelompok', 'A')->get('mapel_id');
-            $data_id_mapel_kelompok_b = K13MappingMapel::whereIn('mapel_id', $data_id_mapel_semester_ini)->where('kelompok', 'B')->get('mapel_id');
-            $data_id_pembelajaran_a = Pembelajaran::where('kelas_id', $anggota_kelas->kelas_id)->whereIn('mapel_id', $data_id_mapel_kelompok_a)->get('id');
-            $data_id_pembelajaran_b = Pembelajaran::where('kelas_id', $anggota_kelas->kelas_id)->whereIn('mapel_id', $data_id_mapel_kelompok_b)->get('id');
+            $cek_tanggal_raport = K13TglRaport::where('tapel_id', session()->get('tapel_id'))->first();
+            if (is_null($cek_tanggal_raport)) {
+                return back()->with('toast_warning', 'Tanggal raport belum disetting oleh admin');
+            }
 
-            $data_nilai_kelompok_a = K13NilaiAkhirRaport::whereIn('pembelajaran_id', $data_id_pembelajaran_a)->where('anggota_kelas_id', $anggota_kelas->id)->get();
-            $data_nilai_kelompok_b = K13NilaiAkhirRaport::whereIn('pembelajaran_id', $data_id_pembelajaran_b)->where('anggota_kelas_id', $anggota_kelas->id)->get();
+            // Ambil semua pembelajaran di kelas ini, urutkan berdasarkan nomor_urut mapping
+            $pembelajaran_list = Pembelajaran::with(['mapel.k13_mapping_mapel'])
+                ->where('kelas_id', $anggota_kelas->kelas_id)
+                ->get()
+                ->sortBy(function ($item) {
+                    return optional($item->mapel->k13_mapping_mapel)->nomor_urut ?? 99;
+                });
+
+            $data_nilai_mapel = [];
+            $total_nilai = 0;
+            $count_mapel = 0;
+
+            foreach ($pembelajaran_list as $pembelajaran) {
+                // Ambil semua rencana kisi-kisi untuk pembelajaran ini
+                $rencana_ids = K13RencanaKisi::where('pembelajaran_id', $pembelajaran->id)->pluck('id');
+
+                if ($rencana_ids->isEmpty())
+                    continue;
+
+                // Hitung rata-rata nilai kisi-kisi siswa untuk mapel ini
+                $avg_nilai = K13NilaiKisi::whereIn('k13_rencana_kisi_id', $rencana_ids)
+                    ->where('anggota_kelas_id', $anggota_kelas->id)
+                    ->avg('nilai');
+
+                if (is_null($avg_nilai))
+                    continue;
+
+                $nilai_akhir = round($avg_nilai, 0);
+
+                // Ambil KKM mapel
+                $kkm_obj = K13KkmMapel::where('mapel_id', $pembelajaran->mapel_id)
+                    ->where('kelas_id', $anggota_kelas->kelas_id)
+                    ->first();
+                $kkm = $kkm_obj ? round($kkm_obj->kkm, 0) : 0;
+
+                // Hitung predikat
+                $predikat = '-';
+                if ($kkm > 0) {
+                    $range = (100 - $kkm) / 3;
+                    if ($nilai_akhir >= $kkm + ($range * 2))
+                        $predikat = 'A';
+                    elseif ($nilai_akhir >= $kkm + $range)
+                        $predikat = 'B';
+                    elseif ($nilai_akhir >= $kkm)
+                        $predikat = 'C';
+                    else
+                        $predikat = 'D';
+                }
+
+                $data_nilai_mapel[] = [
+                    'nama_mapel' => $pembelajaran->mapel->nama_mapel,
+                    'kkm' => $kkm ?: '-',
+                    'nilai_akhir' => $nilai_akhir,
+                    'predikat_akhir' => $predikat,
+                ];
+
+                $total_nilai += $nilai_akhir;
+                $count_mapel++;
+            }
+
+            $total_nilai_akhir = $total_nilai;
+            $rata_rata_nilai_akhir = $count_mapel > 0 ? round($total_nilai / $count_mapel, 0) : 0;
 
             $data_prestasi_siswa = PrestasiSiswa::where('anggota_kelas_id', $anggota_kelas->id)->get();
             $kehadiran_siswa = KehadiranSiswa::where('anggota_kelas_id', $anggota_kelas->id)->first();
             $catatan_wali_kelas = CatatanWaliKelas::where('anggota_kelas_id', $anggota_kelas->id)->first();
 
-            $cek_tanggal_raport = K13TglRaport::where('tapel_id', session()->get('tapel_id'))->first();
-            if (is_null($cek_tanggal_raport)) {
-                return back()->with('toast_warning', 'Tanggal raport belum disetting oleh admin');
-            } else {
-                $raport = PDF::loadview('walikelas.k13.raportsemester.raport', compact('title', 'sekolah', 'anggota_kelas', 'deskripsi_sikap', 'data_nilai_kelompok_a', 'data_nilai_kelompok_b', 'data_prestasi_siswa', 'kehadiran_siswa', 'catatan_wali_kelas'))->setPaper($request->paper_size, $request->orientation);
-                return $raport->stream('RAPORT ' . $anggota_kelas->siswa->nama_lengkap . ' (' . $anggota_kelas->kelas->nama_kelas . ').pdf');
-            }
+            $raport = PDF::loadview('walikelas.k13.raportsemester.raport', compact(
+                'title',
+                'sekolah',
+                'anggota_kelas',
+                'data_nilai_mapel',
+                'total_nilai_akhir',
+                'rata_rata_nilai_akhir',
+                'data_prestasi_siswa',
+                'kehadiran_siswa',
+                'catatan_wali_kelas'
+            ))->setPaper($request->paper_size, $request->orientation);
+
+            return $raport->stream('RAPORT ' . $anggota_kelas->siswa->nama_lengkap . ' (' . $anggota_kelas->kelas->nama_kelas . ').pdf');
         }
     }
 }

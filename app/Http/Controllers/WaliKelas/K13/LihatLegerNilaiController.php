@@ -36,15 +36,13 @@ class LihatLegerNilaiController extends Controller
 
         $data_id_mapel_semester_ini = Mapel::where('tapel_id', $tapel->id)->get('id');
 
-        $data_id_mapel_kelompok_a = K13MappingMapel::whereIn('mapel_id', $data_id_mapel_semester_ini)->where('kelompok', 'A')->get('mapel_id');
-        $data_id_mapel_kelompok_b = K13MappingMapel::whereIn('mapel_id', $data_id_mapel_semester_ini)->where('kelompok', 'B')->get('mapel_id');
+        $data_id_mapel_kelompok_a = K13MappingMapel::whereIn('mapel_id', $data_id_mapel_semester_ini)->get('mapel_id');
 
         $data_id_pembelajaran_all = Pembelajaran::whereIn('kelas_id', $id_kelas_diampu)->get('id');
         $data_id_pembelajaran_a = Pembelajaran::whereIn('kelas_id', $id_kelas_diampu)->whereIn('mapel_id', $data_id_mapel_kelompok_a)->get('id');
-        $data_id_pembelajaran_b = Pembelajaran::whereIn('kelas_id', $id_kelas_diampu)->whereIn('mapel_id', $data_id_mapel_kelompok_b)->get('id');
 
         $data_mapel_kelompok_a = K13NilaiAkhirRaport::whereIn('pembelajaran_id', $data_id_pembelajaran_a)->groupBy('pembelajaran_id')->get();
-        $data_mapel_kelompok_b = K13NilaiAkhirRaport::whereIn('pembelajaran_id', $data_id_pembelajaran_b)->groupBy('pembelajaran_id')->get();
+        $data_mapel_kelompok_b = collect(); // Kelompok B tidak digunakan lagi
 
         $data_ekstrakulikuler = Ekstrakulikuler::where('tapel_id', $tapel->id)->get();
         $count_ekstrakulikuler = count($data_ekstrakulikuler);
@@ -53,10 +51,8 @@ class LihatLegerNilaiController extends Controller
         foreach ($data_anggota_kelas as $anggota_kelas) {
 
             $data_nilai_kelompok_a = K13NilaiAkhirRaport::whereIn('pembelajaran_id', $data_id_pembelajaran_a)->where('anggota_kelas_id', $anggota_kelas->id)->get();
-            $data_nilai_kelompok_b = K13NilaiAkhirRaport::whereIn('pembelajaran_id', $data_id_pembelajaran_b)->where('anggota_kelas_id', $anggota_kelas->id)->get();
 
             $anggota_kelas->data_nilai_kelompok_a = $data_nilai_kelompok_a;
-            $anggota_kelas->data_nilai_kelompok_b = $data_nilai_kelompok_b;
 
             $rt_pengetahuan = K13NilaiAkhirRaport::whereIn('pembelajaran_id', $data_id_pembelajaran_all)->where('anggota_kelas_id', $anggota_kelas->id)->avg('nilai_pengetahuan');
             $rt_keterampilan = K13NilaiAkhirRaport::whereIn('pembelajaran_id', $data_id_pembelajaran_all)->where('anggota_kelas_id', $anggota_kelas->id)->avg('nilai_keterampilan');

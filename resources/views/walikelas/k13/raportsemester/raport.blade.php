@@ -70,14 +70,14 @@
                 </tr>
 
                 <?php $no = 0; ?>
-                @foreach ($data_nilai_kelompok_a->sortBy('pembelajaran.mapel.k13_mapping_mapel.nomor_urut') as $nilai_kelompok_a)
+                @foreach ($data_nilai_mapel as $nilai)
                     <?php    $no++; ?>
                     <tr class="nilai">
                         <td class="center">{{ $no }}</td>
-                        <td>{{ $nilai_kelompok_a->pembelajaran->mapel->nama_mapel }}</td>
-                        <td class="center">{{ $nilai_kelompok_a->kkm }}</td>
-                        <td class="center">{{ $nilai_kelompok_a->nilai_akhir }}</td>
-                        <td class="center">{{ $nilai_kelompok_a->predikat_akhir }}</td>
+                        <td>{{ $nilai['nama_mapel'] }}</td>
+                        <td class="center">{{ $nilai['kkm'] }}</td>
+                        <td class="center">{{ $nilai['nilai_akhir'] }}</td>
+                        <td class="center">{{ $nilai['predikat_akhir'] }}</td>
                     </tr>
                 @endforeach
 
