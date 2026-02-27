@@ -12,7 +12,8 @@
   <div class="invoice-box">
     <div class="content">
       <div style="text-align: center; padding-bottom: 10px;">
-        <img src="assets/images/logo/logo.png" alt="Logo" height="160px">
+        <img src="{{ str_replace('\\', '/', public_path('assets/images/logo/' . ($sekolah->logo ?? 'logo.png'))) }}"
+          alt="Logo" height="160px">
       </div>
       <h1><strong>LAPORAN</strong></h1>
       <h1><strong>HASIL BELAJAR SISWA</strong></h1>
@@ -22,7 +23,8 @@
       <table>
         <tr>
           <td style="width: 15%;"></td>
-          <td style="width: 70%; border: 1px solid #333; height: 35px; text-align: center; font-size: 18px;"><b>{{$anggota_kelas->siswa->nama_lengkap}}</b></td>
+          <td style="width: 70%; border: 1px solid #333; height: 35px; text-align: center; font-size: 18px;">
+            <b>{{$anggota_kelas->siswa->nama_lengkap}}</b></td>
           <td style="width: 15%;"></td>
         </tr>
       </table>
@@ -32,7 +34,8 @@
       <table>
         <tr>
           <td style="width: 20%;"></td>
-          <td style="width: 60%; border: 1px solid #333; height: 35px; text-align: center; font-size: 18px;"><b>{{$anggota_kelas->siswa->nisn}} / {{$anggota_kelas->siswa->nis}}</b></td>
+          <td style="width: 60%; border: 1px solid #333; height: 35px; text-align: center; font-size: 18px;">
+            <b>{{$anggota_kelas->siswa->nisn}} / {{$anggota_kelas->siswa->nis}}</b></td>
           <td style="width: 20%;"></td>
         </tr>
       </table>
@@ -46,7 +49,8 @@
       </p>
     </div>
     <div class="footer">
-      <i>{{$anggota_kelas->siswa->nama_lengkap}} | {{$anggota_kelas->siswa->nis}}</i> <b style="float: right;"><i>Halaman 1</i></b>
+      <i>{{$anggota_kelas->siswa->nama_lengkap}} | {{$anggota_kelas->siswa->nis}}</i> <b
+        style="float: right;"><i>Halaman 1</i></b>
     </div>
   </div>
   <div class="page-break"></div>
@@ -101,7 +105,8 @@
       </table>
     </div>
     <div class="footer">
-      <i>{{$anggota_kelas->siswa->nama_lengkap}} | {{$anggota_kelas->siswa->nis}}</i> <b style="float: right;"><i>Halaman 2</i></b>
+      <i>{{$anggota_kelas->siswa->nama_lengkap}} | {{$anggota_kelas->siswa->nis}}</i> <b
+        style="float: right;"><i>Halaman 2</i></b>
     </div>
   </div>
   <div class="page-break"></div>
@@ -129,7 +134,8 @@
           <td style="width: 4%;">3</td>
           <td style="width: 25%;">Tempat, Tanggal Lahir</td>
           <td style="width: 2%;">:</td>
-          <td>{{$anggota_kelas->siswa->tempat_lahir}}, {{$anggota_kelas->siswa->tanggal_lahir->isoFormat('D MMMM Y')}}</td>
+          <td>{{$anggota_kelas->siswa->tempat_lahir}}, {{$anggota_kelas->siswa->tanggal_lahir->isoFormat('D MMMM Y')}}
+          </td>
         </tr>
         <tr style="line-height: 25px;">
           <td style="width: 4%;">4</td>
@@ -137,9 +143,9 @@
           <td style="width: 2%;">:</td>
           <td>
             @if($anggota_kelas->siswa->jenis_kelamin == 'L')
-            Laki-Laki
+              Laki-Laki
             @else
-            Perempuan
+              Perempuan
             @endif
           </td>
         </tr>
@@ -149,19 +155,19 @@
           <td style="width: 2%;">:</td>
           <td>
             @if($anggota_kelas->siswa->agama == 1)
-            Islam
+              Islam
             @elseif($anggota_kelas->siswa->agama == 2)
-            Protestan
+              Protestan
             @elseif($anggota_kelas->siswa->agama == 3)
-            Katolik
+              Katolik
             @elseif($anggota_kelas->siswa->agama == 4)
-            Hindu
+              Hindu
             @elseif($anggota_kelas->siswa->agama == 5)
-            Budha
+              Budha
             @elseif($anggota_kelas->siswa->agama == 6)
-            Khonghucu
+              Khonghucu
             @elseif($anggota_kelas->siswa->agama == 7)
-            Kepercayaan
+              Kepercayaan
             @endif
           </td>
         </tr>
@@ -171,11 +177,11 @@
           <td style="width: 2%;">:</td>
           <td>
             @if($anggota_kelas->siswa->status_dalam_keluarga == 1)
-            Anak Kandung
+              Anak Kandung
             @elseif($anggota_kelas->siswa->status_dalam_keluarga == 2)
-            Anak Angkat
+              Anak Angkat
             @elseif($anggota_kelas->siswa->status_dalam_keluarga == 3)
-            Anak Tiri
+              Anak Tiri
             @endif
           </td>
         </tr>
@@ -221,9 +227,9 @@
           <td style="width: 2%;">:</td>
           <td>
             @if($anggota_kelas->siswa->jenis_pendaftaran == 1)
-            Siswa Baru
+              Siswa Baru
             @elseif($anggota_kelas->siswa->jenis_pendaftaran == 2)
-            Pindahan
+              Pindahan
             @endif
           </td>
         </tr>
@@ -288,7 +294,7 @@
           </td>
           <td style="width: 40%; font-size: 15px;">
             @if(!is_null($anggota_kelas->kelas->tapel->k13_tgl_raport))
-            {{$anggota_kelas->kelas->tapel->k13_tgl_raport->tempat_penerbitan}},
+              {{$anggota_kelas->kelas->tapel->k13_tgl_raport->tempat_penerbitan}},
             @endif
             {{$anggota_kelas->siswa->created_at->isoFormat('D MMMM Y')}}<br>
             Kepala Sekolah, <br><br><br><br>
@@ -299,7 +305,8 @@
       </table>
     </div>
     <div class="footer">
-      <i>{{$anggota_kelas->siswa->nama_lengkap}} | {{$anggota_kelas->siswa->nis}}</i> <b style="float: right;"><i>Halaman 3</i></b>
+      <i>{{$anggota_kelas->siswa->nama_lengkap}} | {{$anggota_kelas->siswa->nis}}</i> <b
+        style="float: right;"><i>Halaman 3</i></b>
     </div>
   </div>
 
