@@ -32,14 +32,23 @@ class PersonalProgramController extends Controller
         $orientation = $request->get('orientation', 'potrait');
         $semester = $request->get('semester', 'Ganjil');
 
-        $anggota = \App\AnggotaKelas::with('siswa.kelas.tapel')->findOrFail($anggota_kelas_id);
+        $anggota = \App\AnggotaKelas::with(['siswa', 'kelas.tapel'])->findOrFail($anggota_kelas_id);
         $siswa = $anggota->siswa;
 
+        // Cari PP berdasarkan siswa_id dan semester
         $pp = PersonalProgram::with('guru')
             ->where('siswa_id', $siswa->id)
             ->where('semester', $semester)
             ->latest('updated_at')
             ->first();
+
+        // Fallback: jika tidak ditemukan dengan semester ini, ambil PP paling baru
+        if (!$pp) {
+            $pp = PersonalProgram::with('guru')
+                ->where('siswa_id', $siswa->id)
+                ->latest('updated_at')
+                ->first();
+        }
 
         $title = 'Raport Personal Program';
 

@@ -83,10 +83,10 @@
     <tr>
       <td>Kelas/Program</td>
       <td>:</td>
-      <td>{{$siswa->kelas->nama_kelas ?? '-'}}</td>
+      <td>{{$anggota->kelas->nama_kelas ?? '-'}}</td>
       <td>Tahun Ajaran</td>
       <td>:</td>
-      <td>{{$siswa->kelas->tapel->tahun_pelajaran ?? '-'}}</td>
+      <td>{{$anggota->kelas->tapel->tahun_pelajaran ?? '-'}}</td>
     </tr>
   </table>
 
@@ -116,7 +116,7 @@
     <tr>
       <td style="text-align:left; width:50%;"></td>
       <td style="text-align:right; width:50%;">
-        {{$siswa->kelas->tapel->kota ?? ''}}, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}
+        {{$anggota->kelas->tapel->kota ?? ''}}, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}
       </td>
     </tr>
 
