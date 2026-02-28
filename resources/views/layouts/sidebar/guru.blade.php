@@ -44,6 +44,13 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a href="{{ route('statuspengiriman.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-tasks"></i>
+              <p>Status Pengiriman Nilai</p>
+            </a>
+          </li>
+
           <!-- Wali Kelas Section (K13) - hanya tampil jika guru adalah wali kelas -->
           @php
             $guru_wk = \App\Guru::where('user_id', Auth::id())->first();
