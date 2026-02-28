@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Admin\K13;
 
-use App\AnggotaEkstrakulikuler;
 use App\AnggotaKelas;
 use App\CatatanWaliKelas;
-use App\Ekstrakulikuler;
 use App\Http\Controllers\Controller;
 use App\K13KkmMapel;
 use App\K13NilaiKisi;
@@ -13,11 +11,11 @@ use App\K13RencanaKisi;
 use App\K13TglRaport;
 use App\KehadiranSiswa;
 use App\Kelas;
-use App\NilaiEkstrakulikuler;
 use App\Pembelajaran;
 use App\PrestasiSiswa;
 use App\Sekolah;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use PDF;
 
 class CetakRaportSemesterController extends Controller
@@ -118,14 +116,8 @@ class CetakRaportSemesterController extends Controller
             $total_nilai_akhir = $total_nilai;
             $rata_rata_nilai_akhir = $count_mapel > 0 ? round($total_nilai / $count_mapel, 0) : 0;
 
-            // Ekstrakulikuler
-            $data_id_ekstrakulikuler = Ekstrakulikuler::where('tapel_id', session()->get('tapel_id'))->get('id');
-            $data_anggota_ekstrakulikuler = AnggotaEkstrakulikuler::whereIn('ekstrakulikuler_id', $data_id_ekstrakulikuler)->where('anggota_kelas_id', $anggota_kelas->id)->get();
-            foreach ($data_anggota_ekstrakulikuler as $anggota_ekstrakulikuler) {
-                $cek_nilai_ekstra = NilaiEkstrakulikuler::where('anggota_ekstrakulikuler_id', $anggota_ekstrakulikuler->id)->first();
-                $anggota_ekstrakulikuler->nilai = $cek_nilai_ekstra ? $cek_nilai_ekstra->nilai : null;
-                $anggota_ekstrakulikuler->deskripsi = $cek_nilai_ekstra ? $cek_nilai_ekstra->deskripsi : null;
-            }
+            // Ekstrakulikuler sudah dihapus — gunakan koleksi kosong
+            $data_anggota_ekstrakulikuler = collect();
 
             $data_prestasi_siswa = PrestasiSiswa::where('anggota_kelas_id', $anggota_kelas->id)->get();
             $kehadiran_siswa = KehadiranSiswa::where('anggota_kelas_id', $anggota_kelas->id)->first();

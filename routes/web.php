@@ -274,6 +274,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('kirimnilaiakhir', 'Guru\K13\KirimNilaiAkhirController', [
           'uses' => ['index', 'create', 'store']
         ]);
+        Route::resource('statuspengiriman', 'Guru\K13\StatusPengirimanNilaiController', [
+          'uses' => ['index']
+        ]);
 
         // Sistem Kisi-kisi Terpadu (Baru)
         Route::get('rencanakisi/create', 'Guru\K13\RencanaKisiController@create')->name('rencanakisi.create');

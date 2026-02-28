@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\Admin\K13;
 
-use App\AnggotaEkstrakulikuler;
 use App\AnggotaKelas;
-use App\Ekstrakulikuler;
 use App\Guru;
 use App\Http\Controllers\Controller;
-use App\K13ButirSikap;
 use App\K13KdMapel;
 use App\K13KkmMapel;
 use App\K13MappingMapel;
@@ -50,12 +47,9 @@ class ValidasiController extends Controller
         // ✅ FIX: siswa_invalid dihapus karena kelas_id boleh null (tracking via anggota_kelas)
         $count_siswa_invalid = 0; // Always 0, no longer relevant
 
-        $data_ekstrakulikuler = Ekstrakulikuler::where('tapel_id', $tapel->id)->orderBy('nama_ekstrakulikuler', 'ASC')->get();
-        foreach ($data_ekstrakulikuler as $ekstrakulikuler) {
-            $jumlah_anggota = AnggotaEkstrakulikuler::where('ekstrakulikuler_id', $ekstrakulikuler->id)->count();
-            $ekstrakulikuler->jumlah_anggota = $jumlah_anggota;
-        }
-        $count_ekstrakulikuler = count($data_ekstrakulikuler);
+        // Ekstrakulikuler sudah dihapus
+        $data_ekstrakulikuler = collect();
+        $count_ekstrakulikuler = 0;
         // End Validasi Data Master 
 
         // Validasi data Setting
@@ -68,8 +62,9 @@ class ValidasiController extends Controller
         $count_pembelajaran = Pembelajaran::whereIn('kelas_id', $id_kelas)->whereNotNull('guru_id')->where('status', 1)->count();
         $count_kkm = K13KkmMapel::whereIn('kelas_id', $id_kelas)->whereIn('mapel_id', $id_mapel)->count();
 
-        $count_sikap_spiritual = K13ButirSikap::where('jenis_kompetensi', 1)->count();
-        $count_sikap_sosial = K13ButirSikap::where('jenis_kompetensi', 2)->count();
+        // Butir Sikap sudah tidak digunakan
+        $count_sikap_spiritual = 0;
+        $count_sikap_sosial = 0;
 
         $data_kd = Mapel::where('tapel_id', $tapel->id)->orderBy('nama_mapel', 'ASC')->get();
         foreach ($data_kd as $kd) {
