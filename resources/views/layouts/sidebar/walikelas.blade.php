@@ -45,7 +45,7 @@
             <li class="nav-item">
               <a href="{{ route('prestasi.index') }}" class="nav-link">
                 <i class="fas fa-trophy nav-icon"></i>
-                <p>Input Prestasi Siswa</p>
+                <p>Input Talents Mapping</p>
               </a>
             </li>
             <li class="nav-item">
@@ -74,26 +74,10 @@
           <!-- Kurikulum 2013 -->
 
           <li class="nav-item">
-            <a href="{{ route('statusnilaiguru.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-check-circle"></i>
-              <p>
-                Cek Status Penilaian
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
             <a href="{{ route('hasilnilai.index') }}" class="nav-link">
               <i class="nav-icon fas fa-check-square"></i>
               <p>
                 Hasil Pengelolaan Nilai
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ route('prosesdeskripsisikap.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-file-alt"></i>
-              <p>
-                Proses Deskripsi Sikap
               </p>
             </a>
           </li>
@@ -122,12 +106,6 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('raportsemester.index') }}" class="nav-link">
-                  <i class="fas fa-print nav-icon"></i>
-                  <p>Raport Semester</p>
-                </a>
-              </li>
-              <li class="nav-item">
                 <a href="{{ route('terapi.index') }}" class="nav-link">
                   <i class="fas fa-print nav-icon"></i>
                   <p>Raport Perkembangan Terapi</p>
@@ -141,17 +119,6 @@
         @elseif(Session::get('kurikulum') == '2006')
 
           <!-- Kurikulum 2006 -->
-          <li class="nav-item">
-            <a href="{{ route('statuspenilaian.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-check-circle"></i>
-              <p>
-                Cek Status Penilaian
-              </p>
-            </a>
-          </li>
-
-          <!-- LANJUT DIATAS -->
-
           <li class="nav-item">
             <a href="{{ route('hasilpenilaian.index') }}" class="nav-link">
               <i class="nav-icon fas fa-check-square"></i>
@@ -182,12 +149,6 @@
                 <a href="{{ route('raportuts.index') }}" class=" nav-link">
                   <i class="fas fa-print nav-icon"></i>
                   <p>Raport Tengah Semester</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('raportuas.index') }}" class="nav-link">
-                  <i class="fas fa-print nav-icon"></i>
-                  <p>Raport Semester</p>
                 </a>
               </li>
               <li class="nav-item">
