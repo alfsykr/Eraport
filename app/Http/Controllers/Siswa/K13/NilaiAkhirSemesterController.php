@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Siswa\K13;
 
 use App\AnggotaKelas;
 use App\Http\Controllers\Controller;
-use App\K13NilaiAkhirRaport;
+use App\K13NilaiKisi;
+use App\K13RencanaKisi;
 use App\Kelas;
 use App\Pembelajaran;
 use App\Siswa;
@@ -30,7 +31,13 @@ class NilaiAkhirSemesterController extends Controller
         } else {
             $data_pembelajaran = Pembelajaran::where('kelas_id', $anggota_kelas->kelas_id)->where('status', 1)->get();
             foreach ($data_pembelajaran as $pembelajaran) {
-                $pembelajaran->nilai = K13NilaiAkhirRaport::where('pembelajaran_id', $pembelajaran->id)->where('anggota_kelas_id', $anggota_kelas->id)->first();
+                // Ambil semua rencana kisi untuk pembelajaran ini
+                $rencana_kisi_ids = K13RencanaKisi::where('pembelajaran_id', $pembelajaran->id)->pluck('id');
+                // Hitung rata-rata nilai kisi-kisi untuk siswa ini
+                $rata_nilai = K13NilaiKisi::whereIn('k13_rencana_kisi_id', $rencana_kisi_ids)
+                    ->where('anggota_kelas_id', $anggota_kelas->id)
+                    ->avg('nilai');
+                $pembelajaran->rata_nilai_kisi = $rata_nilai ? round($rata_nilai, 1) : null;
             }
             return view('siswa.k13.nilaiakhir.index', compact('title', 'siswa', 'data_pembelajaran'));
         }
