@@ -22,10 +22,6 @@ class Tapel extends Model
         return $this->hasMany('App\Mapel');
     }
 
-    public function ekstrakulikuler()
-    {
-        return $this->hasMany('App\Ekstrakulikuler');
-    }
 
     // Relasi K13
     public function k13_tgl_raport()

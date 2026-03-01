@@ -23,10 +23,6 @@ class AnggotaKelas extends Model
         return $this->belongsTo('App\Kelas');
     }
 
-    public function anggota_ekstrakulikuler()
-    {
-        return $this->hasMany('App\AnggotaEkstrakulikuler');
-    }
 
     public function kehadiran_siswa()
     {
