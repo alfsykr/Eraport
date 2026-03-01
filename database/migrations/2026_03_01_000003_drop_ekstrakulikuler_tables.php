@@ -22,10 +22,10 @@ class DropEkstrakulikulerTables extends Migration
 
         $tables_to_drop = [
             // Child tables dulu
-            'nilai_ekstrakulikulers',
-            'anggota_ekstrakulikulers',
+            'nilai_ekstrakulikuler',
+            'anggota_ekstrakulikuler',
             // Parent table
-            'ekstrakulikulers',
+            'ekstrakulikuler',
         ];
 
         // Hapus semua data terlebih dahulu
