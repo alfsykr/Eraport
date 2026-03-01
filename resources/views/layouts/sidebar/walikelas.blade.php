@@ -73,14 +73,7 @@
 
           <!-- Kurikulum 2013 -->
 
-          <li class="nav-item">
-            <a href="{{ route('hasilnilai.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-check-square"></i>
-              <p>
-                Hasil Pengelolaan Nilai
-              </p>
-            </a>
-          </li>
+
           <li class="nav-item">
             <a href="{{ route('leger.index') }}" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
@@ -99,12 +92,7 @@
               </p>
             </a>
             <ul class="nav nav-treeview bg-secondary">
-              <li class="nav-item">
-                <a href="{{ route('raportpts.index') }}" class=" nav-link">
-                  <i class="fas fa-print nav-icon"></i>
-                  <p>Raport Tengah Semester</p>
-                </a>
-              </li>
+
               <li class="nav-item">
                 <a href="{{ route('terapi.index') }}" class="nav-link">
                   <i class="fas fa-print nav-icon"></i>
@@ -115,51 +103,6 @@
           </li>
 
           <!-- End Kurikulum 2013 -->
-
-        @elseif(Session::get('kurikulum') == '2006')
-
-          <!-- Kurikulum 2006 -->
-          <li class="nav-item">
-            <a href="{{ route('hasilpenilaian.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-check-square"></i>
-              <p>
-                Hasil Pengelolaan Nilai
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ route('legernilai.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                Leger Nilai Siswa
-              </p>
-            </a>
-          </li>
-
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-print"></i>
-              <p>
-                Cetak Raport
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview bg-secondary">
-              <li class="nav-item">
-                <a href="{{ route('raportuts.index') }}" class=" nav-link">
-                  <i class="fas fa-print nav-icon"></i>
-                  <p>Raport Tengah Semester</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('terapi.index') }}" class="nav-link">
-                  <i class="fas fa-print nav-icon"></i>
-                  <p>Raport Perkembangan Terapi</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <!-- End Kurikulum 2006 -->
 
         @endif
 
