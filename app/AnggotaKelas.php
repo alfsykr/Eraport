@@ -50,59 +50,8 @@ class AnggotaKelas extends Model
 
 
     // Relasi K13
-    public function k13_nilai_pengetahuan()
-    {
-        return $this->hasOne('App\K13NilaiPengetahuan');
-    }
-
-    public function k13_nilai_keterampilan()
-    {
-        return $this->hasOne('App\K13NilaiKeterampilan');
-    }
-
-    public function k13_nilai_spiritual()
-    {
-        return $this->hasOne('App\K13NilaiSpiritual');
-    }
-
-    public function k13_nilai_sosial()
-    {
-        return $this->hasOne('App\K13NilaiSosial');
-    }
-
-    public function k13_nilai_pts_pas()
-    {
-        return $this->hasOne('App\K13NilaiPtsPas');
-    }
-
     public function k13_nilai_akhir_raport()
     {
         return $this->hasMany('App\K13NilaiAkhirRaport');
-    }
-
-    public function k13_deskripsi_sikap_siswa()
-    {
-        return $this->hasOne('App\K13DeskripsiSikapSiswa');
-    }
-
-    // Relasi KTSP 
-    public function ktsp_nilai_tugas()
-    {
-        return $this->hasOne('App\KtspNilaiTugas');
-    }
-
-    public function ktsp_nilai_uh()
-    {
-        return $this->hasOne('App\KtspNilaiUh');
-    }
-
-    public function anggota_kelas()
-    {
-        return $this->hasOne('App\AnggotaKelas');
-    }
-
-    public function ktsp_nilai_akhir_raport()
-    {
-        return $this->hasMany('App\KtspNilaiAkhirRaport');
     }
 }

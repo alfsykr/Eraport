@@ -129,15 +129,9 @@ class KirimNilaiAkhirController extends Controller
                 'kkm' => $kkm->kkm,
                 'nilai_akhir' => $nilai_akhir,
                 'predikat_akhir' => $predikat,
-                // backward compat
-                'nilai_pengetahuan' => $nilai_akhir,
-                'predikat_pengetahuan' => $predikat,
-                'nilai_keterampilan' => $nilai_akhir,
-                'predikat_keterampilan' => $predikat,
-                'nilai_spiritual' => 3,
-                'nilai_sosial' => 3,
                 'updated_at' => Carbon::now(),
             ];
+
 
             $cek = K13NilaiAkhirRaport::where('pembelajaran_id', $request->pembelajaran_id)
                 ->where('anggota_kelas_id', $request->anggota_kelas_id[$i])

@@ -13,12 +13,6 @@ class K13NilaiAkhirRaport extends Model
         'kkm',
         'nilai_akhir',
         'predikat_akhir',
-        'nilai_pengetahuan',
-        'predikat_pengetahuan',
-        'nilai_keterampilan',
-        'predikat_keterampilan',
-        'nilai_spiritual',
-        'nilai_sosial',
     ];
 
     public function pembelajaran()
@@ -29,10 +23,5 @@ class K13NilaiAkhirRaport extends Model
     public function anggota_kelas()
     {
         return $this->belongsTo('App\AnggotaKelas');
-    }
-
-    public function k13_deskripsi_nilai_siswa()
-    {
-        return $this->hasOne('App\K13DeskripsiNilaiSiswa');
     }
 }

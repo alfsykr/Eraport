@@ -34,18 +34,4 @@ class Mapel extends Model
         return $this->hasOne('App\K13KkmMapel');
     }
 
-    public function k13_kd_mapel()
-    {
-        return $this->hasMany('App\K13KdMapel');
-    }
-
-    // Relasi KTSP
-    public function ktsp_mapping_mapel()
-    {
-        return $this->hasOne('App\KtspMappingMapel');
-    }
-    public function ktsp_kkm_mapel()
-    {
-        return $this->hasOne('App\KtspKkmMapel');
-    }
 }

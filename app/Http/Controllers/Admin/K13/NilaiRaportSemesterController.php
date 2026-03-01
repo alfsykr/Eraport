@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Admin\K13;
 
 use App\AnggotaKelas;
 use App\Http\Controllers\Controller;
-use App\K13DeskripsiNilaiSiswa;
 use App\K13NilaiAkhirRaport;
 use App\Kelas;
 use App\Mapel;
 use App\Pembelajaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+
 
 class NilaiRaportSemesterController extends Controller
 {
@@ -116,24 +116,12 @@ class NilaiRaportSemesterController extends Controller
                         'kkm' => $kkm,
                         'nilai_akhir' => $nilai_akhir,
                         'predikat_akhir' => $predikat,
-                        // Set nilai lama ke nilai_akhir juga (backward compat)
-                        'nilai_pengetahuan' => $nilai_akhir,
-                        'predikat_pengetahuan' => $predikat,
-                        'nilai_keterampilan' => $nilai_akhir,
-                        'predikat_keterampilan' => $predikat,
-                        'nilai_spiritual' => '3',
-                        'nilai_sosial' => '3',
                     ]
                 );
 
-                // Simpan deskripsi jika ada
-                if (!empty($deskripsi)) {
-                    K13DeskripsiNilaiSiswa::updateOrCreate(
-                        ['k13_nilai_akhir_raport_id' => $nilai_record->id],
-                        ['deskripsi_pengetahuan' => $deskripsi, 'deskripsi_keterampilan' => $deskripsi]
-                    );
-                }
+
             }
+
         }
 
         return back()->with('toast_success', 'Nilai berhasil disimpan!');
