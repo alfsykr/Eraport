@@ -4,13 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PrestasiSiswa extends Model
+class TalentsMapping extends Model
 {
-    protected $table = 'prestasi_siswa';
+    protected $table = 'talents_mapping';
     protected $fillable = [
         'anggota_kelas_id',
-        'jenis_prestasi',
-        'deskripsi'
+        'nama_talents',
+        'deskripsi_talents'
     ];
 
     public function anggota_kelas()

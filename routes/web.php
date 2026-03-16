@@ -200,7 +200,7 @@ Route::group(['middleware' => ['auth']], function () {
       Route::resource('kehadiran', 'Walikelas\KehadiranSiswaController', [
         'uses' => ['index', 'store']
       ]);
-      Route::resource('prestasi', 'Walikelas\PrestasiSiswaController', [
+      Route::resource('prestasi', 'Walikelas\TalentsMappingController', [
         'uses' => ['index', 'store', 'destroy']
       ]);
       Route::resource('catatan', 'Walikelas\CatatanWaliKelasController', [
@@ -242,6 +242,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('presensi', 'Siswa\RekapKehadiranController', [
       'uses' => ['index']
     ]);
+    Route::get('catatanterapi', 'Siswa\CatatanTerapiController@index')->name('catatanterapi.index');
 
     // Raport K13 Siswa
     Route::group(['middleware' => 'checkKurikulum:2013'], function () {

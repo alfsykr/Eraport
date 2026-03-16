@@ -101,7 +101,7 @@
             <li class="nav-item">
               <a href="{{ route('personalprogram.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-user-edit"></i>
-                <p>Personal Program</p>
+                <p>Raport Personal Program</p>
               </a>
             </li>
 

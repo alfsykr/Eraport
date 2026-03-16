@@ -12,7 +12,7 @@ use App\K13TglRaport;
 use App\KehadiranSiswa;
 use App\Kelas;
 use App\Pembelajaran;
-use App\PrestasiSiswa;
+use App\TalentsMapping;
 use App\Sekolah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -119,7 +119,7 @@ class CetakRaportSemesterController extends Controller
             // Ekstrakulikuler sudah dihapus — gunakan koleksi kosong
             $data_anggota_ekstrakulikuler = collect();
 
-            $data_prestasi_siswa = PrestasiSiswa::where('anggota_kelas_id', $anggota_kelas->id)->get();
+            $data_talents_mapping = TalentsMapping::where('anggota_kelas_id', $anggota_kelas->id)->get();
             $kehadiran_siswa = KehadiranSiswa::where('anggota_kelas_id', $anggota_kelas->id)->first();
             $catatan_wali_kelas = CatatanWaliKelas::where('anggota_kelas_id', $anggota_kelas->id)->first();
 
@@ -131,7 +131,7 @@ class CetakRaportSemesterController extends Controller
                 'total_nilai_akhir',
                 'rata_rata_nilai_akhir',
                 'data_anggota_ekstrakulikuler',
-                'data_prestasi_siswa',
+                'data_talents_mapping',
                 'kehadiran_siswa',
                 'catatan_wali_kelas'
             ))->setPaper($request->paper_size, $request->orientation);

@@ -57,26 +57,27 @@
                             <option value="">-- Pilih Siswa --</option>
                             @foreach($data_anggota_kelas as $anggota)
                               <option value="{{$anggota->id}}">{{$anggota->siswa->nis}} | {{$anggota->siswa->nisn}} |
-                                {{$anggota->siswa->nama_lengkap}}</option>
+                                {{$anggota->siswa->nama_lengkap}}
+                              </option>
                             @endforeach
                           </select>
                         </div>
                       </div>
 
                       <div class="form-group row">
-                        <label for="jenis_prestasi" class="col-sm-3 col-form-label">Nama Talents Mapping</label>
+                        <label for="nama_talents" class="col-sm-3 col-form-label">Nama Talents Mapping</label>
                         <div class="col-sm-9 pt-1">
-                          <label class="form-check-label mr-3"><input type="radio" name="jenis_prestasi" value="1"
+                          <label class="form-check-label mr-3"><input type="radio" name="nama_talents" value="1"
                               required> Akademik</label>
-                          <label class="form-check-label mr-3"><input type="radio" name="jenis_prestasi" value="2"
+                          <label class="form-check-label mr-3"><input type="radio" name="nama_talents" value="2"
                               required> Non Akademik</label>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label for="deskripsi" class="col-sm-3 col-form-label">Deskripsi Talents Mapping</label>
+                        <label for="deskripsi_talents" class="col-sm-3 col-form-label">Deskripsi Talents Mapping</label>
                         <div class="col-sm-9">
-                          <textarea class="form-control" name="deskripsi" placeholder="Deskripsi Talents Mapping"
-                            rows="3" minlength="20" maxlength="200" required
+                          <textarea class="form-control" name="deskripsi_talents"
+                            placeholder="Deskripsi Talents Mapping" rows="3" minlength="20" maxlength="200" required
                             oninvalid="this.setCustomValidity('Deskripsi harus berisi antara 20 s/d 100 karekter')"
                             oninput="setCustomValidity('')"></textarea>
                         </div>
@@ -109,24 +110,24 @@
                   </thead>
                   <tbody>
                     <?php $no = 0; ?>
-                    @foreach($data_prestasi_siswa->sortBy('anggota_kelas.siswa.nama_lengkap') as $prestasi)
+                    @foreach($data_talents->sortBy('anggota_kelas.siswa.nama_lengkap') as $talents)
                       <?php  $no++; ?>
                       <tr>
                         <td>{{$no}}</td>
-                        <td>{{$prestasi->anggota_kelas->siswa->nis}}</td>
-                        <td>{{$prestasi->anggota_kelas->siswa->nama_lengkap}}</td>
-                        <td>{{$prestasi->anggota_kelas->siswa->jenis_kelamin}}</td>
-                        <td>{{$prestasi->anggota_kelas->kelas->nama_kelas}}</td>
+                        <td>{{$talents->anggota_kelas->siswa->nis}}</td>
+                        <td>{{$talents->anggota_kelas->siswa->nama_lengkap}}</td>
+                        <td>{{$talents->anggota_kelas->siswa->jenis_kelamin}}</td>
+                        <td>{{$talents->anggota_kelas->kelas->nama_kelas}}</td>
                         <td>
-                          @if($prestasi->jenis_prestasi == 1)
+                          @if($talents->nama_talents == 1)
                             Akademik
                           @else
                             Non Akademik
                           @endif
                         </td>
-                        <td>{{$prestasi->deskripsi}}</td>
+                        <td>{{$talents->deskripsi_talents}}</td>
                         <td class="text-center">
-                          <form action="{{ route('prestasi.destroy', $prestasi->id) }}" method="POST">
+                          <form action="{{ route('prestasi.destroy', $talents->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm mt-1"
