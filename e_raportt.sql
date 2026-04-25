@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 4.9.11
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jan 08, 2022 at 05:18 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.2
+-- Host: localhost:3306
+-- Generation Time: Feb 24, 2026 at 02:43 PM
+-- Server version: 8.0.30
+-- PHP Version: 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `e_raport`
+-- Database: `e_raportt`
 --
 
 -- --------------------------------------------------------
@@ -29,14 +29,14 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admin` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `nama_lengkap` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `jenis_kelamin` enum('L','P') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `nama_lengkap` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jenis_kelamin` enum('L','P') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal_lahir` date NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nomor_hp` varchar(13) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nomor_hp` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -56,9 +56,9 @@ INSERT INTO `admin` (`id`, `user_id`, `nama_lengkap`, `jenis_kelamin`, `tanggal_
 --
 
 CREATE TABLE `anggota_ekstrakulikuler` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `anggota_kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `ekstrakulikuler_id` bigint(20) UNSIGNED NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `anggota_kelas_id` bigint UNSIGNED NOT NULL,
+  `ekstrakulikuler_id` bigint UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -190,10 +190,10 @@ INSERT INTO `anggota_ekstrakulikuler` (`id`, `anggota_kelas_id`, `ekstrakulikule
 --
 
 CREATE TABLE `anggota_kelas` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `siswa_id` bigint(20) UNSIGNED NOT NULL,
-  `kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `pendaftaran` enum('1','2','3','4','5') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `siswa_id` bigint UNSIGNED NOT NULL,
+  `kelas_id` bigint UNSIGNED NOT NULL,
+  `pendaftaran` enum('1','2','3','4','5') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -289,7 +289,8 @@ INSERT INTO `anggota_kelas` (`id`, `siswa_id`, `kelas_id`, `pendaftaran`, `creat
 (153, 299, 11, '3', NULL, NULL),
 (154, 300, 11, '3', NULL, NULL),
 (155, 230, 12, '3', NULL, NULL),
-(156, 228, 12, '1', NULL, NULL);
+(156, 228, 12, '1', NULL, NULL),
+(158, 300, 9, '2', '2026-02-14 03:37:49', '2026-02-14 03:37:49');
 
 -- --------------------------------------------------------
 
@@ -298,9 +299,9 @@ INSERT INTO `anggota_kelas` (`id`, `siswa_id`, `kelas_id`, `pendaftaran`, `creat
 --
 
 CREATE TABLE `catatan_wali_kelas` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `anggota_kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `catatan` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `anggota_kelas_id` bigint UNSIGNED NOT NULL,
+  `catatan` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -347,10 +348,10 @@ INSERT INTO `catatan_wali_kelas` (`id`, `anggota_kelas_id`, `catatan`, `created_
 --
 
 CREATE TABLE `ekstrakulikuler` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `tapel_id` bigint(20) UNSIGNED NOT NULL,
-  `pembina_id` bigint(20) UNSIGNED NOT NULL,
-  `nama_ekstrakulikuler` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `tapel_id` bigint UNSIGNED NOT NULL,
+  `pembina_id` bigint UNSIGNED NOT NULL,
+  `nama_ekstrakulikuler` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -370,17 +371,17 @@ INSERT INTO `ekstrakulikuler` (`id`, `tapel_id`, `pembina_id`, `nama_ekstrakulik
 --
 
 CREATE TABLE `guru` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `nama_lengkap` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `gelar` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nip` varchar(18) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `jenis_kelamin` enum('L','P') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tempat_lahir` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `nama_lengkap` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gelar` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nip` varchar(18) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jenis_kelamin` enum('L','P') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tempat_lahir` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal_lahir` date NOT NULL,
-  `nuptk` varchar(16) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `alamat` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nuptk` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `alamat` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -410,10 +411,10 @@ INSERT INTO `guru` (`id`, `user_id`, `nama_lengkap`, `gelar`, `nip`, `jenis_kela
 --
 
 CREATE TABLE `k13_butir_sikap` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `jenis_kompetensi` enum('1','2') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `kode` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `butir_sikap` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `jenis_kompetensi` enum('1','2') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `butir_sikap` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -442,11 +443,11 @@ INSERT INTO `k13_butir_sikap` (`id`, `jenis_kompetensi`, `kode`, `butir_sikap`, 
 --
 
 CREATE TABLE `k13_deskripsi_nilai_siswa` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `pembelajaran_id` bigint(20) UNSIGNED NOT NULL,
-  `k13_nilai_akhir_raport_id` bigint(20) UNSIGNED NOT NULL,
-  `deskripsi_pengetahuan` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `deskripsi_keterampilan` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `pembelajaran_id` bigint UNSIGNED NOT NULL,
+  `k13_nilai_akhir_raport_id` bigint UNSIGNED NOT NULL,
+  `deskripsi_pengetahuan` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `deskripsi_keterampilan` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -578,12 +579,12 @@ INSERT INTO `k13_deskripsi_nilai_siswa` (`id`, `pembelajaran_id`, `k13_nilai_akh
 --
 
 CREATE TABLE `k13_deskripsi_sikap_siswa` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `anggota_kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `nilai_spiritual` enum('1','2','3','4') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `deskripsi_spiritual` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nilai_sosial` enum('1','2','3','4') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `deskripsi_sosial` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `anggota_kelas_id` bigint UNSIGNED NOT NULL,
+  `nilai_spiritual` enum('1','2','3','4') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `deskripsi_spiritual` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nilai_sosial` enum('1','2','3','4') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `deskripsi_sosial` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -630,14 +631,14 @@ INSERT INTO `k13_deskripsi_sikap_siswa` (`id`, `anggota_kelas_id`, `nilai_spirit
 --
 
 CREATE TABLE `k13_kd_mapel` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `mapel_id` bigint(20) UNSIGNED NOT NULL,
-  `tingkatan_kelas` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `jenis_kompetensi` enum('1','2','3','4') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `semester` enum('1','2') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `kode_kd` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `kompetensi_dasar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ringkasan_kompetensi` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `mapel_id` bigint UNSIGNED NOT NULL,
+  `tingkatan_kelas` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jenis_kompetensi` enum('1','2','3','4') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `semester` enum('1','2') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_kd` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kompetensi_dasar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ringkasan_kompetensi` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -685,10 +686,10 @@ INSERT INTO `k13_kd_mapel` (`id`, `mapel_id`, `tingkatan_kelas`, `jenis_kompeten
 --
 
 CREATE TABLE `k13_kkm_mapel` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `mapel_id` bigint(20) UNSIGNED NOT NULL,
-  `kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `kkm` int(11) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `mapel_id` bigint UNSIGNED NOT NULL,
+  `kelas_id` bigint UNSIGNED NOT NULL,
+  `kkm` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -771,10 +772,10 @@ INSERT INTO `k13_kkm_mapel` (`id`, `mapel_id`, `kelas_id`, `kkm`, `created_at`, 
 --
 
 CREATE TABLE `k13_mapping_mapel` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `mapel_id` bigint(20) UNSIGNED NOT NULL,
-  `kelompok` enum('A','B') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nomor_urut` int(11) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `mapel_id` bigint UNSIGNED NOT NULL,
+  `kelompok` enum('A','B') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nomor_urut` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -805,16 +806,18 @@ INSERT INTO `k13_mapping_mapel` (`id`, `mapel_id`, `kelompok`, `nomor_urut`, `cr
 --
 
 CREATE TABLE `k13_nilai_akhir_raport` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `pembelajaran_id` bigint(20) UNSIGNED NOT NULL,
-  `anggota_kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `kkm` int(11) NOT NULL,
-  `nilai_pengetahuan` int(11) NOT NULL,
-  `predikat_pengetahuan` enum('A','B','C','D') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nilai_keterampilan` int(11) NOT NULL,
-  `predikat_keterampilan` enum('A','B','C','D') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nilai_spiritual` enum('1','2','3','4') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nilai_sosial` enum('1','2','3','4') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `pembelajaran_id` bigint UNSIGNED NOT NULL,
+  `anggota_kelas_id` bigint UNSIGNED NOT NULL,
+  `kkm` int NOT NULL,
+  `nilai_akhir` int DEFAULT NULL,
+  `predikat_akhir` enum('A','B','C','D') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nilai_pengetahuan` int NOT NULL,
+  `predikat_pengetahuan` enum('A','B','C','D') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nilai_keterampilan` int NOT NULL,
+  `predikat_keterampilan` enum('A','B','C','D') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nilai_spiritual` enum('1','2','3','4') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nilai_sosial` enum('1','2','3','4') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -823,121 +826,125 @@ CREATE TABLE `k13_nilai_akhir_raport` (
 -- Dumping data for table `k13_nilai_akhir_raport`
 --
 
-INSERT INTO `k13_nilai_akhir_raport` (`id`, `pembelajaran_id`, `anggota_kelas_id`, `kkm`, `nilai_pengetahuan`, `predikat_pengetahuan`, `nilai_keterampilan`, `predikat_keterampilan`, `nilai_spiritual`, `nilai_sosial`, `created_at`, `updated_at`) VALUES
-(519, 293, 70, 70, 90, 'A', 80, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(520, 293, 71, 70, 79, 'C', 80, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(521, 293, 72, 70, 82, 'B', 81, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(522, 293, 73, 70, 81, 'B', 82, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(523, 293, 74, 70, 82, 'B', 82, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(524, 293, 75, 70, 80, 'B', 80, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(525, 293, 76, 70, 79, 'C', 81, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(526, 293, 77, 70, 76, 'C', 82, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(527, 293, 78, 70, 76, 'C', 82, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(528, 293, 79, 70, 76, 'C', 81, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(529, 293, 80, 70, 81, 'B', 78, 'C', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(530, 293, 81, 70, 81, 'B', 77, 'C', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(531, 293, 82, 70, 81, 'B', 77, 'C', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(532, 293, 83, 70, 83, 'B', 78, 'C', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(533, 293, 84, 70, 82, 'B', 80, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(534, 293, 85, 70, 81, 'B', 79, 'C', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(535, 293, 86, 70, 80, 'B', 79, 'C', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(536, 293, 87, 70, 78, 'C', 80, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(537, 293, 88, 70, 80, 'B', 80, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(538, 293, 89, 70, 80, 'B', 78, 'C', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(539, 293, 90, 70, 86, 'B', 80, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(540, 293, 91, 70, 88, 'B', 82, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(541, 293, 92, 70, 83, 'B', 77, 'C', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(542, 293, 93, 70, 82, 'B', 80, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(543, 293, 94, 70, 82, 'B', 81, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(544, 293, 95, 70, 78, 'C', 82, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(545, 293, 96, 70, 81, 'B', 80, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
-(546, 306, 97, 70, 80, 'B', 88, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(547, 306, 98, 70, 80, 'B', 91, 'A', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(548, 306, 99, 70, 80, 'B', 87, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(549, 306, 100, 70, 80, 'B', 86, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(550, 306, 101, 70, 80, 'B', 86, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(551, 306, 102, 70, 82, 'B', 83, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(552, 306, 103, 70, 82, 'B', 87, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(553, 306, 104, 70, 83, 'B', 84, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(554, 306, 105, 70, 82, 'B', 91, 'A', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(555, 306, 106, 70, 83, 'B', 88, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(556, 306, 107, 70, 83, 'B', 91, 'A', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(557, 306, 108, 70, 82, 'B', 87, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(558, 306, 109, 70, 83, 'B', 86, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(559, 306, 110, 70, 83, 'B', 86, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(560, 306, 111, 70, 84, 'B', 83, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(561, 306, 112, 70, 84, 'B', 87, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(562, 306, 113, 70, 85, 'B', 84, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(563, 306, 114, 70, 84, 'B', 91, 'A', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(564, 306, 115, 70, 84, 'B', 88, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(565, 306, 116, 70, 84, 'B', 91, 'A', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(566, 306, 117, 70, 84, 'B', 87, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(567, 306, 118, 70, 84, 'B', 86, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(568, 306, 119, 70, 84, 'B', 86, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(569, 306, 120, 70, 83, 'B', 86, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(570, 306, 121, 70, 83, 'B', 86, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(571, 306, 122, 70, 83, 'B', 83, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(572, 306, 123, 70, 84, 'B', 87, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(573, 306, 124, 70, 84, 'B', 84, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(574, 306, 125, 70, 84, 'B', 91, 'A', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
-(575, 304, 97, 70, 90, 'A', 98, 'A', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(576, 304, 98, 70, 90, 'A', 92, 'A', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(577, 304, 99, 70, 89, 'B', 91, 'A', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(578, 304, 100, 70, 90, 'A', 93, 'A', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(579, 304, 101, 70, 88, 'B', 92, 'A', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(580, 304, 102, 70, 90, 'A', 91, 'A', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(581, 304, 103, 70, 86, 'B', 91, 'A', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(582, 304, 104, 70, 88, 'B', 90, 'A', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(583, 304, 105, 70, 90, 'A', 89, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(584, 304, 106, 70, 90, 'A', 89, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(585, 304, 107, 70, 87, 'B', 85, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(586, 304, 108, 70, 92, 'A', 85, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(587, 304, 109, 70, 86, 'B', 85, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(588, 304, 110, 70, 89, 'B', 86, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(589, 304, 111, 70, 88, 'B', 85, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(590, 304, 112, 70, 88, 'B', 83, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(591, 304, 113, 70, 86, 'B', 88, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(592, 304, 114, 70, 86, 'B', 85, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(593, 304, 115, 70, 85, 'B', 82, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(594, 304, 116, 70, 84, 'B', 82, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(595, 304, 117, 70, 85, 'B', 82, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(596, 304, 118, 70, 84, 'B', 85, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(597, 304, 119, 70, 84, 'B', 86, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(598, 304, 120, 70, 86, 'B', 85, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(599, 304, 121, 70, 91, 'A', 85, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(600, 304, 122, 70, 87, 'B', 84, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(601, 304, 123, 70, 86, 'B', 85, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(602, 304, 124, 70, 86, 'B', 86, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(603, 304, 125, 70, 91, 'A', 82, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
-(604, 305, 97, 70, 94, 'A', 97, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
-(605, 305, 98, 70, 92, 'A', 87, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
-(606, 305, 99, 70, 92, 'A', 92, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
-(607, 305, 100, 70, 90, 'A', 93, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
-(608, 305, 101, 70, 87, 'B', 94, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
-(609, 305, 102, 70, 87, 'B', 95, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
-(610, 305, 103, 70, 86, 'B', 94, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
-(611, 305, 104, 70, 85, 'B', 96, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
-(612, 305, 105, 70, 87, 'B', 86, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
-(613, 305, 106, 70, 88, 'B', 84, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
-(614, 305, 107, 70, 89, 'B', 86, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
-(615, 305, 108, 70, 89, 'B', 85, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
-(616, 305, 109, 70, 90, 'A', 86, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
-(617, 305, 110, 70, 88, 'B', 87, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
-(618, 305, 111, 70, 92, 'A', 88, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
-(619, 305, 112, 70, 87, 'B', 95, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
-(620, 305, 113, 70, 89, 'B', 96, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
-(621, 305, 114, 70, 88, 'B', 96, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
-(622, 305, 115, 70, 87, 'B', 97, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
-(623, 305, 116, 70, 88, 'B', 87, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
-(624, 305, 117, 70, 90, 'A', 92, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
-(625, 305, 118, 70, 88, 'B', 89, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
-(626, 305, 119, 70, 92, 'A', 91, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
-(627, 305, 120, 70, 89, 'B', 90, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
-(628, 305, 121, 70, 87, 'B', 81, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
-(629, 305, 122, 70, 92, 'A', 89, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
-(630, 305, 123, 70, 93, 'A', 90, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
-(631, 305, 124, 70, 93, 'A', 90, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
-(632, 305, 125, 70, 91, 'A', 84, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41');
+INSERT INTO `k13_nilai_akhir_raport` (`id`, `pembelajaran_id`, `anggota_kelas_id`, `kkm`, `nilai_akhir`, `predikat_akhir`, `nilai_pengetahuan`, `predikat_pengetahuan`, `nilai_keterampilan`, `predikat_keterampilan`, `nilai_spiritual`, `nilai_sosial`, `created_at`, `updated_at`) VALUES
+(519, 293, 70, 70, NULL, NULL, 90, 'A', 80, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(520, 293, 71, 70, NULL, NULL, 79, 'C', 80, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(521, 293, 72, 70, NULL, NULL, 82, 'B', 81, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(522, 293, 73, 70, NULL, NULL, 81, 'B', 82, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(523, 293, 74, 70, NULL, NULL, 82, 'B', 82, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(524, 293, 75, 70, NULL, NULL, 80, 'B', 80, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(525, 293, 76, 70, NULL, NULL, 79, 'C', 81, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(526, 293, 77, 70, NULL, NULL, 76, 'C', 82, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(527, 293, 78, 70, NULL, NULL, 76, 'C', 82, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(528, 293, 79, 70, NULL, NULL, 76, 'C', 81, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(529, 293, 80, 70, NULL, NULL, 81, 'B', 78, 'C', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(530, 293, 81, 70, NULL, NULL, 81, 'B', 77, 'C', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(531, 293, 82, 70, NULL, NULL, 81, 'B', 77, 'C', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(532, 293, 83, 70, NULL, NULL, 83, 'B', 78, 'C', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(533, 293, 84, 70, NULL, NULL, 82, 'B', 80, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(534, 293, 85, 70, NULL, NULL, 81, 'B', 79, 'C', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(535, 293, 86, 70, NULL, NULL, 80, 'B', 79, 'C', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(536, 293, 87, 70, NULL, NULL, 78, 'C', 80, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(537, 293, 88, 70, NULL, NULL, 80, 'B', 80, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(538, 293, 89, 70, NULL, NULL, 80, 'B', 78, 'C', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(539, 293, 90, 70, NULL, NULL, 86, 'B', 80, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(540, 293, 91, 70, NULL, NULL, 88, 'B', 82, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(541, 293, 92, 70, NULL, NULL, 83, 'B', 77, 'C', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(542, 293, 93, 70, NULL, NULL, 82, 'B', 80, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(543, 293, 94, 70, NULL, NULL, 82, 'B', 81, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(544, 293, 95, 70, NULL, NULL, 78, 'C', 82, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(545, 293, 96, 70, NULL, NULL, 81, 'B', 80, 'B', '3', '3', '2021-12-20 14:51:12', '2021-12-28 12:19:24'),
+(546, 306, 97, 70, NULL, NULL, 80, 'B', 88, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(547, 306, 98, 70, NULL, NULL, 80, 'B', 91, 'A', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(548, 306, 99, 70, NULL, NULL, 80, 'B', 87, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(549, 306, 100, 70, NULL, NULL, 80, 'B', 86, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(550, 306, 101, 70, NULL, NULL, 80, 'B', 86, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(551, 306, 102, 70, NULL, NULL, 82, 'B', 83, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(552, 306, 103, 70, NULL, NULL, 82, 'B', 87, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(553, 306, 104, 70, NULL, NULL, 83, 'B', 84, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(554, 306, 105, 70, NULL, NULL, 82, 'B', 91, 'A', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(555, 306, 106, 70, NULL, NULL, 83, 'B', 88, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(556, 306, 107, 70, NULL, NULL, 83, 'B', 91, 'A', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(557, 306, 108, 70, NULL, NULL, 82, 'B', 87, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(558, 306, 109, 70, NULL, NULL, 83, 'B', 86, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(559, 306, 110, 70, NULL, NULL, 83, 'B', 86, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(560, 306, 111, 70, NULL, NULL, 84, 'B', 83, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(561, 306, 112, 70, NULL, NULL, 84, 'B', 87, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(562, 306, 113, 70, NULL, NULL, 85, 'B', 84, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(563, 306, 114, 70, NULL, NULL, 84, 'B', 91, 'A', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(564, 306, 115, 70, NULL, NULL, 84, 'B', 88, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(565, 306, 116, 70, NULL, NULL, 84, 'B', 91, 'A', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(566, 306, 117, 70, NULL, NULL, 84, 'B', 87, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(567, 306, 118, 70, NULL, NULL, 84, 'B', 86, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(568, 306, 119, 70, NULL, NULL, 84, 'B', 86, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(569, 306, 120, 70, NULL, NULL, 83, 'B', 86, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(570, 306, 121, 70, NULL, NULL, 83, 'B', 86, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(571, 306, 122, 70, NULL, NULL, 83, 'B', 83, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(572, 306, 123, 70, NULL, NULL, 84, 'B', 87, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(573, 306, 124, 70, NULL, NULL, 84, 'B', 84, 'B', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(574, 306, 125, 70, NULL, NULL, 84, 'B', 91, 'A', '4', '4', '2021-12-20 15:24:20', '2022-01-07 11:44:59'),
+(575, 304, 97, 70, NULL, NULL, 90, 'A', 98, 'A', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(576, 304, 98, 70, NULL, NULL, 90, 'A', 92, 'A', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(577, 304, 99, 70, NULL, NULL, 89, 'B', 91, 'A', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(578, 304, 100, 70, NULL, NULL, 90, 'A', 93, 'A', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(579, 304, 101, 70, NULL, NULL, 88, 'B', 92, 'A', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(580, 304, 102, 70, NULL, NULL, 90, 'A', 91, 'A', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(581, 304, 103, 70, NULL, NULL, 86, 'B', 91, 'A', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(582, 304, 104, 70, NULL, NULL, 88, 'B', 90, 'A', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(583, 304, 105, 70, NULL, NULL, 90, 'A', 89, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(584, 304, 106, 70, NULL, NULL, 90, 'A', 89, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(585, 304, 107, 70, NULL, NULL, 87, 'B', 85, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(586, 304, 108, 70, NULL, NULL, 92, 'A', 85, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(587, 304, 109, 70, NULL, NULL, 86, 'B', 85, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(588, 304, 110, 70, NULL, NULL, 89, 'B', 86, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(589, 304, 111, 70, NULL, NULL, 88, 'B', 85, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(590, 304, 112, 70, NULL, NULL, 88, 'B', 83, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(591, 304, 113, 70, NULL, NULL, 86, 'B', 88, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(592, 304, 114, 70, NULL, NULL, 86, 'B', 85, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(593, 304, 115, 70, NULL, NULL, 85, 'B', 82, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(594, 304, 116, 70, NULL, NULL, 84, 'B', 82, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(595, 304, 117, 70, NULL, NULL, 85, 'B', 82, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(596, 304, 118, 70, NULL, NULL, 84, 'B', 85, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(597, 304, 119, 70, NULL, NULL, 84, 'B', 86, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(598, 304, 120, 70, NULL, NULL, 86, 'B', 85, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(599, 304, 121, 70, NULL, NULL, 91, 'A', 85, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(600, 304, 122, 70, NULL, NULL, 87, 'B', 84, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(601, 304, 123, 70, NULL, NULL, 86, 'B', 85, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(602, 304, 124, 70, NULL, NULL, 86, 'B', 86, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(603, 304, 125, 70, NULL, NULL, 91, 'A', 82, 'B', '3', '3', '2021-12-23 10:34:13', '2021-12-28 12:10:26'),
+(604, 305, 97, 70, NULL, NULL, 94, 'A', 97, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
+(605, 305, 98, 70, NULL, NULL, 92, 'A', 87, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
+(606, 305, 99, 70, NULL, NULL, 92, 'A', 92, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
+(607, 305, 100, 70, NULL, NULL, 90, 'A', 93, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
+(608, 305, 101, 70, NULL, NULL, 87, 'B', 94, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
+(609, 305, 102, 70, NULL, NULL, 87, 'B', 95, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
+(610, 305, 103, 70, NULL, NULL, 86, 'B', 94, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
+(611, 305, 104, 70, NULL, NULL, 85, 'B', 96, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
+(612, 305, 105, 70, NULL, NULL, 87, 'B', 86, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
+(613, 305, 106, 70, NULL, NULL, 88, 'B', 84, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
+(614, 305, 107, 70, NULL, NULL, 89, 'B', 86, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
+(615, 305, 108, 70, NULL, NULL, 89, 'B', 85, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
+(616, 305, 109, 70, NULL, NULL, 90, 'A', 86, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
+(617, 305, 110, 70, NULL, NULL, 88, 'B', 87, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
+(618, 305, 111, 70, NULL, NULL, 92, 'A', 88, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
+(619, 305, 112, 70, NULL, NULL, 87, 'B', 95, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
+(620, 305, 113, 70, NULL, NULL, 89, 'B', 96, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
+(621, 305, 114, 70, NULL, NULL, 88, 'B', 96, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:40'),
+(622, 305, 115, 70, NULL, NULL, 87, 'B', 97, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
+(623, 305, 116, 70, NULL, NULL, 88, 'B', 87, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
+(624, 305, 117, 70, NULL, NULL, 90, 'A', 92, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
+(625, 305, 118, 70, NULL, NULL, 88, 'B', 89, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
+(626, 305, 119, 70, NULL, NULL, 92, 'A', 91, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
+(627, 305, 120, 70, NULL, NULL, 89, 'B', 90, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
+(628, 305, 121, 70, NULL, NULL, 87, 'B', 81, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
+(629, 305, 122, 70, NULL, NULL, 92, 'A', 89, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
+(630, 305, 123, 70, NULL, NULL, 93, 'A', 90, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
+(631, 305, 124, 70, NULL, NULL, 93, 'A', 90, 'A', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
+(632, 305, 125, 70, NULL, NULL, 91, 'A', 84, 'B', '3', '3', '2021-12-23 10:34:27', '2021-12-28 12:10:41'),
+(633, 331, 156, 70, 90, 'A', 90, 'A', 90, 'A', '3', '3', '2026-02-18 04:20:19', '2026-02-18 04:20:19'),
+(634, 331, 155, 70, 90, 'A', 90, 'A', 90, 'A', '3', '3', '2026-02-18 04:20:19', '2026-02-18 04:20:19'),
+(635, 330, 156, 75, 90, 'B', 90, 'B', 90, 'B', '3', '3', '2026-02-18 04:40:29', '2026-02-18 04:43:28'),
+(636, 330, 155, 75, 90, 'B', 90, 'B', 90, 'B', '3', '3', '2026-02-18 04:40:29', '2026-02-18 04:43:28');
 
 -- --------------------------------------------------------
 
@@ -946,10 +953,10 @@ INSERT INTO `k13_nilai_akhir_raport` (`id`, `pembelajaran_id`, `anggota_kelas_id
 --
 
 CREATE TABLE `k13_nilai_keterampilan` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `k13_rencana_nilai_keterampilan_id` bigint(20) UNSIGNED NOT NULL,
-  `anggota_kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `nilai` int(11) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `k13_rencana_nilai_keterampilan_id` bigint UNSIGNED NOT NULL,
+  `anggota_kelas_id` bigint UNSIGNED NOT NULL,
+  `nilai` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1338,14 +1345,68 @@ INSERT INTO `k13_nilai_keterampilan` (`id`, `k13_rencana_nilai_keterampilan_id`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `k13_nilai_kisi`
+--
+
+CREATE TABLE `k13_nilai_kisi` (
+  `id` bigint UNSIGNED NOT NULL,
+  `k13_rencana_kisi_id` bigint UNSIGNED NOT NULL,
+  `anggota_kelas_id` bigint UNSIGNED NOT NULL,
+  `nilai` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `k13_nilai_kisi`
+--
+
+INSERT INTO `k13_nilai_kisi` (`id`, `k13_rencana_kisi_id`, `anggota_kelas_id`, `nilai`, `created_at`, `updated_at`) VALUES
+(1, 21, 155, 90, '2026-02-18 04:19:57', '2026-02-18 04:19:57'),
+(2, 21, 156, 90, '2026-02-18 04:19:57', '2026-02-18 04:19:57'),
+(10, 3, 70, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(11, 3, 71, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(12, 3, 72, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(13, 3, 73, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(14, 3, 74, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(15, 3, 75, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(16, 3, 76, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(17, 3, 77, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(18, 3, 78, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(19, 3, 79, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(20, 3, 80, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(21, 3, 81, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(22, 3, 82, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(23, 3, 83, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(24, 3, 84, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(25, 3, 85, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(26, 3, 86, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(27, 3, 87, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(28, 3, 88, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(29, 3, 89, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(30, 3, 90, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(31, 3, 91, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(32, 3, 92, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(33, 3, 93, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(34, 3, 94, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(35, 3, 95, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(36, 3, 96, 1, '2026-02-18 04:33:32', '2026-02-18 04:33:32'),
+(38, 25, 155, 90, '2026-02-18 04:39:28', '2026-02-18 04:39:28'),
+(39, 25, 156, 90, '2026-02-18 04:39:58', '2026-02-18 04:39:58'),
+(40, 27, 155, 90, '2026-02-18 04:40:07', '2026-02-18 04:40:07'),
+(41, 27, 156, 90, '2026-02-18 04:40:13', '2026-02-18 04:40:13');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `k13_nilai_pengetahuan`
 --
 
 CREATE TABLE `k13_nilai_pengetahuan` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `k13_rencana_nilai_pengetahuan_id` bigint(20) UNSIGNED NOT NULL,
-  `anggota_kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `nilai` int(11) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `k13_rencana_nilai_pengetahuan_id` bigint UNSIGNED NOT NULL,
+  `anggota_kelas_id` bigint UNSIGNED NOT NULL,
+  `nilai` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1987,11 +2048,11 @@ INSERT INTO `k13_nilai_pengetahuan` (`id`, `k13_rencana_nilai_pengetahuan_id`, `
 --
 
 CREATE TABLE `k13_nilai_pts_pas` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `pembelajaran_id` bigint(20) UNSIGNED NOT NULL,
-  `anggota_kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `nilai_pts` int(11) NOT NULL,
-  `nilai_pas` int(11) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `pembelajaran_id` bigint UNSIGNED NOT NULL,
+  `anggota_kelas_id` bigint UNSIGNED NOT NULL,
+  `nilai_pts` int NOT NULL,
+  `nilai_pas` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -2114,7 +2175,9 @@ INSERT INTO `k13_nilai_pts_pas` (`id`, `pembelajaran_id`, `anggota_kelas_id`, `n
 (111, 305, 122, 87, 98, '2021-12-23 10:33:47', '2021-12-23 10:33:47'),
 (112, 305, 123, 96, 96, '2021-12-23 10:33:47', '2021-12-23 10:33:47'),
 (113, 305, 124, 95, 96, '2021-12-23 10:33:47', '2021-12-23 10:33:47'),
-(114, 305, 125, 92, 93, '2021-12-23 10:33:47', '2021-12-23 10:33:47');
+(114, 305, 125, 92, 93, '2021-12-23 10:33:47', '2021-12-23 10:33:47'),
+(115, 324, 156, 90, 90, '2026-02-18 02:51:59', '2026-02-18 02:51:59'),
+(116, 324, 155, 90, 90, '2026-02-18 02:51:59', '2026-02-18 02:51:59');
 
 -- --------------------------------------------------------
 
@@ -2123,10 +2186,10 @@ INSERT INTO `k13_nilai_pts_pas` (`id`, `pembelajaran_id`, `anggota_kelas_id`, `n
 --
 
 CREATE TABLE `k13_nilai_sosial` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `k13_rencana_nilai_sosial_id` bigint(20) UNSIGNED NOT NULL,
-  `anggota_kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `nilai` enum('1','2','3','4') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `k13_rencana_nilai_sosial_id` bigint UNSIGNED NOT NULL,
+  `anggota_kelas_id` bigint UNSIGNED NOT NULL,
+  `nilai` enum('1','2','3','4') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -2712,10 +2775,10 @@ INSERT INTO `k13_nilai_sosial` (`id`, `k13_rencana_nilai_sosial_id`, `anggota_ke
 --
 
 CREATE TABLE `k13_nilai_spiritual` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `k13_rencana_nilai_spiritual_id` bigint(20) UNSIGNED NOT NULL,
-  `anggota_kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `nilai` enum('1','2','3','4') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `k13_rencana_nilai_spiritual_id` bigint UNSIGNED NOT NULL,
+  `anggota_kelas_id` bigint UNSIGNED NOT NULL,
+  `nilai` enum('1','2','3','4') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -3654,7 +3717,35 @@ INSERT INTO `k13_nilai_spiritual` (`id`, `k13_rencana_nilai_spiritual_id`, `angg
 (1573, 55, 154, '3', '2021-12-23 10:29:48', '2021-12-23 10:29:48'),
 (1574, 56, 154, '3', '2021-12-23 10:29:48', '2021-12-23 10:29:48'),
 (1575, 57, 154, '3', '2021-12-23 10:29:48', '2021-12-23 10:29:48'),
-(1576, 58, 154, '3', '2021-12-23 10:29:48', '2021-12-23 10:29:48');
+(1576, 58, 154, '3', '2021-12-23 10:29:48', '2021-12-23 10:29:48'),
+(1577, 67, 70, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1578, 67, 71, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1579, 67, 72, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1580, 67, 73, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1581, 67, 74, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1582, 67, 75, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1583, 67, 76, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1584, 67, 77, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1585, 67, 78, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1586, 67, 79, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1587, 67, 80, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1588, 67, 81, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1589, 67, 82, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1590, 67, 83, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1591, 67, 84, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1592, 67, 85, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1593, 67, 86, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1594, 67, 88, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1595, 67, 87, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1596, 67, 89, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1597, 67, 90, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1598, 67, 91, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1599, 67, 92, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1600, 67, 93, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1601, 67, 94, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1602, 67, 158, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1603, 67, 95, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47'),
+(1604, 67, 96, '3', '2026-02-18 02:47:47', '2026-02-18 02:47:47');
 
 -- --------------------------------------------------------
 
@@ -3663,11 +3754,11 @@ INSERT INTO `k13_nilai_spiritual` (`id`, `k13_rencana_nilai_spiritual_id`, `angg
 --
 
 CREATE TABLE `k13_rencana_bobot_penilaian` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `pembelajaran_id` bigint(20) UNSIGNED NOT NULL,
-  `bobot_ph` int(11) NOT NULL,
-  `bobot_pts` int(11) NOT NULL,
-  `bobot_pas` int(11) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `pembelajaran_id` bigint UNSIGNED NOT NULL,
+  `bobot_ph` int NOT NULL,
+  `bobot_pts` int NOT NULL,
+  `bobot_pas` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -3690,7 +3781,52 @@ INSERT INTO `k13_rencana_bobot_penilaian` (`id`, `pembelajaran_id`, `bobot_ph`, 
 (11, 305, 2, 1, 1, '2021-12-23 10:30:48', '2021-12-23 10:30:48'),
 (12, 318, 2, 1, 1, '2021-12-23 10:30:55', '2021-12-23 10:30:55'),
 (13, 331, 2, 1, 1, '2021-12-23 10:31:02', '2021-12-23 10:31:02'),
-(14, 358, 2, 1, 1, '2021-12-23 10:31:09', '2021-12-23 10:31:09');
+(14, 358, 2, 1, 1, '2021-12-23 10:31:09', '2021-12-23 10:31:09'),
+(15, 324, 1, 1, 1, '2026-02-18 02:52:24', '2026-02-18 02:52:33');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `k13_rencana_kisi`
+--
+
+CREATE TABLE `k13_rencana_kisi` (
+  `id` bigint UNSIGNED NOT NULL,
+  `pembelajaran_id` bigint UNSIGNED NOT NULL,
+  `k13_kd_mapel_id` bigint UNSIGNED DEFAULT NULL,
+  `deskripsi_penilaian` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `urutan` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `k13_rencana_kisi`
+--
+
+INSERT INTO `k13_rencana_kisi` (`id`, `pembelajaran_id`, `k13_kd_mapel_id`, `deskripsi_penilaian`, `urutan`, `created_at`, `updated_at`) VALUES
+(1, 285, NULL, 'Meneliti Hewan', 1, '2026-02-18 03:19:24', '2026-02-18 03:19:24'),
+(3, 291, 31, 'memahami komoditas tanaman sayuran yang dapat dikembangkan sesuai kebutuhan wilayah setempat', 1, '2026-02-18 03:27:57', '2026-02-18 04:31:30'),
+(4, 291, 36, 'mempraktikkan budidaya satwa harapan (jangkrik, kroto, ulat sutra, cacing, bekicot, dan lain-lain)', 2, '2026-02-18 03:27:57', '2026-02-18 04:31:30'),
+(5, 291, 37, 'mempraktikkan budidaya (pembesaran) ikan hias', 3, '2026-02-18 03:27:57', '2026-02-18 04:31:30'),
+(7, 304, 31, 'memahami komoditas tanaman sayuran yang dapat dikembangkan sesuai kebutuhan wilayah setempat', 1, '2026-02-18 03:28:40', '2026-02-18 03:28:47'),
+(8, 304, 36, 'mempraktikkan budidaya satwa harapan (jangkrik, kroto, ulat sutra, cacing, bekicot, dan lain-lain)', 2, '2026-02-18 03:28:40', '2026-02-18 03:28:47'),
+(9, 304, 37, 'mempraktikkan budidaya (pembesaran) ikan hias', 3, '2026-02-18 03:28:40', '2026-02-18 03:28:47'),
+(11, 292, 2, 'Menganalisis Hubungan Antar Sudut', 1, '2026-02-18 03:29:01', '2026-02-18 03:29:19'),
+(12, 292, 34, 'mementaskan fragmen sesuai konsep, teknik, dan prosedur', 2, '2026-02-18 03:29:01', '2026-02-18 03:29:19'),
+(13, 292, 35, 'mementaskan pantomim sesuai konsep, teknik, dan prosedur', 3, '2026-02-18 03:29:01', '2026-02-18 03:29:19'),
+(14, 305, 3, 'Menjelaskan dan Menentukan urutan bilangan', 1, '2026-02-18 04:11:47', '2026-02-18 04:11:47'),
+(15, 305, 2, 'Menganalisis Hubungan Antar Sudut', 2, '2026-02-18 04:11:47', '2026-02-18 04:11:47'),
+(17, 305, 35, 'mementaskan pantomim sesuai konsep, teknik, dan prosedur', 3, '2026-02-18 04:11:47', '2026-02-18 04:16:56'),
+(18, 305, 34, 'mementaskan fragmen sesuai konsep, teknik, dan prosedur', 4, '2026-02-18 04:16:48', '2026-02-18 04:16:56'),
+(19, 358, 35, 'mementaskan pantomim sesuai konsep, teknik, dan prosedur', 1, '2026-02-18 04:19:17', '2026-02-18 04:19:17'),
+(20, 358, 12, 'Menerapkan ragam hias pada kriya kayu', 2, '2026-02-18 04:19:23', '2026-02-18 04:19:23'),
+(21, 331, 2, 'Menganalisis Hubungan Antar Sudut', 1, '2026-02-18 04:19:48', '2026-02-18 04:19:48'),
+(23, 317, 30, 'memahami komoditas tanaman sayuran yang dapat dikembangkan sesuai kebutuhan wilayah setempat', 1, '2026-02-18 04:37:23', '2026-02-18 04:37:23'),
+(25, 330, 30, 'memahami komoditas tanaman sayuran yang dapat dikembangkan sesuai kebutuhan wilayah setempat', 1, '2026-02-18 04:37:50', '2026-02-18 04:37:50'),
+(26, 357, 31, 'memahami komoditas tanaman sayuran yang dapat dikembangkan sesuai kebutuhan wilayah setempat', 1, '2026-02-18 04:37:59', '2026-02-18 04:37:59'),
+(27, 330, 36, 'mempraktikkan budidaya satwa harapan (jangkrik, kroto, ulat sutra, cacing, bekicot, dan lain-lain)', 2, '2026-02-18 04:39:46', '2026-02-18 04:39:46'),
+(28, 291, NULL, 'membuat kesenian', 4, '2026-02-19 14:16:41', '2026-02-19 14:16:41');
 
 -- --------------------------------------------------------
 
@@ -3699,11 +3835,11 @@ INSERT INTO `k13_rencana_bobot_penilaian` (`id`, `pembelajaran_id`, `bobot_ph`, 
 --
 
 CREATE TABLE `k13_rencana_nilai_keterampilan` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `pembelajaran_id` bigint(20) UNSIGNED NOT NULL,
-  `k13_kd_mapel_id` bigint(20) UNSIGNED NOT NULL,
-  `kode_penilaian` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `teknik_penilaian` enum('1','2','3','4','5') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `pembelajaran_id` bigint UNSIGNED NOT NULL,
+  `k13_kd_mapel_id` bigint UNSIGNED NOT NULL,
+  `kode_penilaian` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `teknik_penilaian` enum('1','2','3','4','5') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -3743,12 +3879,12 @@ INSERT INTO `k13_rencana_nilai_keterampilan` (`id`, `pembelajaran_id`, `k13_kd_m
 --
 
 CREATE TABLE `k13_rencana_nilai_pengetahuan` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `pembelajaran_id` bigint(20) UNSIGNED NOT NULL,
-  `k13_kd_mapel_id` bigint(20) UNSIGNED NOT NULL,
-  `kode_penilaian` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `teknik_penilaian` enum('1','2','3') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `bobot_teknik_penilaian` int(11) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `pembelajaran_id` bigint UNSIGNED NOT NULL,
+  `k13_kd_mapel_id` bigint UNSIGNED NOT NULL,
+  `kode_penilaian` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `teknik_penilaian` enum('1','2','3') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `bobot_teknik_penilaian` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -3795,9 +3931,9 @@ INSERT INTO `k13_rencana_nilai_pengetahuan` (`id`, `pembelajaran_id`, `k13_kd_ma
 --
 
 CREATE TABLE `k13_rencana_nilai_sosial` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `pembelajaran_id` bigint(20) UNSIGNED NOT NULL,
-  `k13_butir_sikap_id` bigint(20) UNSIGNED NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `pembelajaran_id` bigint UNSIGNED NOT NULL,
+  `k13_butir_sikap_id` bigint UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -3881,9 +4017,9 @@ INSERT INTO `k13_rencana_nilai_sosial` (`id`, `pembelajaran_id`, `k13_butir_sika
 --
 
 CREATE TABLE `k13_rencana_nilai_spiritual` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `pembelajaran_id` bigint(20) UNSIGNED NOT NULL,
-  `k13_butir_sikap_id` bigint(20) UNSIGNED NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `pembelajaran_id` bigint UNSIGNED NOT NULL,
+  `k13_butir_sikap_id` bigint UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -3950,7 +4086,8 @@ INSERT INTO `k13_rencana_nilai_spiritual` (`id`, `pembelajaran_id`, `k13_butir_s
 (63, 358, 1, '2021-12-23 10:20:51', '2021-12-23 10:20:51'),
 (64, 358, 4, '2021-12-23 10:20:51', '2021-12-23 10:20:51'),
 (65, 358, 12, '2021-12-23 10:20:51', '2021-12-23 10:20:51'),
-(66, 358, 13, '2021-12-23 10:20:51', '2021-12-23 10:20:51');
+(66, 358, 13, '2021-12-23 10:20:51', '2021-12-23 10:20:51'),
+(67, 285, 1, '2026-02-18 02:47:24', '2026-02-18 02:47:24');
 
 -- --------------------------------------------------------
 
@@ -3959,9 +4096,9 @@ INSERT INTO `k13_rencana_nilai_spiritual` (`id`, `pembelajaran_id`, `k13_butir_s
 --
 
 CREATE TABLE `k13_tgl_raport` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `tapel_id` bigint(20) UNSIGNED NOT NULL,
-  `tempat_penerbitan` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `tapel_id` bigint UNSIGNED NOT NULL,
+  `tempat_penerbitan` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal_pembagian` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -3981,11 +4118,11 @@ INSERT INTO `k13_tgl_raport` (`id`, `tapel_id`, `tempat_penerbitan`, `tanggal_pe
 --
 
 CREATE TABLE `kehadiran_siswa` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `anggota_kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `sakit` int(11) NOT NULL,
-  `izin` int(11) NOT NULL,
-  `tanpa_keterangan` int(11) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `anggota_kelas_id` bigint UNSIGNED NOT NULL,
+  `sakit` int NOT NULL,
+  `izin` int NOT NULL,
+  `tanpa_keterangan` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -4032,11 +4169,11 @@ INSERT INTO `kehadiran_siswa` (`id`, `anggota_kelas_id`, `sakit`, `izin`, `tanpa
 --
 
 CREATE TABLE `kelas` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `tapel_id` bigint(20) UNSIGNED NOT NULL,
-  `guru_id` bigint(20) UNSIGNED NOT NULL,
-  `tingkatan_kelas` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nama_kelas` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `tapel_id` bigint UNSIGNED NOT NULL,
+  `guru_id` bigint UNSIGNED NOT NULL,
+  `tingkatan_kelas` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama_kelas` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -4059,10 +4196,10 @@ INSERT INTO `kelas` (`id`, `tapel_id`, `guru_id`, `tingkatan_kelas`, `nama_kelas
 --
 
 CREATE TABLE `kenaikan_kelas` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `anggota_kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `keputusan` enum('1','2','3','4') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `kelas_tujuan` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `anggota_kelas_id` bigint UNSIGNED NOT NULL,
+  `keputusan` enum('1','2','3','4') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kelas_tujuan` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -4074,12 +4211,12 @@ CREATE TABLE `kenaikan_kelas` (
 --
 
 CREATE TABLE `ktsp_bobot_penilaian` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `pembelajaran_id` bigint(20) UNSIGNED NOT NULL,
-  `bobot_tugas` int(11) NOT NULL,
-  `bobot_uh` int(11) NOT NULL,
-  `bobot_uts` int(11) NOT NULL,
-  `bobot_uas` int(11) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `pembelajaran_id` bigint UNSIGNED NOT NULL,
+  `bobot_tugas` int NOT NULL,
+  `bobot_uh` int NOT NULL,
+  `bobot_uts` int NOT NULL,
+  `bobot_uas` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -4107,10 +4244,10 @@ INSERT INTO `ktsp_bobot_penilaian` (`id`, `pembelajaran_id`, `bobot_tugas`, `bob
 --
 
 CREATE TABLE `ktsp_deskripsi_nilai_siswa` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `pembelajaran_id` bigint(20) UNSIGNED NOT NULL,
-  `ktsp_nilai_akhir_raport_id` bigint(20) UNSIGNED NOT NULL,
-  `deskripsi` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `pembelajaran_id` bigint UNSIGNED NOT NULL,
+  `ktsp_nilai_akhir_raport_id` bigint UNSIGNED NOT NULL,
+  `deskripsi` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -4356,10 +4493,10 @@ INSERT INTO `ktsp_deskripsi_nilai_siswa` (`id`, `pembelajaran_id`, `ktsp_nilai_a
 --
 
 CREATE TABLE `ktsp_kkm_mapel` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `mapel_id` bigint(20) UNSIGNED NOT NULL,
-  `kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `kkm` int(11) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `mapel_id` bigint UNSIGNED NOT NULL,
+  `kelas_id` bigint UNSIGNED NOT NULL,
+  `kkm` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -4442,10 +4579,10 @@ INSERT INTO `ktsp_kkm_mapel` (`id`, `mapel_id`, `kelas_id`, `kkm`, `created_at`,
 --
 
 CREATE TABLE `ktsp_mapping_mapel` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `mapel_id` bigint(20) UNSIGNED NOT NULL,
-  `kelompok` enum('1','2','3') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nomor_urut` int(11) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `mapel_id` bigint UNSIGNED NOT NULL,
+  `kelompok` enum('1','2','3') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nomor_urut` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -4476,12 +4613,12 @@ INSERT INTO `ktsp_mapping_mapel` (`id`, `mapel_id`, `kelompok`, `nomor_urut`, `c
 --
 
 CREATE TABLE `ktsp_nilai_akhir_raport` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `pembelajaran_id` bigint(20) UNSIGNED NOT NULL,
-  `anggota_kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `kkm` int(11) NOT NULL,
-  `nilai_akhir` int(11) NOT NULL,
-  `predikat` enum('A','B','C','D') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `pembelajaran_id` bigint UNSIGNED NOT NULL,
+  `anggota_kelas_id` bigint UNSIGNED NOT NULL,
+  `kkm` int NOT NULL,
+  `nilai_akhir` int NOT NULL,
+  `predikat` enum('A','B','C','D') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -4727,10 +4864,10 @@ INSERT INTO `ktsp_nilai_akhir_raport` (`id`, `pembelajaran_id`, `anggota_kelas_i
 --
 
 CREATE TABLE `ktsp_nilai_tugas` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `pembelajaran_id` bigint(20) UNSIGNED NOT NULL,
-  `anggota_kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `nilai` int(11) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `pembelajaran_id` bigint UNSIGNED NOT NULL,
+  `anggota_kelas_id` bigint UNSIGNED NOT NULL,
+  `nilai` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -5005,10 +5142,10 @@ INSERT INTO `ktsp_nilai_tugas` (`id`, `pembelajaran_id`, `anggota_kelas_id`, `ni
 --
 
 CREATE TABLE `ktsp_nilai_uh` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `pembelajaran_id` bigint(20) UNSIGNED NOT NULL,
-  `anggota_kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `nilai` int(11) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `pembelajaran_id` bigint UNSIGNED NOT NULL,
+  `anggota_kelas_id` bigint UNSIGNED NOT NULL,
+  `nilai` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -5254,11 +5391,11 @@ INSERT INTO `ktsp_nilai_uh` (`id`, `pembelajaran_id`, `anggota_kelas_id`, `nilai
 --
 
 CREATE TABLE `ktsp_nilai_uts_uas` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `pembelajaran_id` bigint(20) UNSIGNED NOT NULL,
-  `anggota_kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `nilai_uts` int(11) NOT NULL,
-  `nilai_uas` int(11) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `pembelajaran_id` bigint UNSIGNED NOT NULL,
+  `anggota_kelas_id` bigint UNSIGNED NOT NULL,
+  `nilai_uts` int NOT NULL,
+  `nilai_uas` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -5504,9 +5641,9 @@ INSERT INTO `ktsp_nilai_uts_uas` (`id`, `pembelajaran_id`, `anggota_kelas_id`, `
 --
 
 CREATE TABLE `ktsp_tgl_raport` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `tapel_id` bigint(20) UNSIGNED NOT NULL,
-  `tempat_penerbitan` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `tapel_id` bigint UNSIGNED NOT NULL,
+  `tempat_penerbitan` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal_pembagian` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -5526,10 +5663,10 @@ INSERT INTO `ktsp_tgl_raport` (`id`, `tapel_id`, `tempat_penerbitan`, `tanggal_p
 --
 
 CREATE TABLE `mapel` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `tapel_id` bigint(20) UNSIGNED NOT NULL,
-  `nama_mapel` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ringkasan_mapel` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `tapel_id` bigint UNSIGNED NOT NULL,
+  `nama_mapel` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ringkasan_mapel` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -5539,7 +5676,7 @@ CREATE TABLE `mapel` (
 --
 
 INSERT INTO `mapel` (`id`, `tapel_id`, `nama_mapel`, `ringkasan_mapel`, `created_at`, `updated_at`) VALUES
-(32, 1, 'Aswaja', 'Aswaja', '2021-11-13 14:15:56', '2021-11-13 14:15:56'),
+(32, 1, 'Aswaja', 'asdasd', '2021-11-13 14:15:56', '2026-02-14 03:22:43'),
 (33, 1, 'Bahasa Indnesia', 'BIN', '2021-11-13 14:15:56', '2021-11-13 14:15:56'),
 (34, 1, 'Bahasa Inggris', 'BING', '2021-11-13 14:15:56', '2021-11-13 14:15:56'),
 (35, 1, 'Bahasa Jawa', 'B. Jawa', '2021-11-13 14:15:56', '2021-11-13 14:15:56'),
@@ -5560,9 +5697,9 @@ INSERT INTO `mapel` (`id`, `tapel_id`, `nama_mapel`, `ringkasan_mapel`, `created
 --
 
 CREATE TABLE `migrations` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int(11) NOT NULL
+  `id` int UNSIGNED NOT NULL,
+  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -5618,7 +5755,12 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (69, '2022_01_03_225023_create_ktsp_nilai_akhir_raports_table', 41),
 (70, '2022_01_03_232637_create_ktsp_deskripsi_nilai_siswas_table', 42),
 (71, '2022_01_07_101419_create_pengumumen_table', 43),
-(72, '2022_01_08_220617_create_kenaikan_kelas_table', 44);
+(72, '2022_01_08_220617_create_kenaikan_kelas_table', 44),
+(73, '2025_11_07_000001_create_terapi_perkembangan_table', 45),
+(74, '2026_02_18_000000_create_personal_program_table', 46),
+(75, '2026_02_18_000001_add_nilai_akhir_to_k13_nilai_akhir_raport', 46),
+(76, '2026_02_18_000002_create_k13_rencana_kisi_table', 47),
+(77, '2026_02_18_000003_create_k13_nilai_kisi_table', 47);
 
 -- --------------------------------------------------------
 
@@ -5627,11 +5769,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 --
 
 CREATE TABLE `nilai_ekstrakulikuler` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `ekstrakulikuler_id` bigint(20) UNSIGNED NOT NULL,
-  `anggota_ekstrakulikuler_id` bigint(20) UNSIGNED NOT NULL,
-  `nilai` enum('4','3','2','1') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `deskripsi` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `ekstrakulikuler_id` bigint UNSIGNED NOT NULL,
+  `anggota_ekstrakulikuler_id` bigint UNSIGNED NOT NULL,
+  `nilai` enum('4','3','2','1') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `deskripsi` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -5763,10 +5905,10 @@ INSERT INTO `nilai_ekstrakulikuler` (`id`, `ekstrakulikuler_id`, `anggota_ekstra
 --
 
 CREATE TABLE `pembelajaran` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `mapel_id` bigint(20) UNSIGNED NOT NULL,
-  `guru_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `kelas_id` bigint UNSIGNED NOT NULL,
+  `mapel_id` bigint UNSIGNED NOT NULL,
+  `guru_id` bigint UNSIGNED DEFAULT NULL,
   `status` tinyint(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -5850,10 +5992,10 @@ INSERT INTO `pembelajaran` (`id`, `kelas_id`, `mapel_id`, `guru_id`, `status`, `
 --
 
 CREATE TABLE `pengumuman` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `judul` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `isi` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `judul` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `isi` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -5868,14 +6010,42 @@ INSERT INTO `pengumuman` (`id`, `user_id`, `judul`, `isi`, `created_at`, `update
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `personal_program`
+--
+
+CREATE TABLE `personal_program` (
+  `id` bigint UNSIGNED NOT NULL,
+  `siswa_id` bigint UNSIGNED NOT NULL,
+  `semester` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `motorik_kasar` text COLLATE utf8mb4_unicode_ci,
+  `sosialisasi` text COLLATE utf8mb4_unicode_ci,
+  `rentang_akademis` text COLLATE utf8mb4_unicode_ci,
+  `evaluasi_motorik_kasar` text COLLATE utf8mb4_unicode_ci,
+  `evaluasi_sosialisasi` text COLLATE utf8mb4_unicode_ci,
+  `evaluasi_rentang_akademis` text COLLATE utf8mb4_unicode_ci,
+  `guru_id` bigint UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `personal_program`
+--
+
+INSERT INTO `personal_program` (`id`, `siswa_id`, `semester`, `motorik_kasar`, `sosialisasi`, `rentang_akademis`, `evaluasi_motorik_kasar`, `evaluasi_sosialisasi`, `evaluasi_rentang_akademis`, `guru_id`, `created_at`, `updated_at`) VALUES
+(1, 85, 'Genap', 'sdfff', 'sdfffff', 'sfdd', 'sdfff', 'dfss', 'dfsss', 63, '2026-02-18 07:51:26', '2026-02-18 07:51:26');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `prestasi_siswa`
 --
 
 CREATE TABLE `prestasi_siswa` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `anggota_kelas_id` bigint(20) UNSIGNED NOT NULL,
-  `jenis_prestasi` enum('1','2') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `deskripsi` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `anggota_kelas_id` bigint UNSIGNED NOT NULL,
+  `jenis_prestasi` enum('1','2') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `deskripsi` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -5897,8 +6067,8 @@ INSERT INTO `prestasi_siswa` (`id`, `anggota_kelas_id`, `jenis_prestasi`, `deskr
 --
 
 CREATE TABLE `riwayat_login` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
   `status_login` tinyint(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -5909,13 +6079,13 @@ CREATE TABLE `riwayat_login` (
 --
 
 INSERT INTO `riwayat_login` (`id`, `user_id`, `status_login`, `created_at`, `updated_at`) VALUES
-(1, 1, 0, '2021-10-29 10:26:46', '2022-01-08 16:12:16'),
+(1, 1, 0, '2021-10-29 10:26:46', '2026-02-19 14:14:38'),
 (2, 2, 0, '2021-10-31 08:30:43', '2022-01-07 04:14:01'),
 (3, 87, 0, '2021-11-28 16:18:11', '2021-11-29 07:00:54'),
 (4, 86, 0, '2021-11-29 07:01:08', '2022-01-07 11:46:24'),
-(5, 97, 0, '2021-11-29 07:48:12', '2022-01-08 16:15:24'),
+(5, 97, 1, '2021-11-29 07:48:12', '2026-02-19 14:16:02'),
 (6, 92, 0, '2021-12-22 06:03:40', '2022-01-08 15:30:39'),
-(7, 88, 0, '2021-12-23 17:07:02', '2021-12-23 17:08:23'),
+(7, 88, 0, '2021-12-23 17:07:02', '2026-02-18 07:44:55'),
 (8, 184, 0, '2022-01-01 21:11:48', '2022-01-07 13:17:01'),
 (9, 374, 0, '2022-01-02 08:33:32', '2022-01-02 08:51:47'),
 (10, 212, 0, '2022-01-02 08:52:04', '2022-01-02 10:38:23'),
@@ -5933,18 +6103,18 @@ INSERT INTO `riwayat_login` (`id`, `user_id`, `status_login`, `created_at`, `upd
 --
 
 CREATE TABLE `sekolah` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `nama_sekolah` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `npsn` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nss` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `kode_pos` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nomor_telpon` varchar(13) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `alamat` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `website` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(35) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `logo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `kepala_sekolah` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nip_kepala_sekolah` varchar(18) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `nama_sekolah` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `npsn` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nss` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `kode_pos` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nomor_telpon` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `alamat` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `website` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kepala_sekolah` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nip_kepala_sekolah` varchar(18) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -5963,29 +6133,29 @@ INSERT INTO `sekolah` (`id`, `nama_sekolah`, `npsn`, `nss`, `kode_pos`, `nomor_t
 --
 
 CREATE TABLE `siswa` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `kelas_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `jenis_pendaftaran` enum('1','2') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nis` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nisn` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `nama_lengkap` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tempat_lahir` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `kelas_id` bigint UNSIGNED DEFAULT NULL,
+  `jenis_pendaftaran` enum('1','2') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nis` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nisn` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nama_lengkap` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tempat_lahir` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal_lahir` date NOT NULL,
-  `jenis_kelamin` enum('L','P') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `agama` enum('1','2','3','4','5','6','7') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status_dalam_keluarga` enum('1','2','3') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `anak_ke` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `alamat` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nomor_hp` varchar(13) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `nama_ayah` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nama_ibu` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `pekerjaan_ayah` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `pekerjaan_ibu` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nama_wali` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pekerjaan_wali` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` enum('1','2','3') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jenis_kelamin` enum('L','P') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `agama` enum('1','2','3','4','5','6','7') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status_dalam_keluarga` enum('1','2','3') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `anak_ke` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `alamat` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nomor_hp` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nama_ayah` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama_ibu` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pekerjaan_ayah` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pekerjaan_ibu` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama_wali` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pekerjaan_wali` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('1','2','3') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -5995,136 +6165,136 @@ CREATE TABLE `siswa` (
 --
 
 INSERT INTO `siswa` (`id`, `user_id`, `kelas_id`, `jenis_pendaftaran`, `nis`, `nisn`, `nama_lengkap`, `tempat_lahir`, `tanggal_lahir`, `jenis_kelamin`, `agama`, `status_dalam_keluarga`, `anak_ke`, `alamat`, `nomor_hp`, `nama_ayah`, `nama_ibu`, `pekerjaan_ayah`, `pekerjaan_ibu`, `nama_wali`, `pekerjaan_wali`, `avatar`, `status`, `created_at`, `updated_at`) VALUES
-(85, 183, 9, '1', '310', '0084692742', 'A. RIFQI KHILMI', 'Tuban', '2008-08-08', 'L', '1', '1', '1', 'Dasin', NULL, 'ROHMAD', 'SHOFI\'UL NASAROH', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:03', '2021-11-15 12:51:20'),
-(86, 184, 9, '1', '311', '0099050329', 'ACHMAD FAHRI ALI KAFABY', 'Tuban', '2009-02-23', 'L', '1', '1', '1', 'Mander', NULL, 'Durjamid', 'Khoirom', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:04', '2021-11-15 12:51:20'),
-(87, 185, 9, '1', '312', '0096538165', 'AHMAD AKHABBANI MUKHITH', 'Tuban', '2009-02-19', 'L', '1', '1', '4', 'Dasin', NULL, 'BASARUDDIN', 'NGATEMI', 'Pedagang Kecil', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:04', '2021-11-15 12:51:20'),
-(88, 186, 9, '1', '313', '0088667972', 'AHMADA ROMADLONANSYAH WAFA', 'Tuban', '2008-09-14', 'L', '1', '1', '1', 'Merkawang', NULL, 'BASAR', 'RIWAYATI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:04', '2021-11-15 12:51:20'),
-(89, 187, 9, '1', '314', '0097638568', 'ALVAN ULIL ABSHOR', 'Tuban', '2009-01-17', 'L', '1', '1', '2', 'Dasin', NULL, 'KHAMDANI', 'SRI SULISTIYOWATI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:04', '2021-11-15 12:51:20'),
-(90, 188, 9, '1', '318', '0093180560', 'ATIK SOIMATUL AULIYA', 'Tuban', '2009-08-24', 'P', '1', '1', '1', 'Dasin', NULL, 'WAWAN EKO DIYANTO', 'SITI WAHYUNI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:04', '2021-11-15 12:51:20'),
-(91, 189, 9, '1', '319', '0091052558', 'DAFFA KURNIAWAN', 'Jakarta', '2009-04-20', 'L', '1', '1', '2', 'Bogorejo', NULL, 'Rahmat Setiaji', 'Desi Kurniawati', 'Wiraswasta', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:04', '2021-11-15 12:51:20'),
-(92, 190, 9, '1', '322', '0081366086', 'ERDIVA BERLIANA PUTRI', 'TUBAN', '2008-08-24', 'P', '1', '1', '1', 'SAWIR', NULL, 'MULYADI', 'ISMIYATI', 'Lainnya', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:04', '2021-11-15 12:51:20'),
-(93, 191, 9, '1', '323', '0081791744', 'EUIS LUTHFIANA ISTIQOMAH', 'Tuban', '2008-12-27', 'P', '1', '1', '1', 'Bancar', NULL, 'SAEFULLOH', 'ARSALAH HIBDIYAH', 'Karyawan Swasta', 'Karyawan Swasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:04', '2021-11-15 12:51:20'),
+(85, 183, NULL, '1', '310', '0084692742', 'A. RIFQI KHILMI', 'Tuban', '2008-08-08', 'L', '1', '1', '1', 'Dasin', NULL, 'ROHMAD', 'SHOFI\'UL NASAROH', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:03', '2026-02-14 02:41:07'),
+(86, 184, NULL, '1', '311', '0099050329', 'ACHMAD FAHRI ALI KAFABY', 'Tuban', '2009-02-23', 'L', '1', '1', '1', 'Mander', NULL, 'Durjamid', 'Khoirom', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:04', '2026-02-14 02:41:07'),
+(87, 185, NULL, '1', '312', '0096538165', 'AHMAD AKHABBANI MUKHITH', 'Tuban', '2009-02-19', 'L', '1', '1', '4', 'Dasin', NULL, 'BASARUDDIN', 'NGATEMI', 'Pedagang Kecil', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:04', '2026-02-14 02:41:07'),
+(88, 186, NULL, '1', '313', '0088667972', 'AHMADA ROMADLONANSYAH WAFA', 'Tuban', '2008-09-14', 'L', '1', '1', '1', 'Merkawang', NULL, 'BASAR', 'RIWAYATI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:04', '2026-02-14 02:41:07'),
+(89, 187, NULL, '1', '314', '0097638568', 'ALVAN ULIL ABSHOR', 'Tuban', '2009-01-17', 'L', '1', '1', '2', 'Dasin', NULL, 'KHAMDANI', 'SRI SULISTIYOWATI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:04', '2026-02-14 02:41:07'),
+(90, 188, NULL, '1', '318', '0093180560', 'ATIK SOIMATUL AULIYA', 'Tuban', '2009-08-24', 'P', '1', '1', '1', 'Dasin', NULL, 'WAWAN EKO DIYANTO', 'SITI WAHYUNI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:04', '2026-02-14 02:41:07'),
+(91, 189, NULL, '1', '319', '0091052558', 'DAFFA KURNIAWAN', 'Jakarta', '2009-04-20', 'L', '1', '1', '2', 'Bogorejo', NULL, 'Rahmat Setiaji', 'Desi Kurniawati', 'Wiraswasta', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:04', '2026-02-14 02:41:07'),
+(92, 190, NULL, '1', '322', '0081366086', 'ERDIVA BERLIANA PUTRI', 'TUBAN', '2008-08-24', 'P', '1', '1', '1', 'SAWIR', NULL, 'MULYADI', 'ISMIYATI', 'Lainnya', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:04', '2026-02-14 02:41:07'),
+(93, 191, NULL, '1', '323', '0081791744', 'EUIS LUTHFIANA ISTIQOMAH', 'Tuban', '2008-12-27', 'P', '1', '1', '1', 'Bancar', NULL, 'SAEFULLOH', 'ARSALAH HIBDIYAH', 'Karyawan Swasta', 'Karyawan Swasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:04', '2026-02-14 02:41:07'),
 (94, 192, NULL, '1', '001', '3087484193', 'FACHREZA IFNU REFANDI', 'TUBAN', '2008-11-19', 'L', '1', '1', '1', 'SAWIR', NULL, 'SLAMET WINARDI', 'SOLIKATUN', 'Lainnya', 'Lainnya', NULL, NULL, 'default.png', '2', '2021-11-06 14:36:05', '2021-11-07 07:39:42'),
-(95, 193, 9, '1', '324', '0089275532', 'FAIZATUN MAQFUROH', 'Tuban', '2008-01-02', 'P', '1', '1', '3', 'Mander', NULL, 'Kurdi', 'Aminah', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:05', '2021-11-15 12:52:35'),
-(96, 194, 9, '1', '327', '0095407122', 'FINA NAILATUL IZAH', 'Tuban', '2009-01-24', 'P', '1', '1', '1', 'Dasin', NULL, 'TAMZIDUN', 'SITI ROATUL IZAH', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:05', '2021-11-15 12:52:35'),
-(97, 195, 9, '1', '331', '0096456062', 'JHOHANDA HILWA KIWAMIL BAHRI', 'Tuban', '2009-02-13', 'L', '1', '1', '2', 'Margosuko', NULL, 'Saiful Bakri', 'Hartatik', 'PNS/TNI/Polri', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:05', '2021-11-15 12:52:35'),
-(98, 196, 9, '1', '332', '0083429609', 'KHULAFAUR ROSYIDIN', 'Tuban', '2008-09-01', 'L', '1', '1', '2', 'Merkawang', NULL, 'KUSAERI', 'SRI NANIK', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:05', '2021-11-15 12:52:35'),
-(99, 197, 9, '1', '334', '0092885435', 'LUKMAN ARDIANSYAH ROMADHONI', 'Tuban', '2009-09-11', 'L', '1', '1', '1', 'Pulogede', NULL, 'KUSAERI', 'LASMINI', 'Wiraswasta', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:05', '2021-11-15 12:52:35'),
-(100, 198, 9, '1', '335', '0088639939', 'LUKMAN DIYANTO', 'Tuban', '2008-03-27', 'L', '1', '1', '4', 'Mander', NULL, 'Darkum', 'Sunarsi', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:05', '2021-11-15 12:52:35'),
-(101, 199, 9, '1', '337', '0082288885', 'M.SHIHABUDDIN AL MUSAHHALI', 'TUBAN', '2008-05-12', 'L', '1', '1', '2', 'DASIN', NULL, 'KISBU WAHUDAH', 'SITI ROHMAH', 'Petani', 'Pedagang Kecil', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:06', '2021-11-15 12:52:35'),
-(102, 200, 9, '1', '339', '0091117221', 'MIZTA ILMA AMELIYA', 'TUBAN', '2009-01-01', 'P', '1', '1', '1', 'SOBONTORO', NULL, 'WARSONO', 'ENIK PUJIATI', 'Wiraswasta', 'Tidak dapat diterapkan', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:06', '2021-11-15 12:52:35'),
-(103, 201, 9, '1', '340', '0097556883', 'MOCH. ALVANSYAH', 'Tuban', '2009-10-06', 'L', '1', '1', '1', 'SOTANG', NULL, 'SAHLAN', 'MARLIK', 'Petani', 'Pedagang Kecil', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:06', '2021-11-15 12:54:11'),
-(104, 202, 9, '1', '342', '0089312800', 'MONICA ARTHA ZHARANI', 'Tuban', '2008-10-20', 'P', '1', '1', '1', 'Dasin', NULL, 'JANUAR PRIBADI', 'DARWATI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:06', '2021-11-15 12:52:35'),
-(105, 203, 9, '1', '347', '3099025171', 'NABILA NAURA HARTANTO', 'Tuban', '2009-04-08', 'P', '1', '1', '1', 'Kebonsari', NULL, 'IWAN HARTANTO', 'LUSMIANA', 'Lainnya', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:06', '2021-11-15 12:55:20'),
-(106, 204, 9, '1', '348', '0085759334', 'NADHIFA NINA OKTAFIA', 'Tuban', '2008-10-09', 'P', '1', '1', '3', 'Sokogunung', NULL, 'Suyono', 'Siti Sopiyatun', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:06', '2021-11-15 12:55:20'),
-(107, 205, 9, '1', '349', '3086594378', 'NADINA KHAESWAROH OLIVIA', 'Tuban', '2008-06-20', 'P', '1', '1', '1', 'Pabeyan', NULL, 'MUHAJIRIN', 'ATIK ROSIDAH', 'Nelayan', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:06', '2021-11-15 12:55:20'),
-(108, 206, 9, '1', '350', '0096821665', 'NANDA BAKTIAR PRATAMA', 'Tuban', '2009-10-08', 'L', '1', '1', '1', 'SOTANG', NULL, 'DAMUJI', 'YUYUN NURLAELA', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:06', '2021-11-15 12:55:20'),
-(109, 207, 9, '1', '354', '0099013780', 'NUR RIFKI ALI MUBAROK', 'Tuban', '2009-07-08', 'L', '1', '1', '1', 'Cokrowati', NULL, 'DASMO PRIYADI', 'SULASTRI', 'Lainnya', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:07', '2021-11-15 12:55:20'),
-(110, 208, 9, '1', '355', '0088892184', 'PAMA NAISILA OKTAVIANI', 'Tuban', '2008-10-12', 'P', '1', '1', '2', 'Merkawang', NULL, 'KUSAERI', 'SAMONAH', 'Lainnya', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:07', '2021-11-15 12:55:20'),
-(111, 209, 9, '1', '362', '0098363297', 'THORIQUL ILMI SHOFIANADZIR', 'Tuban', '2009-01-22', 'L', '1', '1', '1', 'Merkawang', NULL, 'JAYADI', 'SUSANAH', 'Karyawan Swasta', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:07', '2021-11-15 12:55:20'),
-(112, 210, 9, '1', '364', '3082355717', 'WASIYAT', 'Tuban', '2008-06-18', 'L', '1', '1', '1', 'Sawir', NULL, 'KUSAERI', 'TUNTUM', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:07', '2021-11-15 12:55:20'),
-(113, 211, 10, '1', '315', '0097720825', 'ALVIN ULIL ALBAB', 'Tuban', '2009-01-17', 'L', '1', '1', '3', 'Dasin', NULL, 'KHAMDANI', 'SRI SULISTIYOWATI', 'Petani', 'Pedagang Kecil', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:07', '2021-11-15 12:56:58'),
-(114, 212, 10, '1', '316', '0081102132', 'AMALIA', 'Tuban', '2008-12-13', 'P', '1', '1', '2', 'Dasin', NULL, 'WARSADI', 'MASRINGAH', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:07', '2021-11-15 12:56:58'),
-(115, 213, 10, '1', '317', '0089198651', 'ANDIKA LESTARI', 'TUBAN', '2008-08-05', 'L', '1', '1', '1', 'PLAJAN', NULL, 'KUSTARI', 'TRI SULASIH', 'Petani', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:07', '2021-11-15 12:56:58'),
-(116, 214, 10, '1', '320', '0091799882', 'DENDI NAUFAL AL AZIZ', 'Tuban', '2009-01-08', 'L', '1', '1', '1', 'Cokrowati', NULL, 'BAKIR', 'SRIYANA', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:07', '2021-11-15 12:56:58'),
-(117, 215, 10, '1', '321', '0092667144', 'DHEA FANY ANDRIANI', 'Tuban', '2009-07-08', 'P', '1', '1', '1', 'Margosuko', NULL, 'Suparno', 'Siti Askolati', 'Petani', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:07', '2021-11-15 12:56:58'),
-(118, 216, 10, '1', '325', '0082658373', 'FARIH FAKRIYAN AKMAL', 'Tuban', '2008-04-28', 'L', '1', '1', '2', 'Dasin', NULL, 'MASNUR', 'DZINNURIN NAFI AH', 'Wiraswasta', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:08', '2021-11-15 12:56:58'),
-(119, 217, 10, '1', '326', '0086756265', 'FERI AHMAD GHUFRON', 'Tuban', '2008-12-11', 'L', '1', '1', '2', 'Merkawang', NULL, 'KUSAERI', 'SITI RATMIATUN', 'Karyawan Swasta', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:08', '2021-11-15 12:56:58'),
-(120, 218, 10, '1', '328', '0096172235', 'GUSTIN EVELLYNA CAHYANI', 'Tuban', '2009-02-21', 'P', '1', '1', '2', 'Margosuko', NULL, 'Ramuji', 'Melip', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:08', '2021-11-15 12:56:58'),
-(121, 219, 10, '1', '329', '0093048022', 'HELLEN ISSA ARIYANIT', 'Tuban', '2009-01-12', 'P', '1', '1', '2', 'Socorejo', NULL, 'Samid', 'Siti Aisyah', 'Nelayan', 'Pedagang Kecil', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:08', '2021-11-15 12:56:58'),
-(122, 220, 10, '1', '330', '0092056639', 'IRFA ALIFIA', 'Tuban', '2009-06-20', 'P', '1', '1', '1', 'Dasin', NULL, 'ABDUL ZAENI', 'SITI LATIFAH', 'Wiraswasta', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:08', '2021-11-15 12:56:58'),
-(123, 221, 10, '1', '333', '0084953920', 'LINA WATI SAYLINNIKMA', 'TUBAN', '2008-06-01', 'P', '1', '1', '1', 'SOBONTORO', NULL, 'AGUS SUTRISNO', 'SOLIKAH', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:08', '2021-11-15 12:58:27'),
-(124, 222, 10, '1', '336', '0091113408', 'LUKMAN HIDAYATULLAH', 'Tuban', '2009-02-20', 'L', '1', '1', '1', 'SOTANG', NULL, 'ACHMAD BADRUS', 'DARMINI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:08', '2021-11-15 12:58:27'),
-(125, 223, 10, '1', '338', '0096484188', 'MIFTAQUR ROUF BILIMMAH', 'Tuban', '2009-07-03', 'L', '1', '1', '1', 'Socorejo', NULL, 'Ta\'lim', 'Khusnul Khotimah', 'Nelayan', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:08', '2021-11-15 12:58:27'),
-(126, 224, 10, '1', '341', NULL, 'MOHAMMAD NI\'AM SAIFULLAH', 'Tuban', '2008-03-02', 'L', '1', '1', '1', 'Sotang', NULL, 'MARJUKI', 'SAYATI', 'Lainnya', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:09', '2021-11-15 12:58:27'),
-(127, 225, 10, '1', '343', '0093369391', 'MUHAMMAD JIBRAN IRFANI', 'Tuban', '2009-05-04', 'L', '1', '1', '1', 'Socorejo', NULL, 'Muhyidin', 'Wiwin Windarti', 'Nelayan', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:09', '2021-11-15 12:58:27'),
-(128, 226, 10, '1', '344', '0085396771', 'MUHAMMAD NOR ROHMAN', 'TUBAN', '2008-08-07', 'L', '1', '1', '1', 'GADON', NULL, 'ECHWAN ISNANTO', 'ELA TEJAWATI', 'Nelayan', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:09', '2021-11-15 12:58:27'),
-(129, 227, 10, '1', '345', '0093826376', 'MUHAMMAD RIZKY ADITYA', 'Tuban', '2009-03-15', 'L', '1', '1', '1', 'Dasin', NULL, 'SLAMET', 'RUKAMAH', 'Petani', 'Pedagang Kecil', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:09', '2021-11-15 12:58:27'),
-(130, 228, 10, '1', '346', '0087592278', 'NABIGHOTUL HUSNIYAH', 'REMBANG', '2008-06-17', 'P', '1', '1', '2', 'SAWIR', NULL, 'MASRUHAN AZ\'AFI', 'INDASAH', 'Wiraswasta', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:09', '2021-11-15 12:58:27'),
-(131, 229, 10, '1', '351', '0087968270', 'NELI ALFI MUTMAINAH', 'Bojonegoro', '2008-06-16', 'P', '1', '1', '3', 'Asemrowo', NULL, 'Saliman', 'Sukarsiningsih', 'Petani', 'Buruh', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:09', '2021-11-15 12:58:27'),
-(132, 230, 10, '1', '352', '0088965490', 'NOVITA SELVI INDRIYANI', 'Tuban', '2008-11-01', 'P', '1', '1', '1', 'Margosuko', NULL, 'M. Nurul Anwar', 'Awini', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:09', '2021-11-15 12:58:27'),
-(133, 231, 10, '1', '353', '0086884735', 'NUR AISSYAH', 'Tuban', '2008-11-17', 'P', '1', '1', '2', 'Cokrowati', NULL, 'SUKARMIN', 'RUSMIATI', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:09', '2021-11-15 13:00:16'),
-(134, 232, 10, '1', '356', '0097166427', 'RAFIUDDIN ATHAR', 'Tuban', '2009-03-24', 'L', '1', '1', '1', 'Bancar', NULL, 'ATHAR NASIR', 'MUHAYATI', 'Karyawan Swasta', 'Karyawan Swasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:10', '2021-11-15 13:00:16'),
-(135, 233, 10, '1', '357', '0095551885', 'RIZKY ARIF AFANDI', 'Tuban', '2009-02-28', 'L', '1', '1', '1', 'Mander', NULL, 'Kastono', 'Rusmiati', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:10', '2021-11-15 13:00:16'),
-(136, 234, 10, '1', '358', '0083469761', 'ROHMATUL BAIM', 'Tuban', '2008-08-31', 'L', '1', '1', '1', 'Dasin', NULL, 'SALIKUN', 'UMASAROH', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:10', '2021-11-15 13:00:16'),
-(137, 235, 10, '1', '359', '0088098912', 'ROSYIDATUL MAHMUDAH', 'TUBAN', '2008-05-31', 'P', '1', '1', '1', 'DASIN', NULL, 'MOH. KHOIRUL ROZIKIN', 'ROCHMAH', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:10', '2021-11-15 13:00:16'),
-(138, 236, 10, '1', '360', '0086427009', 'SHELFI OCTAVIA ROESDAH', 'LEBAK', '2008-10-26', 'P', '1', '1', '1', 'BELIKANGET', NULL, 'SUPRIYADI', 'HERLINA DARNIATI', 'Wiraswasta', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:10', '2021-11-15 13:00:16'),
-(139, 237, 10, '1', '361', '3088352695', 'SUSI ARINI', 'Tuban', '2008-10-17', 'P', '1', '1', '1', 'Margosuko', NULL, 'SUWONO', 'CARMI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:10', '2021-11-15 13:00:16'),
-(140, 238, 10, '1', '363', '0091003580', 'TIYO ALDYYANSAH', 'Tuban', '2009-04-18', 'L', '1', '1', '1', 'Dasin', NULL, 'TARMIJAN', 'KASINI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:10', '2021-11-15 13:00:16'),
-(141, 239, 10, '1', '365', '3086082338', 'YOGI OKTA MAHENDRA', 'Tuban', '2008-10-10', 'L', '1', '1', '1', 'Margosuko', NULL, 'KUSAERI', 'NINA INDRAWATI', 'Petani', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:10', '2021-11-15 13:00:16'),
-(228, 329, 12, '2', '235', '0067570625', 'ACHMAD FAIQ MUZAKKIY', 'Tuban', '2006-12-28', 'L', '1', '1', '1', 'Pabeyan', NULL, 'KUSNAN', 'LUDFIYAH', 'Nelayan', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:40', '2021-12-21 08:07:50'),
-(229, 330, NULL, '2', '237', '0063339111', 'AHMAD SYAIFUDDIN', 'Tuban', '2006-10-17', 'L', '1', '1', '1', 'Tambakboyo', NULL, 'WAKIRAN', 'LASTATIK', 'Wiraswasta', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:40', '2021-11-06 17:07:01'),
-(230, 331, 12, '2', '238', '0068730623', 'AMELIA RAHAYU', 'Tuban', '2006-12-15', 'P', '1', '1', '1', 'Margosuko', NULL, 'Marwan', 'Tiyah', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:40', '2021-12-21 08:07:38'),
-(231, 332, NULL, '2', '240', '0068609189', 'ARBI FADILLA MUHSAN', 'Tuban', '2006-11-08', 'L', '1', '1', '1', 'Gadon', NULL, 'MUHSIN', 'ANISAH', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:40', '2021-11-06 17:07:01'),
-(232, 333, NULL, '2', '241', '0069584088', 'ARDHYANTO PRATAMA', 'Nganjuk', '2006-11-12', 'L', '1', '1', '1', 'Gemulung', NULL, 'Sudarmanto', 'Laswati', 'Pedagang Kecil', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:40', '2021-11-06 17:07:01'),
-(233, 334, NULL, '2', '242', '0056479277', 'AZKA SYARAFINA', 'TUBAN', '2005-11-14', 'P', '1', '1', '1', 'Dasin', NULL, 'NUR CHOLID', 'HIMMATUL HUSNA', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:40', '2021-11-06 17:07:01'),
-(234, 335, NULL, '2', '244', '0074107388', 'DAFFA MUSTAQIM', 'Tuban', '2007-01-12', 'L', '1', '1', '1', 'Mander', NULL, 'Danuri', 'Jumirah', 'Wiraswasta', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:40', '2021-11-06 17:07:01'),
-(235, 336, NULL, '2', '245', '0065889238', 'DIFANA SALSABILA', 'Tuban', '2006-10-02', 'P', '1', '1', '1', 'Sawir', NULL, 'YANTO SUSILO', 'KUSMIATUN', 'Wiraswasta', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:40', '2021-11-06 17:07:01'),
-(236, 337, NULL, '2', '246', '3061685791', 'EKARIA ZULSILIS DELIMA NUR HIDAYAH', 'Tuban', '2006-12-05', 'P', '1', '1', '1', 'Pabeyan', NULL, 'WARSAM', 'LILIS RETNO WATI', 'Buruh', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:41', '2021-11-06 17:07:01'),
-(237, 338, NULL, '2', '252', '0061606985', 'JULIANSAH KHOIRUL UMAM', 'Tuban', '2006-07-19', 'L', '1', '1', '2', 'Mander', NULL, 'Rokim', 'Umayah', 'Wiraswasta', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:41', '2021-11-06 17:07:01'),
-(238, 339, NULL, '2', '254', '0079264175', 'M. WAHYU REZA AULA FIRDAUS', 'Tuban', '2007-03-03', 'L', '1', '1', '1', 'socorejo', NULL, 'Lasmijan Al Parizi', 'Supriyatin', 'Nelayan', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:41', '2021-11-06 17:07:01'),
-(239, 340, NULL, '2', '282', '0067007455', 'MUHAMMAD ZAINUL AZZAN', 'TUBAN', '2006-10-17', 'L', '1', '1', '1', 'SAWIR', NULL, 'MASYHUDI', 'LAS INDAYATI', 'Pedagang Kecil', 'Pedagang Kecil', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:41', '2021-11-06 17:07:01'),
-(240, 341, NULL, '2', '259', '0066979722', 'NAELATUL MUNA', 'Tuban', '2006-07-03', 'P', '1', '1', '2', 'Sobontoro', NULL, 'Mukhlis', 'Siti Munawaroh', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:41', '2021-11-06 17:07:01'),
-(241, 342, NULL, '2', '260', '0069534558', 'NANDA DIFA PRATAMA', 'Tuban', '2006-12-22', 'L', '1', '1', '1', 'Merkawang', NULL, 'BUDI UTOMO', 'TUNAFLIFAH', 'Wiraswasta', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:41', '2021-11-06 17:07:01'),
-(242, 343, NULL, '2', '263', '0077498152', 'NUR FAIZATUN NISA', 'TUBAN', '2006-12-11', 'P', '1', '1', '2', 'KRADENAN', NULL, 'WARDJI', 'MARDIYAH', 'Buruh', 'Pedagang Kecil', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:41', '2021-11-06 17:07:01'),
-(243, 344, NULL, '2', '265', '0064982542', 'NURUL ISTIANAH', 'TUBAN', '2006-08-07', 'P', '1', '1', '1', 'DASIN', NULL, 'JUMALI', 'SITI ZUBAIDAH', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:41', '2021-11-06 17:07:01'),
-(244, 345, NULL, '2', '266', '0071845030', 'PUTRI AMEYLA SARI', 'TUBAN', '2007-05-25', 'P', '1', '1', '1', 'KRADENAN', NULL, 'KARTONO', 'HARTATIK', 'Buruh', 'Buruh', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:42', '2021-11-06 17:07:01'),
-(245, 346, NULL, '2', '269', '0068636596', 'RIFKA MAULIDA', 'Tuban', '2006-03-29', 'P', '1', '1', '2', 'Kenanti', NULL, 'Kacung Suwasono', 'Wantutik', 'Wiraswasta', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:42', '2021-11-06 17:07:01'),
-(246, 347, NULL, '2', '272', '0061572256', 'ROFII QOTUZ ZULFA', 'Tuban', '2006-06-15', 'P', '1', '1', '1', 'Sobontoro', NULL, 'LASTO', 'DUROH ZULIANA', 'Buruh', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:42', '2021-11-06 17:07:01'),
-(247, 348, NULL, '2', '275', '0068007916', 'SINTIA RAHMA SAYILA NOVA', 'Tuban', '2006-11-30', 'P', '1', '1', '2', 'Klutuk', NULL, 'Ciptoroso', 'Istiqomah', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:42', '2021-11-06 17:07:01'),
-(248, 349, 11, '2', '276', '0073557892', 'SINTYA NABILA RAHMAWATI', 'Tuban', '2007-03-05', 'P', '1', '1', '1', 'Margosuko', NULL, 'Sempuk Adi Saputro', 'Endang Susilowati', 'Wiraswasta', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:42', '2021-11-15 13:09:48'),
-(249, 350, NULL, '2', '278', '0072206518', 'SRI MU AWANAH', 'TUBAN', '2007-04-25', 'P', '1', '1', '2', 'Dasin', NULL, 'SRIYADI', 'MU AKHIROTUN', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:42', '2021-11-06 17:07:01'),
-(250, 351, NULL, '2', '280', '0136360617', 'ZAHRA KHOIRUN NISA', 'TUBAN', '2006-12-03', 'P', '1', '1', '1', 'Pulogede', NULL, 'Kholidin', 'MUNIK ASIYAH', 'Karyawan Swasta', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:42', '2021-11-06 17:07:01'),
-(251, 352, NULL, '2', '236', '0068586426', 'AHMAD RAFIUD DAROJAT', 'Tuban', '2006-10-11', 'L', '1', '1', '1', 'Dasin', NULL, 'SAEKON', 'LISIANA', 'Wiraswasta', 'Lainnya', NULL, NULL, 'profile_ahmad rafiud darojat.jpg', '1', '2021-11-06 14:47:42', '2022-01-06 12:05:27'),
-(252, 353, NULL, '2', '239', '0068500375', 'ANISA NURUL ALFIYAH', 'Tuban', '2006-09-17', 'P', '1', '1', '1', 'Mander', NULL, 'Suripno', 'Hetty Mursiah', 'Wiraswasta', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:43', '2021-11-06 17:07:01'),
-(253, 354, NULL, '2', '283', '0054128141', 'BENI SANTOSO', 'REMBANG', '2005-02-09', 'L', '1', '1', '3', 'Ds. TAMBAKBOYO', NULL, 'SUNGEDI', 'SITI MUKIAYATUN', 'Wiraswasta', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:43', '2021-11-06 17:07:01'),
-(254, 355, NULL, '2', '243', '0071167688', 'CITRA ARIHA ZAHRA MANANTA', 'Tuban', '2007-01-12', 'P', '1', '1', '1', 'Klutuk', NULL, 'Abdul Manan', 'Roihanah', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:43', '2021-11-06 17:07:01'),
-(255, 356, NULL, '2', '247', '0063192439', 'HENKY GUSFAHDLI', 'Tuban', '2006-08-03', 'L', '1', '1', '1', 'Gemulung', NULL, 'Didik Herwanto', 'Suci Indriyani', 'Wiraswasta', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:43', '2021-11-06 17:07:01'),
-(256, 357, NULL, '2', '248', '0067702592', 'IFSYA ULFAIDAH', 'Tuban', '2006-09-14', 'P', '1', '1', '1', 'Dasin', NULL, 'TARMUDI', 'KAYATUN', 'Karyawan Swasta', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:43', '2021-11-06 17:07:01'),
-(257, 358, NULL, '2', '250', '0066311876', 'IZZATUL NURATHIYAH', 'Tuban', '2006-12-01', 'P', '1', '1', '1', 'Pabeyan', NULL, 'MUNAWAR', 'MASATIN', 'Lainnya', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:43', '2021-11-06 17:07:01'),
-(258, 359, NULL, '2', '251', '0066072331', 'JIHAN ALFIA NURAINI', 'Tuban', '2006-01-06', 'P', '1', '1', '1', 'Sotang', NULL, 'Sumiran', 'Ririn Iswati', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:43', '2021-11-06 17:07:01'),
-(259, 360, NULL, '2', '255', '0074953372', 'MARTA VIVI IFRIKA', 'TUBAN', '2007-03-25', 'P', '1', '1', '1', 'DASIN', NULL, 'TAMU', 'SRI WAHYUNI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:43', '2021-11-06 17:07:01'),
-(260, 361, NULL, '2', '257', '0071047031', 'MOHAMAD RIFQI MUKAFFA', 'Tuban', '2007-07-25', 'L', '1', '1', '2', 'Merkawang', NULL, 'KASTUR', 'JUMINI', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:44', '2021-11-06 17:07:01'),
-(261, 362, 11, '2', '258', '0063420344', 'MUHAMMAD YUSUF MAULANA', 'Tuban', '2006-06-25', 'L', '1', '1', '1', 'Pabeyan', NULL, 'ZAENURI', 'ROFIUL INAYAH', 'Buruh', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:44', '2021-11-15 13:03:57'),
-(262, 363, NULL, '2', '261', '0075420522', 'NILNA MINAHAZZAHROH', 'TUBAN', '2007-05-01', 'P', '1', '1', '1', 'Dasin', NULL, 'LASMUJI', 'MASLUROH', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:44', '2021-11-06 17:07:01'),
-(263, 364, NULL, '2', '262', '0065308881', 'NUNGKI WIDIYANTO', 'Tuban', '2006-07-26', 'L', '1', '1', '2', 'Klutuk', NULL, 'KUSTONO', 'YULIYANTO', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:44', '2021-11-06 17:07:01'),
-(264, 365, NULL, '2', '267', '0064466847', 'RAUDHATUL JANNAH', 'KOTABARU', '2006-12-24', 'P', '1', '1', '2', 'Sukadamai', NULL, 'M. BISRUL', 'SAIMI', 'Wiraswasta', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:44', '2021-11-06 17:07:01'),
-(265, 366, NULL, '2', '268', '0067766770', 'RIANA SHOVI AFIDA', 'Tuban', '2006-12-21', 'P', '1', '1', '1', 'Dasin', NULL, 'TARNO', 'NURWATIN', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:44', '2021-11-06 17:07:01'),
-(266, 367, NULL, '2', '270', '0073484580', 'RISMA AMELIA', 'Tuban', '2007-04-06', 'P', '1', '1', '1', 'Klutuk', NULL, 'AINUR ROFIK', 'TIN MARPUAH', 'Lainnya', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:44', '2021-11-06 17:07:01'),
-(267, 368, NULL, '2', '271', '0061446644', 'RIZKI RIANSYAH', 'Tuban', '2006-12-09', 'L', '1', '1', '1', 'Gemulung', NULL, 'Samuri', 'Kunanik', 'PNS/TNI/Polri', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:44', '2021-11-06 17:07:01'),
-(268, 369, NULL, '2', '273', '0076817435', 'SALSA NUR AFIFAH', 'TUBAN', '2007-04-19', 'P', '1', '1', '1', 'DASIN', NULL, 'SOLIKIN', 'SITI N.', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:45', '2021-11-06 17:07:01'),
-(269, 370, NULL, '2', '274', '0075583524', 'SILVIYYA WARDATIN', 'TUBAN', '2007-06-14', 'P', '1', '1', '1', 'Dasin', NULL, 'TASMIN', 'UMILAILA', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:45', '2021-11-06 17:07:01'),
-(270, 371, NULL, '2', '277', '0068608517', 'SITI LAILY ZAKIYAH', 'TUBAN', '2006-12-14', 'P', '1', '1', '1', 'DASIN', NULL, 'TASIRUN', 'DJASMI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:45', '2021-11-06 17:07:01'),
-(271, 372, NULL, '2', '279', '0064981547', 'YUNI MIFTAKHUL KHOLIFAH', 'TUBAN', '2006-08-01', 'P', '1', '1', '2', 'Mander', NULL, 'DARSAM', 'SULIMAH', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:45', '2021-11-06 17:07:01'),
-(272, 373, 11, '2', '366', '0085824374', 'AHMAD IQBAL BAIHAQI', 'Tuban', '2008-07-21', 'L', '1', '1', '1', 'Pabeyan', NULL, 'KASDAR', 'CHUROTUL WIDAT', 'Nelayan', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:45', '2021-11-15 13:02:37'),
-(273, 374, 11, '2', '284', '0073611986', 'AHSANUL MUJAHIDIN', 'TUBAN', '2007-09-05', 'L', '1', '1', '1', 'Margosuko', NULL, 'MUZAID', 'KUSMIATI', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:45', '2021-11-15 13:02:37'),
-(274, 375, 11, '2', '285', '0078468402', 'ANDI MATHLABIL HIKAM', 'Tuban', '2007-11-14', 'L', '1', '1', '1', 'Merkawang', NULL, 'MUHAMMAD NURI ECHSAN', 'SITI MASKHANAH ', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:45', '2021-11-15 13:02:37'),
-(275, 376, 11, '2', '286', '0089137461', 'DITA HENDRA PRATAMA', 'TUBAN', '2008-08-27', 'L', '1', '1', '1', 'GEMULUNG', NULL, 'DARYONO', 'KASTI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:45', '2021-11-15 13:02:37'),
-(276, 377, 11, '2', '287', '0071193863', 'DIVA SANDRA ABELLIA PUTRI', 'Tuban', '2007-12-14', 'P', '1', '1', '1', 'Cokrowati', NULL, 'Hadi', 'Dina Astutik', 'Wiraswasta', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:45', '2021-11-15 13:02:37'),
-(277, 378, 11, '2', '288', '0082864344', 'ESTY AININ NADZIROH', 'Tuban', '2008-01-30', 'P', '1', '1', '1', 'Margosuko', NULL, 'Edi Priyono', 'Siti Asiyah', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:46', '2021-11-15 13:02:37'),
-(278, 379, 11, '2', '289', '0086384426', 'FERLITA SARIFATUN NIKMAH', 'Tuban', '2008-02-06', 'P', '1', '1', '1', 'Margosuko', NULL, 'Ramuji', 'Melip', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:46', '2021-11-15 13:02:37'),
-(279, 380, 11, '2', '290', '0074256091', 'FIDIA ANAIDA', 'TUBAN', '2007-04-01', 'P', '1', '1', '2', 'Belikanget', NULL, 'DASUM', 'YASMI', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:46', '2021-11-15 13:02:37'),
-(280, 381, 11, '2', '291', '0076554168', 'FILHA DINI ASMARANI', 'Tuban', '2007-11-06', 'P', '1', '1', '1', 'DASIN', NULL, 'MOCH AINUR ROFIQ', 'MUNTIKAH', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:46', '2021-11-15 13:02:37'),
-(281, 382, 11, '2', '292', '0083818653', 'HELVI IZZA APRILIA', 'TUBAN', '2008-04-12', 'P', '1', '1', '1', 'SOBONTORO', NULL, 'PRIYADI', 'RUKINAH', 'Wiraswasta', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:46', '2021-11-15 13:02:37'),
-(282, 383, 11, '2', '293', '0078546004', 'KHOIRUT TAMAM', 'TUBAN', '2007-07-28', 'L', '1', '1', '1', 'Dasin', NULL, 'TAMSU', 'KHOTIMAH', 'Sudah Meninggal', 'Pedagang Kecil', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:46', '2021-11-15 13:03:57'),
-(283, 384, 11, '2', '367', '0076593298', 'M. ASHROF MAZID FURQONI', 'Tuban', '2007-12-28', 'L', '1', '1', '1', 'Pabeyan', NULL, 'NUR CAHAYA', 'KHALIMATUS SA\'ADAH', 'Nelayan', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:46', '2021-11-15 13:03:57'),
-(284, 385, 11, '2', '368', '0074063223', 'M. CHABIBUL LATIF', 'Tuban', '2007-11-15', 'L', '1', '1', '1', 'Pabeyan', NULL, 'NASIKIN', 'SULIYATI', 'Nelayan', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:47', '2021-11-15 13:03:57'),
-(285, 386, NULL, '2', '294', '0084644199', 'MAULANA EKCEL ERSULA UTAMA', 'Tuban', '2008-03-18', 'L', '1', '1', '1', 'Socorejo', NULL, 'Sulaiman', 'Ernawati', 'Karyawan Swasta', 'Karyawan Swasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:47', '2021-11-06 17:07:01'),
-(286, 387, 11, '2', '295', '0076622716', 'MOHAMAD RIFQI ABDILLAH', 'Tuban', '2007-02-26', 'L', '1', '1', '1', 'Margosuko', NULL, 'Sodikun', 'Enik Purwati', 'Nelayan', 'Pedagang Kecil', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:47', '2021-11-15 13:03:57'),
-(287, 388, 11, '2', '296', '0087359337', 'MUHAMMAD AQIM YAMIN SIMAL', 'TUBAN', '2008-04-14', 'L', '1', '1', '2', 'GADON', NULL, 'MUHAMMAD HADI SUTIKNO', 'MUKHOLIFAH', 'Nelayan', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:47', '2021-11-15 13:03:57'),
-(288, 389, 11, '2', '297', '0078178085', 'MUHAMMAD HILAL RIDHO', 'Tuban', '2007-04-19', 'L', '1', '1', '1', 'Pulogede', NULL, 'Ikhwan', 'Nurhidayatin', 'PNS/TNI/Polri', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:47', '2021-11-15 13:03:57'),
-(289, 390, 11, '2', '298', '0061626567', 'MUHAMMAD NUR ROHMAN', 'TUBAN', '2007-01-25', 'L', '1', '1', '1', 'Merkawang', NULL, 'KUSAERI', 'SRI NANIK', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:47', '2021-11-15 13:03:57'),
-(290, 391, 11, '2', '299', '0088334793', 'MUHAMMAD RIFQI SAPUTRA', 'TUBAN', '2008-03-08', 'L', '1', '1', '2', 'GLONDONGGEDE', NULL, 'RIDWAN', 'RUKHAYAH', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:47', '2021-11-15 13:03:57'),
-(291, 392, 11, '2', '300', '0072043755', 'MUHAMMAD ZAKKA ADLY FAIRUZH', 'Tuban', '2007-10-30', 'L', '1', '1', '1', 'Karangasem', NULL, 'Ahmad Nuri', 'Sumarni', 'Wiraswasta', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:47', '2021-11-15 13:03:57'),
-(292, 393, NULL, '2', '301', '3076280716', 'NABILA HIMAYA MILLATI', 'TUBAN', '2007-11-27', 'P', '1', '1', '2', 'KENANTI', NULL, 'MUNAJI', 'SUYATI', 'Nelayan', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:48', '2021-11-06 17:07:01'),
-(293, 394, 11, '2', '302', '0083022551', 'NADYA SAFWAH NAJLATUN NAQIYYAH', 'Tuban', '2008-06-06', 'P', '1', '1', '1', 'Margosuko', NULL, 'Zainul', 'Siti Rofi ah', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:48', '2021-11-15 13:09:48'),
-(294, 395, 11, '2', '303', '0071297839', 'NURIL LATIFAH', 'TUBAN', '2007-05-21', 'P', '1', '1', '1', 'SOBONTORO', NULL, 'PRIYADI', 'SITI WAKURANAH', 'Nelayan', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:48', '2021-11-15 13:09:48'),
-(295, 396, 11, '2', '304', '0085561201', 'ROGHIBUR ROHMAN', 'TUBAN', '2008-03-29', 'L', '1', '1', '1', 'Dasin', NULL, 'KASNARI', 'SOFI\'AH', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:48', '2021-11-15 13:09:48'),
-(296, 397, 11, '2', '305', '0083461721', 'SELVIRA ANINDYA LABIBAH', 'TUBAN', '2008-07-13', 'P', '1', '1', '2', 'Pulogede', NULL, 'IMAM', 'CARMI', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:48', '2021-11-15 13:09:48'),
-(297, 398, 11, '2', '306', '0084751537', 'SILVIA CHOIRUN NIHAYAH', 'TUBAN', '2008-02-11', 'P', '1', '1', '2', 'SOBONTORO', NULL, 'SUWARDI', 'ALIF FATU\'AH', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:48', '2021-11-15 13:09:48'),
-(298, 399, 11, '2', '307', '0087363754', 'SITI KHOIRUN NISA', 'Tuban', '2008-01-22', 'P', '1', '1', '1', 'Dasin', NULL, 'AHMAD RAEHAN', 'RASMUTI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:48', '2021-11-15 13:09:48'),
-(299, 400, 11, '2', '369', '0081600941', 'SYAIFUDDIN ZUHRI', 'Tuban', '2008-05-23', 'L', '1', '1', '1', 'Pabeyan', NULL, 'MASNURI', 'SITI MAKRIFAH', 'Nelayan', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:48', '2021-11-15 13:09:48'),
-(300, 401, 11, '2', '308', '0086330248', 'SYITA AZZAHRA', 'Tuban', '2008-01-30', 'P', '1', '1', '1', 'Sobontoro', NULL, 'Moh. Arif Efendy', 'Clara Wanalita', 'Karyawan Swasta', 'PNS/TNI/Polri', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:48', '2021-11-15 13:09:48'),
+(95, 193, NULL, '1', '324', '0089275532', 'FAIZATUN MAQFUROH', 'Tuban', '2008-01-02', 'P', '1', '1', '3', 'Mander', NULL, 'Kurdi', 'Aminah', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:05', '2026-02-14 02:41:07'),
+(96, 194, NULL, '1', '327', '0095407122', 'FINA NAILATUL IZAH', 'Tuban', '2009-01-24', 'P', '1', '1', '1', 'Dasin', NULL, 'TAMZIDUN', 'SITI ROATUL IZAH', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:05', '2026-02-14 02:41:07'),
+(97, 195, NULL, '1', '331', '0096456062', 'JHOHANDA HILWA KIWAMIL BAHRI', 'Tuban', '2009-02-13', 'L', '1', '1', '2', 'Margosuko', NULL, 'Saiful Bakri', 'Hartatik', 'PNS/TNI/Polri', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:05', '2026-02-14 02:41:07'),
+(98, 196, NULL, '1', '332', '0083429609', 'KHULAFAUR ROSYIDIN', 'Tuban', '2008-09-01', 'L', '1', '1', '2', 'Merkawang', NULL, 'KUSAERI', 'SRI NANIK', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:05', '2026-02-14 02:41:07'),
+(99, 197, NULL, '1', '334', '0092885435', 'LUKMAN ARDIANSYAH ROMADHONI', 'Tuban', '2009-09-11', 'L', '1', '1', '1', 'Pulogede', NULL, 'KUSAERI', 'LASMINI', 'Wiraswasta', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:05', '2026-02-14 02:41:07'),
+(100, 198, NULL, '1', '335', '0088639939', 'LUKMAN DIYANTO', 'Tuban', '2008-03-27', 'L', '1', '1', '4', 'Mander', NULL, 'Darkum', 'Sunarsi', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:05', '2026-02-14 02:41:07'),
+(101, 199, NULL, '1', '337', '0082288885', 'M.SHIHABUDDIN AL MUSAHHALI', 'TUBAN', '2008-05-12', 'L', '1', '1', '2', 'DASIN', NULL, 'KISBU WAHUDAH', 'SITI ROHMAH', 'Petani', 'Pedagang Kecil', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:06', '2026-02-14 02:41:07'),
+(102, 200, NULL, '1', '339', '0091117221', 'MIZTA ILMA AMELIYA', 'TUBAN', '2009-01-01', 'P', '1', '1', '1', 'SOBONTORO', NULL, 'WARSONO', 'ENIK PUJIATI', 'Wiraswasta', 'Tidak dapat diterapkan', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:06', '2026-02-14 02:41:07'),
+(103, 201, NULL, '1', '340', '0097556883', 'MOCH. ALVANSYAH', 'Tuban', '2009-10-06', 'L', '1', '1', '1', 'SOTANG', NULL, 'SAHLAN', 'MARLIK', 'Petani', 'Pedagang Kecil', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:06', '2026-02-14 02:41:07'),
+(104, 202, NULL, '1', '342', '0089312800', 'MONICA ARTHA ZHARANI', 'Tuban', '2008-10-20', 'P', '1', '1', '1', 'Dasin', NULL, 'JANUAR PRIBADI', 'DARWATI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:06', '2026-02-14 02:41:07'),
+(105, 203, NULL, '1', '347', '3099025171', 'NABILA NAURA HARTANTO', 'Tuban', '2009-04-08', 'P', '1', '1', '1', 'Kebonsari', NULL, 'IWAN HARTANTO', 'LUSMIANA', 'Lainnya', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:06', '2026-02-14 02:41:07'),
+(106, 204, NULL, '1', '348', '0085759334', 'NADHIFA NINA OKTAFIA', 'Tuban', '2008-10-09', 'P', '1', '1', '3', 'Sokogunung', NULL, 'Suyono', 'Siti Sopiyatun', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:06', '2026-02-14 02:41:07'),
+(107, 205, NULL, '1', '349', '3086594378', 'NADINA KHAESWAROH OLIVIA', 'Tuban', '2008-06-20', 'P', '1', '1', '1', 'Pabeyan', NULL, 'MUHAJIRIN', 'ATIK ROSIDAH', 'Nelayan', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:06', '2026-02-14 02:41:07'),
+(108, 206, NULL, '1', '350', '0096821665', 'NANDA BAKTIAR PRATAMA', 'Tuban', '2009-10-08', 'L', '1', '1', '1', 'SOTANG', NULL, 'DAMUJI', 'YUYUN NURLAELA', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:06', '2026-02-14 02:41:07'),
+(109, 207, NULL, '1', '354', '0099013780', 'NUR RIFKI ALI MUBAROK', 'Tuban', '2009-07-08', 'L', '1', '1', '1', 'Cokrowati', NULL, 'DASMO PRIYADI', 'SULASTRI', 'Lainnya', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:07', '2026-02-14 02:41:07'),
+(110, 208, NULL, '1', '355', '0088892184', 'PAMA NAISILA OKTAVIANI', 'Tuban', '2008-10-12', 'P', '1', '1', '2', 'Merkawang', NULL, 'KUSAERI', 'SAMONAH', 'Lainnya', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:07', '2026-02-14 02:41:07'),
+(111, 209, NULL, '1', '362', '0098363297', 'THORIQUL ILMI SHOFIANADZIR', 'Tuban', '2009-01-22', 'L', '1', '1', '1', 'Merkawang', NULL, 'JAYADI', 'SUSANAH', 'Karyawan Swasta', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:07', '2026-02-14 02:41:07'),
+(112, 210, NULL, '1', '364', '3082355717', 'WASIYAT', 'Tuban', '2008-06-18', 'L', '1', '1', '1', 'Sawir', NULL, 'KUSAERI', 'TUNTUM', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:07', '2026-02-14 02:41:07'),
+(113, 211, NULL, '1', '315', '0097720825', 'ALVIN ULIL ALBAB', 'Tuban', '2009-01-17', 'L', '1', '1', '3', 'Dasin', NULL, 'KHAMDANI', 'SRI SULISTIYOWATI', 'Petani', 'Pedagang Kecil', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:07', '2026-02-14 02:41:07'),
+(114, 212, NULL, '1', '316', '0081102132', 'AMALIA', 'Tuban', '2008-12-13', 'P', '1', '1', '2', 'Dasin', NULL, 'WARSADI', 'MASRINGAH', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:07', '2026-02-14 02:41:07'),
+(115, 213, NULL, '1', '317', '0089198651', 'ANDIKA LESTARI', 'TUBAN', '2008-08-05', 'L', '1', '1', '1', 'PLAJAN', NULL, 'KUSTARI', 'TRI SULASIH', 'Petani', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:07', '2026-02-14 02:41:07'),
+(116, 214, NULL, '1', '320', '0091799882', 'DENDI NAUFAL AL AZIZ', 'Tuban', '2009-01-08', 'L', '1', '1', '1', 'Cokrowati', NULL, 'BAKIR', 'SRIYANA', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:07', '2026-02-14 02:41:07'),
+(117, 215, NULL, '1', '321', '0092667144', 'DHEA FANY ANDRIANI', 'Tuban', '2009-07-08', 'P', '1', '1', '1', 'Margosuko', NULL, 'Suparno', 'Siti Askolati', 'Petani', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:07', '2026-02-14 02:41:07'),
+(118, 216, NULL, '1', '325', '0082658373', 'FARIH FAKRIYAN AKMAL', 'Tuban', '2008-04-28', 'L', '1', '1', '2', 'Dasin', NULL, 'MASNUR', 'DZINNURIN NAFI AH', 'Wiraswasta', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:08', '2026-02-14 02:41:07'),
+(119, 217, NULL, '1', '326', '0086756265', 'FERI AHMAD GHUFRON', 'Tuban', '2008-12-11', 'L', '1', '1', '2', 'Merkawang', NULL, 'KUSAERI', 'SITI RATMIATUN', 'Karyawan Swasta', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:08', '2026-02-14 02:41:07'),
+(120, 218, NULL, '1', '328', '0096172235', 'GUSTIN EVELLYNA CAHYANI', 'Tuban', '2009-02-21', 'P', '1', '1', '2', 'Margosuko', NULL, 'Ramuji', 'Melip', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:08', '2026-02-14 02:41:07'),
+(121, 219, NULL, '1', '329', '0093048022', 'HELLEN ISSA ARIYANIT', 'Tuban', '2009-01-12', 'P', '1', '1', '2', 'Socorejo', NULL, 'Samid', 'Siti Aisyah', 'Nelayan', 'Pedagang Kecil', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:08', '2026-02-14 02:41:07'),
+(122, 220, NULL, '1', '330', '0092056639', 'IRFA ALIFIA', 'Tuban', '2009-06-20', 'P', '1', '1', '1', 'Dasin', NULL, 'ABDUL ZAENI', 'SITI LATIFAH', 'Wiraswasta', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:08', '2026-02-14 02:41:07'),
+(123, 221, NULL, '1', '333', '0084953920', 'LINA WATI SAYLINNIKMA', 'TUBAN', '2008-06-01', 'P', '1', '1', '1', 'SOBONTORO', NULL, 'AGUS SUTRISNO', 'SOLIKAH', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:08', '2026-02-14 02:41:07'),
+(124, 222, NULL, '1', '336', '0091113408', 'LUKMAN HIDAYATULLAH', 'Tuban', '2009-02-20', 'L', '1', '1', '1', 'SOTANG', NULL, 'ACHMAD BADRUS', 'DARMINI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:08', '2026-02-14 02:41:07'),
+(125, 223, NULL, '1', '338', '0096484188', 'MIFTAQUR ROUF BILIMMAH', 'Tuban', '2009-07-03', 'L', '1', '1', '1', 'Socorejo', NULL, 'Ta\'lim', 'Khusnul Khotimah', 'Nelayan', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:08', '2026-02-14 02:41:07'),
+(126, 224, NULL, '1', '341', NULL, 'MOHAMMAD NI\'AM SAIFULLAH', 'Tuban', '2008-03-02', 'L', '1', '1', '1', 'Sotang', NULL, 'MARJUKI', 'SAYATI', 'Lainnya', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:09', '2026-02-14 02:41:07'),
+(127, 225, NULL, '1', '343', '0093369391', 'MUHAMMAD JIBRAN IRFANI', 'Tuban', '2009-05-04', 'L', '1', '1', '1', 'Socorejo', NULL, 'Muhyidin', 'Wiwin Windarti', 'Nelayan', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:09', '2026-02-14 02:41:07'),
+(128, 226, NULL, '1', '344', '0085396771', 'MUHAMMAD NOR ROHMAN', 'TUBAN', '2008-08-07', 'L', '1', '1', '1', 'GADON', NULL, 'ECHWAN ISNANTO', 'ELA TEJAWATI', 'Nelayan', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:09', '2026-02-14 02:41:07'),
+(129, 227, NULL, '1', '345', '0093826376', 'MUHAMMAD RIZKY ADITYA', 'Tuban', '2009-03-15', 'L', '1', '1', '1', 'Dasin', NULL, 'SLAMET', 'RUKAMAH', 'Petani', 'Pedagang Kecil', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:09', '2026-02-14 02:41:07'),
+(130, 228, NULL, '1', '346', '0087592278', 'NABIGHOTUL HUSNIYAH', 'REMBANG', '2008-06-17', 'P', '1', '1', '2', 'SAWIR', NULL, 'MASRUHAN AZ\'AFI', 'INDASAH', 'Wiraswasta', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:09', '2026-02-14 02:41:07'),
+(131, 229, NULL, '1', '351', '0087968270', 'NELI ALFI MUTMAINAH', 'Bojonegoro', '2008-06-16', 'P', '1', '1', '3', 'Asemrowo', NULL, 'Saliman', 'Sukarsiningsih', 'Petani', 'Buruh', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:09', '2026-02-14 02:41:07'),
+(132, 230, NULL, '1', '352', '0088965490', 'NOVITA SELVI INDRIYANI', 'Tuban', '2008-11-01', 'P', '1', '1', '1', 'Margosuko', NULL, 'M. Nurul Anwar', 'Awini', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:09', '2026-02-14 02:41:07'),
+(133, 231, NULL, '1', '353', '0086884735', 'NUR AISSYAH', 'Tuban', '2008-11-17', 'P', '1', '1', '2', 'Cokrowati', NULL, 'SUKARMIN', 'RUSMIATI', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:09', '2026-02-14 02:41:07'),
+(134, 232, NULL, '1', '356', '0097166427', 'RAFIUDDIN ATHAR', 'Tuban', '2009-03-24', 'L', '1', '1', '1', 'Bancar', NULL, 'ATHAR NASIR', 'MUHAYATI', 'Karyawan Swasta', 'Karyawan Swasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:10', '2026-02-14 02:41:07'),
+(135, 233, NULL, '1', '357', '0095551885', 'RIZKY ARIF AFANDI', 'Tuban', '2009-02-28', 'L', '1', '1', '1', 'Mander', NULL, 'Kastono', 'Rusmiati', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:10', '2026-02-14 02:41:07'),
+(136, 234, NULL, '1', '358', '0083469761', 'ROHMATUL BAIM', 'Tuban', '2008-08-31', 'L', '1', '1', '1', 'Dasin', NULL, 'SALIKUN', 'UMASAROH', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:10', '2026-02-14 02:41:07'),
+(137, 235, NULL, '1', '359', '0088098912', 'ROSYIDATUL MAHMUDAH', 'TUBAN', '2008-05-31', 'P', '1', '1', '1', 'DASIN', NULL, 'MOH. KHOIRUL ROZIKIN', 'ROCHMAH', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:10', '2026-02-14 02:41:07'),
+(138, 236, NULL, '1', '360', '0086427009', 'SHELFI OCTAVIA ROESDAH', 'LEBAK', '2008-10-26', 'P', '1', '1', '1', 'BELIKANGET', NULL, 'SUPRIYADI', 'HERLINA DARNIATI', 'Wiraswasta', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:10', '2026-02-14 02:41:07'),
+(139, 237, NULL, '1', '361', '3088352695', 'SUSI ARINI', 'Tuban', '2008-10-17', 'P', '1', '1', '1', 'Margosuko', NULL, 'SUWONO', 'CARMI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:10', '2026-02-14 02:41:07'),
+(140, 238, NULL, '1', '363', '0091003580', 'TIYO ALDYYANSAH', 'Tuban', '2009-04-18', 'L', '1', '1', '1', 'Dasin', NULL, 'TARMIJAN', 'KASINI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:10', '2026-02-14 02:41:07'),
+(141, 239, NULL, '1', '365', '3086082338', 'YOGI OKTA MAHENDRA', 'Tuban', '2008-10-10', 'L', '1', '1', '1', 'Margosuko', NULL, 'KUSAERI', 'NINA INDRAWATI', 'Petani', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:36:10', '2026-02-14 02:41:07'),
+(228, 329, NULL, '2', '235', '0067570625', 'ACHMAD FAIQ MUZAKKIY', 'Tuban', '2006-12-28', 'L', '1', '1', '1', 'Pabeyan', NULL, 'KUSNAN', 'LUDFIYAH', 'Nelayan', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:40', '2026-02-14 02:41:07'),
+(229, 330, NULL, '2', '237', '0063339111', 'AHMAD SYAIFUDDIN', 'Tuban', '2006-10-17', 'L', '1', '1', '1', 'Tambakboyo', NULL, 'WAKIRAN', 'LASTATIK', 'Wiraswasta', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:40', '2026-02-14 02:41:07'),
+(230, 331, NULL, '2', '238', '0068730623', 'AMELIA RAHAYU', 'Tuban', '2006-12-15', 'P', '1', '1', '1', 'Margosuko', NULL, 'Marwan', 'Tiyah', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:40', '2026-02-14 02:41:07'),
+(231, 332, NULL, '2', '240', '0068609189', 'ARBI FADILLA MUHSAN', 'Tuban', '2006-11-08', 'L', '1', '1', '1', 'Gadon', NULL, 'MUHSIN', 'ANISAH', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:40', '2026-02-14 02:41:07'),
+(232, 333, NULL, '2', '241', '0069584088', 'ARDHYANTO PRATAMA', 'Nganjuk', '2006-11-12', 'L', '1', '1', '1', 'Gemulung', NULL, 'Sudarmanto', 'Laswati', 'Pedagang Kecil', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:40', '2026-02-14 02:41:07'),
+(233, 334, NULL, '2', '242', '0056479277', 'AZKA SYARAFINA', 'TUBAN', '2005-11-14', 'P', '1', '1', '1', 'Dasin', NULL, 'NUR CHOLID', 'HIMMATUL HUSNA', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:40', '2026-02-14 02:41:07'),
+(234, 335, NULL, '2', '244', '0074107388', 'DAFFA MUSTAQIM', 'Tuban', '2007-01-12', 'L', '1', '1', '1', 'Mander', NULL, 'Danuri', 'Jumirah', 'Wiraswasta', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:40', '2026-02-14 02:41:07'),
+(235, 336, NULL, '2', '245', '0065889238', 'DIFANA SALSABILA', 'Tuban', '2006-10-02', 'P', '1', '1', '1', 'Sawir', NULL, 'YANTO SUSILO', 'KUSMIATUN', 'Wiraswasta', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:40', '2026-02-14 02:41:07'),
+(236, 337, NULL, '2', '246', '3061685791', 'EKARIA ZULSILIS DELIMA NUR HIDAYAH', 'Tuban', '2006-12-05', 'P', '1', '1', '1', 'Pabeyan', NULL, 'WARSAM', 'LILIS RETNO WATI', 'Buruh', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:41', '2026-02-14 02:41:07'),
+(237, 338, NULL, '2', '252', '0061606985', 'JULIANSAH KHOIRUL UMAM', 'Tuban', '2006-07-19', 'L', '1', '1', '2', 'Mander', NULL, 'Rokim', 'Umayah', 'Wiraswasta', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:41', '2026-02-14 02:41:07'),
+(238, 339, NULL, '2', '254', '0079264175', 'M. WAHYU REZA AULA FIRDAUS', 'Tuban', '2007-03-03', 'L', '1', '1', '1', 'socorejo', NULL, 'Lasmijan Al Parizi', 'Supriyatin', 'Nelayan', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:41', '2026-02-14 02:41:07'),
+(239, 340, NULL, '2', '282', '0067007455', 'MUHAMMAD ZAINUL AZZAN', 'TUBAN', '2006-10-17', 'L', '1', '1', '1', 'SAWIR', NULL, 'MASYHUDI', 'LAS INDAYATI', 'Pedagang Kecil', 'Pedagang Kecil', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:41', '2026-02-14 02:41:07'),
+(240, 341, NULL, '2', '259', '0066979722', 'NAELATUL MUNA', 'Tuban', '2006-07-03', 'P', '1', '1', '2', 'Sobontoro', NULL, 'Mukhlis', 'Siti Munawaroh', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:41', '2026-02-14 02:41:07'),
+(241, 342, NULL, '2', '260', '0069534558', 'NANDA DIFA PRATAMA', 'Tuban', '2006-12-22', 'L', '1', '1', '1', 'Merkawang', NULL, 'BUDI UTOMO', 'TUNAFLIFAH', 'Wiraswasta', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:41', '2026-02-14 02:41:07'),
+(242, 343, NULL, '2', '263', '0077498152', 'NUR FAIZATUN NISA', 'TUBAN', '2006-12-11', 'P', '1', '1', '2', 'KRADENAN', NULL, 'WARDJI', 'MARDIYAH', 'Buruh', 'Pedagang Kecil', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:41', '2026-02-14 02:41:07'),
+(243, 344, NULL, '2', '265', '0064982542', 'NURUL ISTIANAH', 'TUBAN', '2006-08-07', 'P', '1', '1', '1', 'DASIN', NULL, 'JUMALI', 'SITI ZUBAIDAH', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:41', '2026-02-14 02:41:07'),
+(244, 345, NULL, '2', '266', '0071845030', 'PUTRI AMEYLA SARI', 'TUBAN', '2007-05-25', 'P', '1', '1', '1', 'KRADENAN', NULL, 'KARTONO', 'HARTATIK', 'Buruh', 'Buruh', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:42', '2026-02-14 02:41:07'),
+(245, 346, NULL, '2', '269', '0068636596', 'RIFKA MAULIDA', 'Tuban', '2006-03-29', 'P', '1', '1', '2', 'Kenanti', NULL, 'Kacung Suwasono', 'Wantutik', 'Wiraswasta', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:42', '2026-02-14 02:41:07'),
+(246, 347, NULL, '2', '272', '0061572256', 'ROFII QOTUZ ZULFA', 'Tuban', '2006-06-15', 'P', '1', '1', '1', 'Sobontoro', NULL, 'LASTO', 'DUROH ZULIANA', 'Buruh', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:42', '2026-02-14 02:41:07'),
+(247, 348, NULL, '2', '275', '0068007916', 'SINTIA RAHMA SAYILA NOVA', 'Tuban', '2006-11-30', 'P', '1', '1', '2', 'Klutuk', NULL, 'Ciptoroso', 'Istiqomah', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:42', '2026-02-14 02:41:07'),
+(248, 349, NULL, '2', '276', '0073557892', 'SINTYA NABILA RAHMAWATI', 'Tuban', '2007-03-05', 'P', '1', '1', '1', 'Margosuko', NULL, 'Sempuk Adi Saputro', 'Endang Susilowati', 'Wiraswasta', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:42', '2026-02-14 02:41:07'),
+(249, 350, NULL, '2', '278', '0072206518', 'SRI MU AWANAH', 'TUBAN', '2007-04-25', 'P', '1', '1', '2', 'Dasin', NULL, 'SRIYADI', 'MU AKHIROTUN', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:42', '2026-02-14 02:41:07'),
+(250, 351, NULL, '2', '280', '0136360617', 'ZAHRA KHOIRUN NISA', 'TUBAN', '2006-12-03', 'P', '1', '1', '1', 'Pulogede', NULL, 'Kholidin', 'MUNIK ASIYAH', 'Karyawan Swasta', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:42', '2026-02-14 02:41:07'),
+(251, 352, NULL, '2', '236', '0068586426', 'AHMAD RAFIUD DAROJAT', 'Tuban', '2006-10-11', 'L', '1', '1', '1', 'Dasin', NULL, 'SAEKON', 'LISIANA', 'Wiraswasta', 'Lainnya', NULL, NULL, 'profile_ahmad rafiud darojat.jpg', '1', '2021-11-06 14:47:42', '2026-02-14 02:41:07'),
+(252, 353, NULL, '2', '239', '0068500375', 'ANISA NURUL ALFIYAH', 'Tuban', '2006-09-17', 'P', '1', '1', '1', 'Mander', NULL, 'Suripno', 'Hetty Mursiah', 'Wiraswasta', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:43', '2026-02-14 02:41:07'),
+(253, 354, NULL, '2', '283', '0054128141', 'BENI SANTOSO', 'REMBANG', '2005-02-09', 'L', '1', '1', '3', 'Ds. TAMBAKBOYO', NULL, 'SUNGEDI', 'SITI MUKIAYATUN', 'Wiraswasta', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:43', '2026-02-14 02:41:07'),
+(254, 355, NULL, '2', '243', '0071167688', 'CITRA ARIHA ZAHRA MANANTA', 'Tuban', '2007-01-12', 'P', '1', '1', '1', 'Klutuk', NULL, 'Abdul Manan', 'Roihanah', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:43', '2026-02-14 02:41:07'),
+(255, 356, NULL, '2', '247', '0063192439', 'HENKY GUSFAHDLI', 'Tuban', '2006-08-03', 'L', '1', '1', '1', 'Gemulung', NULL, 'Didik Herwanto', 'Suci Indriyani', 'Wiraswasta', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:43', '2026-02-14 02:41:07'),
+(256, 357, NULL, '2', '248', '0067702592', 'IFSYA ULFAIDAH', 'Tuban', '2006-09-14', 'P', '1', '1', '1', 'Dasin', NULL, 'TARMUDI', 'KAYATUN', 'Karyawan Swasta', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:43', '2026-02-14 02:41:07'),
+(257, 358, NULL, '2', '250', '0066311876', 'IZZATUL NURATHIYAH', 'Tuban', '2006-12-01', 'P', '1', '1', '1', 'Pabeyan', NULL, 'MUNAWAR', 'MASATIN', 'Lainnya', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:43', '2026-02-14 02:41:07'),
+(258, 359, NULL, '2', '251', '0066072331', 'JIHAN ALFIA NURAINI', 'Tuban', '2006-01-06', 'P', '1', '1', '1', 'Sotang', NULL, 'Sumiran', 'Ririn Iswati', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:43', '2026-02-14 02:41:07'),
+(259, 360, NULL, '2', '255', '0074953372', 'MARTA VIVI IFRIKA', 'TUBAN', '2007-03-25', 'P', '1', '1', '1', 'DASIN', NULL, 'TAMU', 'SRI WAHYUNI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:43', '2026-02-14 02:41:07'),
+(260, 361, NULL, '2', '257', '0071047031', 'MOHAMAD RIFQI MUKAFFA', 'Tuban', '2007-07-25', 'L', '1', '1', '2', 'Merkawang', NULL, 'KASTUR', 'JUMINI', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:44', '2026-02-14 02:41:07'),
+(261, 362, NULL, '2', '258', '0063420344', 'MUHAMMAD YUSUF MAULANA', 'Tuban', '2006-06-25', 'L', '1', '1', '1', 'Pabeyan', NULL, 'ZAENURI', 'ROFIUL INAYAH', 'Buruh', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:44', '2026-02-14 02:41:07'),
+(262, 363, NULL, '2', '261', '0075420522', 'NILNA MINAHAZZAHROH', 'TUBAN', '2007-05-01', 'P', '1', '1', '1', 'Dasin', NULL, 'LASMUJI', 'MASLUROH', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:44', '2026-02-14 02:41:07'),
+(263, 364, NULL, '2', '262', '0065308881', 'NUNGKI WIDIYANTO', 'Tuban', '2006-07-26', 'L', '1', '1', '2', 'Klutuk', NULL, 'KUSTONO', 'YULIYANTO', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:44', '2026-02-14 02:41:07'),
+(264, 365, NULL, '2', '267', '0064466847', 'RAUDHATUL JANNAH', 'KOTABARU', '2006-12-24', 'P', '1', '1', '2', 'Sukadamai', NULL, 'M. BISRUL', 'SAIMI', 'Wiraswasta', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:44', '2026-02-14 02:41:07'),
+(265, 366, NULL, '2', '268', '0067766770', 'RIANA SHOVI AFIDA', 'Tuban', '2006-12-21', 'P', '1', '1', '1', 'Dasin', NULL, 'TARNO', 'NURWATIN', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:44', '2026-02-14 02:41:07'),
+(266, 367, NULL, '2', '270', '0073484580', 'RISMA AMELIA', 'Tuban', '2007-04-06', 'P', '1', '1', '1', 'Klutuk', NULL, 'AINUR ROFIK', 'TIN MARPUAH', 'Lainnya', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:44', '2026-02-14 02:41:07'),
+(267, 368, NULL, '2', '271', '0061446644', 'RIZKI RIANSYAH', 'Tuban', '2006-12-09', 'L', '1', '1', '1', 'Gemulung', NULL, 'Samuri', 'Kunanik', 'PNS/TNI/Polri', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:44', '2026-02-14 02:41:07'),
+(268, 369, NULL, '2', '273', '0076817435', 'SALSA NUR AFIFAH', 'TUBAN', '2007-04-19', 'P', '1', '1', '1', 'DASIN', NULL, 'SOLIKIN', 'SITI N.', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:45', '2026-02-14 02:41:07'),
+(269, 370, NULL, '2', '274', '0075583524', 'SILVIYYA WARDATIN', 'TUBAN', '2007-06-14', 'P', '1', '1', '1', 'Dasin', NULL, 'TASMIN', 'UMILAILA', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:45', '2026-02-14 02:41:07'),
+(270, 371, NULL, '2', '277', '0068608517', 'SITI LAILY ZAKIYAH', 'TUBAN', '2006-12-14', 'P', '1', '1', '1', 'DASIN', NULL, 'TASIRUN', 'DJASMI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:45', '2026-02-14 02:41:07'),
+(271, 372, NULL, '2', '279', '0064981547', 'YUNI MIFTAKHUL KHOLIFAH', 'TUBAN', '2006-08-01', 'P', '1', '1', '2', 'Mander', NULL, 'DARSAM', 'SULIMAH', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:45', '2026-02-14 02:41:07'),
+(272, 373, NULL, '2', '366', '0085824374', 'AHMAD IQBAL BAIHAQI', 'Tuban', '2008-07-21', 'L', '1', '1', '1', 'Pabeyan', NULL, 'KASDAR', 'CHUROTUL WIDAT', 'Nelayan', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:45', '2026-02-14 02:41:07'),
+(273, 374, NULL, '2', '284', '0073611986', 'AHSANUL MUJAHIDIN', 'TUBAN', '2007-09-05', 'L', '1', '1', '1', 'Margosuko', NULL, 'MUZAID', 'KUSMIATI', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:45', '2026-02-14 02:41:07'),
+(274, 375, NULL, '2', '285', '0078468402', 'ANDI MATHLABIL HIKAM', 'Tuban', '2007-11-14', 'L', '1', '1', '1', 'Merkawang', NULL, 'MUHAMMAD NURI ECHSAN', 'SITI MASKHANAH ', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:45', '2026-02-14 02:41:07'),
+(275, 376, NULL, '2', '286', '0089137461', 'DITA HENDRA PRATAMA', 'TUBAN', '2008-08-27', 'L', '1', '1', '1', 'GEMULUNG', NULL, 'DARYONO', 'KASTI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:45', '2026-02-14 02:41:07'),
+(276, 377, NULL, '2', '287', '0071193863', 'DIVA SANDRA ABELLIA PUTRI', 'Tuban', '2007-12-14', 'P', '1', '1', '1', 'Cokrowati', NULL, 'Hadi', 'Dina Astutik', 'Wiraswasta', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:45', '2026-02-14 02:41:07'),
+(277, 378, NULL, '2', '288', '0082864344', 'ESTY AININ NADZIROH', 'Tuban', '2008-01-30', 'P', '1', '1', '1', 'Margosuko', NULL, 'Edi Priyono', 'Siti Asiyah', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:46', '2026-02-14 02:41:07'),
+(278, 379, NULL, '2', '289', '0086384426', 'FERLITA SARIFATUN NIKMAH', 'Tuban', '2008-02-06', 'P', '1', '1', '1', 'Margosuko', NULL, 'Ramuji', 'Melip', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:46', '2026-02-14 02:41:07'),
+(279, 380, NULL, '2', '290', '0074256091', 'FIDIA ANAIDA', 'TUBAN', '2007-04-01', 'P', '1', '1', '2', 'Belikanget', NULL, 'DASUM', 'YASMI', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:46', '2026-02-14 02:41:07'),
+(280, 381, NULL, '2', '291', '0076554168', 'FILHA DINI ASMARANI', 'Tuban', '2007-11-06', 'P', '1', '1', '1', 'DASIN', NULL, 'MOCH AINUR ROFIQ', 'MUNTIKAH', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:46', '2026-02-14 02:41:07'),
+(281, 382, NULL, '2', '292', '0083818653', 'HELVI IZZA APRILIA', 'TUBAN', '2008-04-12', 'P', '1', '1', '1', 'SOBONTORO', NULL, 'PRIYADI', 'RUKINAH', 'Wiraswasta', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:46', '2026-02-14 02:41:07'),
+(282, 383, NULL, '2', '293', '0078546004', 'KHOIRUT TAMAM', 'TUBAN', '2007-07-28', 'L', '1', '1', '1', 'Dasin', NULL, 'TAMSU', 'KHOTIMAH', 'Sudah Meninggal', 'Pedagang Kecil', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:46', '2026-02-14 02:41:07'),
+(283, 384, NULL, '2', '367', '0076593298', 'M. ASHROF MAZID FURQONI', 'Tuban', '2007-12-28', 'L', '1', '1', '1', 'Pabeyan', NULL, 'NUR CAHAYA', 'KHALIMATUS SA\'ADAH', 'Nelayan', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:46', '2026-02-14 02:41:07'),
+(284, 385, NULL, '2', '368', '0074063223', 'M. CHABIBUL LATIF', 'Tuban', '2007-11-15', 'L', '1', '1', '1', 'Pabeyan', NULL, 'NASIKIN', 'SULIYATI', 'Nelayan', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:47', '2026-02-14 02:41:07'),
+(285, 386, NULL, '2', '294', '0084644199', 'MAULANA EKCEL ERSULA UTAMA', 'Tuban', '2008-03-18', 'L', '1', '1', '1', 'Socorejo', NULL, 'Sulaiman', 'Ernawati', 'Karyawan Swasta', 'Karyawan Swasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:47', '2026-02-14 02:41:07'),
+(286, 387, NULL, '2', '295', '0076622716', 'MOHAMAD RIFQI ABDILLAH', 'Tuban', '2007-02-26', 'L', '1', '1', '1', 'Margosuko', NULL, 'Sodikun', 'Enik Purwati', 'Nelayan', 'Pedagang Kecil', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:47', '2026-02-14 02:41:07'),
+(287, 388, NULL, '2', '296', '0087359337', 'MUHAMMAD AQIM YAMIN SIMAL', 'TUBAN', '2008-04-14', 'L', '1', '1', '2', 'GADON', NULL, 'MUHAMMAD HADI SUTIKNO', 'MUKHOLIFAH', 'Nelayan', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:47', '2026-02-14 02:41:07'),
+(288, 389, NULL, '2', '297', '0078178085', 'MUHAMMAD HILAL RIDHO', 'Tuban', '2007-04-19', 'L', '1', '1', '1', 'Pulogede', NULL, 'Ikhwan', 'Nurhidayatin', 'PNS/TNI/Polri', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:47', '2026-02-14 02:41:07'),
+(289, 390, NULL, '2', '298', '0061626567', 'MUHAMMAD NUR ROHMAN', 'TUBAN', '2007-01-25', 'L', '1', '1', '1', 'Merkawang', NULL, 'KUSAERI', 'SRI NANIK', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:47', '2026-02-14 02:41:07'),
+(290, 391, NULL, '2', '299', '0088334793', 'MUHAMMAD RIFQI SAPUTRA', 'TUBAN', '2008-03-08', 'L', '1', '1', '2', 'GLONDONGGEDE', NULL, 'RIDWAN', 'RUKHAYAH', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:47', '2026-02-14 02:41:07'),
+(291, 392, NULL, '2', '300', '0072043755', 'MUHAMMAD ZAKKA ADLY FAIRUZH', 'Tuban', '2007-10-30', 'L', '1', '1', '1', 'Karangasem', NULL, 'Ahmad Nuri', 'Sumarni', 'Wiraswasta', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:47', '2026-02-14 02:41:07'),
+(292, 393, NULL, '2', '301', '3076280716', 'NABILA HIMAYA MILLATI', 'TUBAN', '2007-11-27', 'P', '1', '1', '2', 'KENANTI', NULL, 'MUNAJI', 'SUYATI', 'Nelayan', 'Wiraswasta', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:48', '2026-02-14 02:41:07'),
+(293, 394, NULL, '2', '302', '0083022551', 'NADYA SAFWAH NAJLATUN NAQIYYAH', 'Tuban', '2008-06-06', 'P', '1', '1', '1', 'Margosuko', NULL, 'Zainul', 'Siti Rofi ah', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:48', '2026-02-14 02:41:07'),
+(294, 395, NULL, '2', '303', '0071297839', 'NURIL LATIFAH', 'TUBAN', '2007-05-21', 'P', '1', '1', '1', 'SOBONTORO', NULL, 'PRIYADI', 'SITI WAKURANAH', 'Nelayan', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:48', '2026-02-14 02:41:07'),
+(295, 396, NULL, '2', '304', '0085561201', 'ROGHIBUR ROHMAN', 'TUBAN', '2008-03-29', 'L', '1', '1', '1', 'Dasin', NULL, 'KASNARI', 'SOFI\'AH', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:48', '2026-02-14 02:41:07'),
+(296, 397, NULL, '2', '305', '0083461721', 'SELVIRA ANINDYA LABIBAH', 'TUBAN', '2008-07-13', 'P', '1', '1', '2', 'Pulogede', NULL, 'IMAM', 'CARMI', 'Petani', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:48', '2026-02-14 02:41:07'),
+(297, 398, NULL, '2', '306', '0084751537', 'SILVIA CHOIRUN NIHAYAH', 'TUBAN', '2008-02-11', 'P', '1', '1', '2', 'SOBONTORO', NULL, 'SUWARDI', 'ALIF FATU\'AH', 'Petani', 'Tidak bekerja', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:48', '2026-02-14 02:41:07'),
+(298, 399, NULL, '2', '307', '0087363754', 'SITI KHOIRUN NISA', 'Tuban', '2008-01-22', 'P', '1', '1', '1', 'Dasin', NULL, 'AHMAD RAEHAN', 'RASMUTI', 'Petani', 'Petani', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:48', '2026-02-14 02:41:07'),
+(299, 400, NULL, '2', '369', '0081600941', 'SYAIFUDDIN ZUHRI', 'Tuban', '2008-05-23', 'L', '1', '1', '1', 'Pabeyan', NULL, 'MASNURI', 'SITI MAKRIFAH', 'Nelayan', 'Lainnya', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:48', '2026-02-14 02:41:07'),
+(300, 401, 9, '2', '308', '0086330248', 'SYITA AZZAHRA', 'Tuban', '2008-01-30', 'P', '1', '1', '1', 'Sobontoro', NULL, 'Moh. Arif Efendy', 'Clara Wanalita', 'Karyawan Swasta', 'PNS/TNI/Polri', NULL, NULL, 'default.png', '1', '2021-11-06 14:47:48', '2026-02-14 03:37:49'),
 (301, 402, NULL, '1', '002', NULL, 'NUR AINI', 'Tuban', '2021-10-31', 'P', '1', '1', '2', 'Dikir', NULL, 'Wasono', 'Darmini', 'Petani', 'IRT', NULL, NULL, 'default.png', '2', '2021-11-07 07:01:32', '2021-11-07 07:28:47');
 
 -- --------------------------------------------------------
@@ -6134,11 +6304,11 @@ INSERT INTO `siswa` (`id`, `user_id`, `kelas_id`, `jenis_pendaftaran`, `nis`, `n
 --
 
 CREATE TABLE `siswa_keluar` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `siswa_id` bigint(20) UNSIGNED NOT NULL,
-  `keluar_karena` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `siswa_id` bigint UNSIGNED NOT NULL,
+  `keluar_karena` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal_keluar` date NOT NULL,
-  `alasan_keluar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `alasan_keluar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -6158,9 +6328,9 @@ INSERT INTO `siswa_keluar` (`id`, `siswa_id`, `keluar_karena`, `tanggal_keluar`,
 --
 
 CREATE TABLE `tapel` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `tahun_pelajaran` varchar(9) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `semester` enum('1','2') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `tahun_pelajaran` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `semester` enum('1','2') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -6175,16 +6345,35 @@ INSERT INTO `tapel` (`id`, `tahun_pelajaran`, `semester`, `created_at`, `updated
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `terapi_perkembangan`
+--
+
+CREATE TABLE `terapi_perkembangan` (
+  `id` bigint UNSIGNED NOT NULL,
+  `anggota_kelas_id` bigint UNSIGNED NOT NULL,
+  `minggu_tanggal` date NOT NULL,
+  `motorik_kasar` text COLLATE utf8mb4_unicode_ci,
+  `sosialisasi` text COLLATE utf8mb4_unicode_ci,
+  `rentang_akademis` text COLLATE utf8mb4_unicode_ci,
+  `evaluasi_sosialisasi` text COLLATE utf8mb4_unicode_ci,
+  `evaluasi_rentang_akademis` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
 CREATE TABLE `user` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role` enum('1','2','3') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` enum('1','2','3') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` tinyint(1) NOT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -6197,7 +6386,7 @@ INSERT INTO `user` (`id`, `username`, `password`, `role`, `status`, `remember_to
 (1, 'admin', '$2y$10$LxLtowUzFJLPeH1pPSCbCOOQJI7Rfsn7Z27FgBPTfkxJ171bLK7JS', '1', 1, NULL, '2021-10-29 02:27:37', '2022-01-06 07:44:14'),
 (2, 'qkohst', '$2y$10$aAZEBNC2u6yz69MyzmsjWesy5.i9isEC5wcFQEjtqz2vNgjxXOoUy', '1', 1, NULL, '2021-10-31 08:30:07', '2021-10-31 08:30:07'),
 (86, 'kukohsantoso', '$2y$10$L7nBsWRDS/thIiVifkpbeuA3IR7EWm7TlNPIsHYgzy6OqKPM3Ffxy', '2', 1, NULL, '2021-11-02 15:06:34', '2021-11-02 15:06:34'),
-(87, 'alighufron', '$2y$10$63YqJA64B7FpUZ.ImwruVeza5nZZBFej2FjRNNgCwtQxFAST2JqWW', '2', 1, NULL, '2021-11-02 15:06:34', '2021-11-02 15:06:34'),
+(87, 'alighufron', '$2y$10$63YqJA64B7FpUZ.ImwruVeza5nZZBFej2FjRNNgCwtQxFAST2JqWW', '2', 0, NULL, '2021-11-02 15:06:34', '2026-01-13 03:19:44'),
 (88, 'darmini', '$2y$10$Ws/AWguLlCj3b4cdTzB/3uOa5csvmuxirxvKA3hhK/ZQUVb8.Z1V.', '2', 1, NULL, '2021-11-02 15:09:00', '2021-11-02 15:09:00'),
 (92, 'habibullubab', '$2y$10$teG7X4PBm56wQF4wlIHPE.PHLWuSr3UT2ZyEmV32Hi6lHySoCb5KO', '2', 1, NULL, '2021-11-06 13:50:01', '2021-11-06 13:50:01'),
 (93, 'hanaratrirahayu', '$2y$10$efcqz9D0Wcxc7enzYuH8Fu6QaPMNpu4r8bUlsHCPbMhNSupLJHFsO', '2', 1, NULL, '2021-11-06 13:50:01', '2021-11-06 13:50:01'),
@@ -6454,6 +6643,14 @@ ALTER TABLE `k13_nilai_keterampilan`
   ADD KEY `k13_nilai_keterampilan_anggota_kelas_id_foreign` (`anggota_kelas_id`);
 
 --
+-- Indexes for table `k13_nilai_kisi`
+--
+ALTER TABLE `k13_nilai_kisi`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `k13_nilai_kisi_k13_rencana_kisi_id_anggota_kelas_id_unique` (`k13_rencana_kisi_id`,`anggota_kelas_id`),
+  ADD KEY `k13_nilai_kisi_anggota_kelas_id_foreign` (`anggota_kelas_id`);
+
+--
 -- Indexes for table `k13_nilai_pengetahuan`
 --
 ALTER TABLE `k13_nilai_pengetahuan`
@@ -6491,6 +6688,14 @@ ALTER TABLE `k13_nilai_spiritual`
 ALTER TABLE `k13_rencana_bobot_penilaian`
   ADD PRIMARY KEY (`id`),
   ADD KEY `k13_rencana_bobot_penilaian_pembelajaran_id_foreign` (`pembelajaran_id`);
+
+--
+-- Indexes for table `k13_rencana_kisi`
+--
+ALTER TABLE `k13_rencana_kisi`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `k13_rencana_kisi_pembelajaran_id_foreign` (`pembelajaran_id`),
+  ADD KEY `k13_rencana_kisi_k13_kd_mapel_id_foreign` (`k13_kd_mapel_id`);
 
 --
 -- Indexes for table `k13_rencana_nilai_keterampilan`
@@ -6660,6 +6865,14 @@ ALTER TABLE `pengumuman`
   ADD KEY `pengumuman_user_id_foreign` (`user_id`);
 
 --
+-- Indexes for table `personal_program`
+--
+ALTER TABLE `personal_program`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `personal_program_siswa_id_foreign` (`siswa_id`),
+  ADD KEY `personal_program_guru_id_foreign` (`guru_id`);
+
+--
 -- Indexes for table `prestasi_siswa`
 --
 ALTER TABLE `prestasi_siswa`
@@ -6704,6 +6917,13 @@ ALTER TABLE `tapel`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `terapi_perkembangan`
+--
+ALTER TABLE `terapi_perkembangan`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `terapi_perkembangan_anggota_kelas_id_minggu_tanggal_unique` (`anggota_kelas_id`,`minggu_tanggal`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -6718,289 +6938,313 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `anggota_ekstrakulikuler`
 --
 ALTER TABLE `anggota_ekstrakulikuler`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=233;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=233;
 
 --
 -- AUTO_INCREMENT for table `anggota_kelas`
 --
 ALTER TABLE `anggota_kelas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=159;
 
 --
 -- AUTO_INCREMENT for table `catatan_wali_kelas`
 --
 ALTER TABLE `catatan_wali_kelas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `ekstrakulikuler`
 --
 ALTER TABLE `ekstrakulikuler`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `guru`
 --
 ALTER TABLE `guru`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT for table `k13_butir_sikap`
 --
 ALTER TABLE `k13_butir_sikap`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `k13_deskripsi_nilai_siswa`
 --
 ALTER TABLE `k13_deskripsi_nilai_siswa`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 
 --
 -- AUTO_INCREMENT for table `k13_deskripsi_sikap_siswa`
 --
 ALTER TABLE `k13_deskripsi_sikap_siswa`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `k13_kd_mapel`
 --
 ALTER TABLE `k13_kd_mapel`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `k13_kkm_mapel`
 --
 ALTER TABLE `k13_kkm_mapel`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=521;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=521;
 
 --
 -- AUTO_INCREMENT for table `k13_mapping_mapel`
 --
 ALTER TABLE `k13_mapping_mapel`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `k13_nilai_akhir_raport`
 --
 ALTER TABLE `k13_nilai_akhir_raport`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=633;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=637;
 
 --
 -- AUTO_INCREMENT for table `k13_nilai_keterampilan`
 --
 ALTER TABLE `k13_nilai_keterampilan`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=376;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=376;
+
+--
+-- AUTO_INCREMENT for table `k13_nilai_kisi`
+--
+ALTER TABLE `k13_nilai_kisi`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `k13_nilai_pengetahuan`
 --
 ALTER TABLE `k13_nilai_pengetahuan`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=628;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=628;
 
 --
 -- AUTO_INCREMENT for table `k13_nilai_pts_pas`
 --
 ALTER TABLE `k13_nilai_pts_pas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
 
 --
 -- AUTO_INCREMENT for table `k13_nilai_sosial`
 --
 ALTER TABLE `k13_nilai_sosial`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1330;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1330;
 
 --
 -- AUTO_INCREMENT for table `k13_nilai_spiritual`
 --
 ALTER TABLE `k13_nilai_spiritual`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1577;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1605;
 
 --
 -- AUTO_INCREMENT for table `k13_rencana_bobot_penilaian`
 --
 ALTER TABLE `k13_rencana_bobot_penilaian`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `k13_rencana_kisi`
+--
+ALTER TABLE `k13_rencana_kisi`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `k13_rencana_nilai_keterampilan`
 --
 ALTER TABLE `k13_rencana_nilai_keterampilan`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `k13_rencana_nilai_pengetahuan`
 --
 ALTER TABLE `k13_rencana_nilai_pengetahuan`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `k13_rencana_nilai_sosial`
 --
 ALTER TABLE `k13_rencana_nilai_sosial`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `k13_rencana_nilai_spiritual`
 --
 ALTER TABLE `k13_rencana_nilai_spiritual`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT for table `k13_tgl_raport`
 --
 ALTER TABLE `k13_tgl_raport`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `kehadiran_siswa`
 --
 ALTER TABLE `kehadiran_siswa`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `kelas`
 --
 ALTER TABLE `kelas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `kenaikan_kelas`
 --
 ALTER TABLE `kenaikan_kelas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `ktsp_bobot_penilaian`
 --
 ALTER TABLE `ktsp_bobot_penilaian`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `ktsp_deskripsi_nilai_siswa`
 --
 ALTER TABLE `ktsp_deskripsi_nilai_siswa`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
 
 --
 -- AUTO_INCREMENT for table `ktsp_kkm_mapel`
 --
 ALTER TABLE `ktsp_kkm_mapel`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT for table `ktsp_mapping_mapel`
 --
 ALTER TABLE `ktsp_mapping_mapel`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `ktsp_nilai_akhir_raport`
 --
 ALTER TABLE `ktsp_nilai_akhir_raport`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
 
 --
 -- AUTO_INCREMENT for table `ktsp_nilai_tugas`
 --
 ALTER TABLE `ktsp_nilai_tugas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=258;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=258;
 
 --
 -- AUTO_INCREMENT for table `ktsp_nilai_uh`
 --
 ALTER TABLE `ktsp_nilai_uh`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
 
 --
 -- AUTO_INCREMENT for table `ktsp_nilai_uts_uas`
 --
 ALTER TABLE `ktsp_nilai_uts_uas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
 
 --
 -- AUTO_INCREMENT for table `ktsp_tgl_raport`
 --
 ALTER TABLE `ktsp_tgl_raport`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `mapel`
 --
 ALTER TABLE `mapel`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT for table `nilai_ekstrakulikuler`
 --
 ALTER TABLE `nilai_ekstrakulikuler`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=173;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=173;
 
 --
 -- AUTO_INCREMENT for table `pembelajaran`
 --
 ALTER TABLE `pembelajaran`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=360;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=360;
 
 --
 -- AUTO_INCREMENT for table `pengumuman`
 --
 ALTER TABLE `pengumuman`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `personal_program`
+--
+ALTER TABLE `personal_program`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `prestasi_siswa`
 --
 ALTER TABLE `prestasi_siswa`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `riwayat_login`
 --
 ALTER TABLE `riwayat_login`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `sekolah`
 --
 ALTER TABLE `sekolah`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `siswa`
 --
 ALTER TABLE `siswa`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=303;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=303;
 
 --
 -- AUTO_INCREMENT for table `siswa_keluar`
 --
 ALTER TABLE `siswa_keluar`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tapel`
 --
 ALTER TABLE `tapel`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `terapi_perkembangan`
+--
+ALTER TABLE `terapi_perkembangan`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=406;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=407;
 
 --
 -- Constraints for dumped tables
@@ -7092,6 +7336,13 @@ ALTER TABLE `k13_nilai_keterampilan`
   ADD CONSTRAINT `k13_nilai_keterampilan_k13_rencana_nilai_keterampilan_id_foreign` FOREIGN KEY (`k13_rencana_nilai_keterampilan_id`) REFERENCES `k13_rencana_nilai_keterampilan` (`id`);
 
 --
+-- Constraints for table `k13_nilai_kisi`
+--
+ALTER TABLE `k13_nilai_kisi`
+  ADD CONSTRAINT `k13_nilai_kisi_anggota_kelas_id_foreign` FOREIGN KEY (`anggota_kelas_id`) REFERENCES `anggota_kelas` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `k13_nilai_kisi_k13_rencana_kisi_id_foreign` FOREIGN KEY (`k13_rencana_kisi_id`) REFERENCES `k13_rencana_kisi` (`id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `k13_nilai_pengetahuan`
 --
 ALTER TABLE `k13_nilai_pengetahuan`
@@ -7124,6 +7375,13 @@ ALTER TABLE `k13_nilai_spiritual`
 --
 ALTER TABLE `k13_rencana_bobot_penilaian`
   ADD CONSTRAINT `k13_rencana_bobot_penilaian_pembelajaran_id_foreign` FOREIGN KEY (`pembelajaran_id`) REFERENCES `pembelajaran` (`id`);
+
+--
+-- Constraints for table `k13_rencana_kisi`
+--
+ALTER TABLE `k13_rencana_kisi`
+  ADD CONSTRAINT `k13_rencana_kisi_k13_kd_mapel_id_foreign` FOREIGN KEY (`k13_kd_mapel_id`) REFERENCES `k13_kd_mapel` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `k13_rencana_kisi_pembelajaran_id_foreign` FOREIGN KEY (`pembelajaran_id`) REFERENCES `pembelajaran` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `k13_rencana_nilai_keterampilan`
@@ -7266,6 +7524,13 @@ ALTER TABLE `pengumuman`
   ADD CONSTRAINT `pengumuman_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
+-- Constraints for table `personal_program`
+--
+ALTER TABLE `personal_program`
+  ADD CONSTRAINT `personal_program_guru_id_foreign` FOREIGN KEY (`guru_id`) REFERENCES `guru` (`id`),
+  ADD CONSTRAINT `personal_program_siswa_id_foreign` FOREIGN KEY (`siswa_id`) REFERENCES `siswa` (`id`);
+
+--
 -- Constraints for table `prestasi_siswa`
 --
 ALTER TABLE `prestasi_siswa`
@@ -7289,6 +7554,12 @@ ALTER TABLE `siswa`
 --
 ALTER TABLE `siswa_keluar`
   ADD CONSTRAINT `siswa_keluar_siswa_id_foreign` FOREIGN KEY (`siswa_id`) REFERENCES `siswa` (`id`);
+
+--
+-- Constraints for table `terapi_perkembangan`
+--
+ALTER TABLE `terapi_perkembangan`
+  ADD CONSTRAINT `terapi_perkembangan_anggota_kelas_id_foreign` FOREIGN KEY (`anggota_kelas_id`) REFERENCES `anggota_kelas` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
