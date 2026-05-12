@@ -144,22 +144,10 @@
                 @endif
               </div>
 
-              <div class="callout callout-success">
+              <div class="callout callout-warning">
                 <h5>Data Kisi-Kisi</h5>
-                @if($count_data_kd == 0)
-                  <span class="text-danger"><i class="icon fas fa-ban"></i> Belum ditemukan data kisi-kisi.</span>
-                @else
-
-                  @foreach($data_kd as $kd)
-                    @if($kd->jumlah_kd_mapel == 0)
-                      <span class="text-warning"><i class="icon fas fa-exclamation-triangle"></i> Belum ditemukan data
-                        Kisi-Kisi pada mapel <b>{{$kd->nama_mapel}}</b></span><br>
-                    @else
-                      <span class="text-success"><i class="icon fas fa-check"></i> Data Kisi-Kisi mata pelajaran
-                        <b>{{$kd->nama_mapel}}</b> valid</span><br>
-                    @endif
-                  @endforeach
-                @endif
+                <span class="text-warning"><i class="icon fas fa-exclamation-triangle"></i> Fitur validasi Kisi-Kisi
+                  sementara dinonaktifkan.</span>
               </div>
               <div class="callout callout-success">
                 <h5>Tanggal Raport</h5>
