@@ -2,16 +2,15 @@
 
 namespace App\Exports;
 
-use App\AnggotaEkstrakulikuler;
 use App\AnggotaKelas;
-use App\Ekstrakulikuler;
+// Ekstrakulikuler, AnggotaEkstrakulikuler, NilaiEkstrakulikuler removed - models not available
+// K13DeskripsiSikapSiswa removed - table not yet migrated
 use App\Guru;
-use App\K13DeskripsiSikapSiswa;
 use App\K13MappingMapel;
 use App\K13NilaiAkhirRaport;
 use App\Kelas;
 use App\Mapel;
-use App\NilaiEkstrakulikuler;
+
 use App\Pembelajaran;
 use App\Sekolah;
 use App\Tapel;
@@ -44,8 +43,9 @@ class WaliKelasLegerNilaiExport implements FromView, ShouldAutoSize
         $data_mapel_kelompok_a = K13NilaiAkhirRaport::whereIn('pembelajaran_id', $data_id_pembelajaran_a)->groupBy('pembelajaran_id')->get();
         $data_mapel_kelompok_b = K13NilaiAkhirRaport::whereIn('pembelajaran_id', $data_id_pembelajaran_b)->groupBy('pembelajaran_id')->get();
 
-        $data_ekstrakulikuler = Ekstrakulikuler::where('tapel_id', $tapel->id)->get();
-        $count_ekstrakulikuler = count($data_ekstrakulikuler);
+        // Ekstrakulikuler dinonaktifkan - model tidak tersedia
+        $data_ekstrakulikuler = collect();
+        $count_ekstrakulikuler = 0;
 
         $data_anggota_kelas = AnggotaKelas::whereIn('kelas_id', $id_kelas_diampu)->get();
         foreach ($data_anggota_kelas as $anggota_kelas) {
@@ -56,36 +56,16 @@ class WaliKelasLegerNilaiExport implements FromView, ShouldAutoSize
             $anggota_kelas->data_nilai_kelompok_a = $data_nilai_kelompok_a;
             $anggota_kelas->data_nilai_kelompok_b = $data_nilai_kelompok_b;
 
-            $rt_pengetahuan = K13NilaiAkhirRaport::whereIn('pembelajaran_id', $data_id_pembelajaran_all)->where('anggota_kelas_id', $anggota_kelas->id)->avg('nilai_pengetahuan');
-            $rt_keterampilan = K13NilaiAkhirRaport::whereIn('pembelajaran_id', $data_id_pembelajaran_all)->where('anggota_kelas_id', $anggota_kelas->id)->avg('nilai_keterampilan');
+            $rt_nilai_akhir = K13NilaiAkhirRaport::whereIn('pembelajaran_id', $data_id_pembelajaran_all)->where('anggota_kelas_id', $anggota_kelas->id)->avg('nilai_akhir');
 
-            $anggota_kelas->rata_rata_pengetahuan = round($rt_pengetahuan, 0);
-            $anggota_kelas->rata_rata_keterampilan = round($rt_keterampilan, 0);
+            $anggota_kelas->rata_rata_semua = round($rt_nilai_akhir, 0);
 
-            $cek_deskripsi_sikap = K13DeskripsiSikapSiswa::where('anggota_kelas_id', $anggota_kelas->id)->first();
-            if (is_null($cek_deskripsi_sikap)) {
-                $anggota_kelas->nilai_spiritual = '-';
-                $anggota_kelas->nilai_sosial = '-';
-            } else {
-                $anggota_kelas->nilai_spiritual = $cek_deskripsi_sikap->nilai_spiritual;
-                $anggota_kelas->nilai_sosial = $cek_deskripsi_sikap->nilai_sosial;
-            }
+            // K13DeskripsiSikapSiswa dinonaktifkan - tabel belum ada
+            $anggota_kelas->nilai_spiritual = '-';
+            $anggota_kelas->nilai_sosial = '-';
 
-            $anggota_kelas->data_nilai_ekstrakulikuler = Ekstrakulikuler::where('tapel_id', $tapel->id)->get();
-
-            foreach ($anggota_kelas->data_nilai_ekstrakulikuler as $data_nilai_ekstrakulikuler) {
-                $cek_anggota_ekstra = AnggotaEkstrakulikuler::where('ekstrakulikuler_id', $data_nilai_ekstrakulikuler->id)->where('anggota_kelas_id', $anggota_kelas->id)->first();
-                if (is_null($cek_anggota_ekstra)) {
-                    $data_nilai_ekstrakulikuler->nilai = '-';
-                } else {
-                    $cek_nilai_ekstra = NilaiEkstrakulikuler::where('ekstrakulikuler_id', $data_nilai_ekstrakulikuler->id)->where('anggota_ekstrakulikuler_id', $cek_anggota_ekstra->id)->first();
-                    if (is_null($cek_nilai_ekstra)) {
-                        $data_nilai_ekstrakulikuler->nilai = '-';
-                    } else {
-                        $data_nilai_ekstrakulikuler->nilai = $cek_nilai_ekstra->nilai;
-                    }
-                }
-            }
+            // Ekstrakulikuler dinonaktifkan - model tidak tersedia
+            $anggota_kelas->data_nilai_ekstrakulikuler = collect();
         }
 
         return view('exports.walikelas.k13.legernilai', compact('time_download', 'sekolah', 'data_mapel_kelompok_a', 'data_mapel_kelompok_b', 'data_ekstrakulikuler', 'count_ekstrakulikuler', 'data_anggota_kelas'));

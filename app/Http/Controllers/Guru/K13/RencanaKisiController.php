@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Guru\K13;
 
 use App\Guru;
 use App\Http\Controllers\Controller;
-use App\K13KdMapel;
 use App\K13NilaiKisi;
 use App\K13RencanaKisi;
-use App\K13RencanaNilaiKeterampilan;
-use App\K13RencanaNilaiPengetahuan;
+// K13RencanaNilaiKeterampilan removed - model not available
+// K13RencanaNilaiPengetahuan removed - model not available
 use App\Kelas;
 use App\Pembelajaran;
 use App\Tapel;
@@ -38,10 +37,8 @@ class RencanaKisiController extends Controller
         foreach ($data_pembelajaran as $pembelajaran) {
             $pembelajaran->jumlah_rencana = K13RencanaKisi::where('pembelajaran_id', $pembelajaran->id)->count();
 
-            // Cek apakah ada data lama yang bisa diimport
-            $ada_pengetahuan = K13RencanaNilaiPengetahuan::where('pembelajaran_id', $pembelajaran->id)->exists();
-            $ada_keterampilan = K13RencanaNilaiKeterampilan::where('pembelajaran_id', $pembelajaran->id)->exists();
-            $pembelajaran->bisa_import = ($ada_pengetahuan || $ada_keterampilan) && $pembelajaran->jumlah_rencana == 0;
+            // Fitur import dari data lama dinonaktifkan - model tidak tersedia
+            $pembelajaran->bisa_import = false;
         }
 
         return view('guru.k13.rencanakisi.index', compact('title', 'data_pembelajaran'));
@@ -64,8 +61,17 @@ class RencanaKisiController extends Controller
             ->orderBy('urutan', 'ASC')
             ->get();
 
-        // KD yang tersedia untuk mapel ini
-        $data_kd = K13KdMapel::where('mapel_id', $pembelajaran->mapel_id)->get();
+        // Ambil indikator kisi-kisi dari pembelajaran lain dengan mapel yang sama
+        // sebagai pilihan yang bisa langsung dipilih guru
+        $pembelajaran_sama = Pembelajaran::where('mapel_id', $pembelajaran->mapel_id)
+            ->where('id', '!=', $pembelajaran->id)
+            ->pluck('id');
+
+        $data_kd = K13RencanaKisi::whereIn('pembelajaran_id', $pembelajaran_sama)
+            ->orderBy('deskripsi_penilaian', 'ASC')
+            ->get()
+            ->unique('deskripsi_penilaian')
+            ->values();
 
         $title = 'Rencana Penilaian - ' . $pembelajaran->mapel->nama_mapel . ' ' . $pembelajaran->kelas->nama_kelas;
         return view('guru.k13.rencanakisi.create', compact('title', 'pembelajaran', 'data_rencana', 'data_kd'));
@@ -88,12 +94,9 @@ class RencanaKisiController extends Controller
 
         // Tentukan deskripsi
         if ($mode === 'pilih' && $request->k13_kd_mapel_id) {
-            // Mode pilih: ambil deskripsi dari KD jika textarea kosong
-            $deskripsi = $request->deskripsi_penilaian;
-            if (empty(trim($deskripsi))) {
-                $kd = K13KdMapel::find($request->k13_kd_mapel_id);
-                $deskripsi = $kd ? $kd->kompetensi_dasar : null;
-            }
+            // Mode pilih: ambil deskripsi dari K13RencanaKisi yang dipilih
+            $sumber = K13RencanaKisi::find($request->k13_kd_mapel_id);
+            $deskripsi = $sumber ? $sumber->deskripsi_penilaian : $request->deskripsi_penilaian;
         } else {
             $deskripsi = $request->deskripsi_penilaian;
         }
@@ -136,68 +139,7 @@ class RencanaKisiController extends Controller
             return back()->with('toast_error', $validator->errors()->first());
         }
 
-        $pembelajaran = Pembelajaran::findorfail($request->pembelajaran_id);
-
-        // Cek sudah ada rencana baru?
-        $sudah_ada = K13RencanaKisi::where('pembelajaran_id', $pembelajaran->id)->exists();
-        if ($sudah_ada) {
-            return back()->with('toast_error', 'Sudah ada rencana penilaian. Hapus semua terlebih dahulu sebelum import.');
-        }
-
-        $urutan = 1;
-        $imported = 0;
-
-        // Import dari rencana pengetahuan (groupBy KD, ambil 1 per KD)
-        $rencana_pengetahuan = K13RencanaNilaiPengetahuan::with('k13_kd_mapel')
-            ->where('pembelajaran_id', $pembelajaran->id)
-            ->get()
-            ->unique('k13_kd_mapel_id');
-
-        foreach ($rencana_pengetahuan as $rencana) {
-            if (is_null($rencana->k13_kd_mapel))
-                continue;
-
-            K13RencanaKisi::create([
-                'pembelajaran_id' => $pembelajaran->id,
-                'k13_kd_mapel_id' => $rencana->k13_kd_mapel_id,
-                'deskripsi_penilaian' => $rencana->k13_kd_mapel->kompetensi_dasar,
-                'urutan' => $urutan++,
-            ]);
-            $imported++;
-        }
-
-        // Import dari rencana keterampilan (groupBy KD, ambil 1 per KD, skip yang sudah ada)
-        $kd_sudah = K13RencanaKisi::where('pembelajaran_id', $pembelajaran->id)
-            ->pluck('k13_kd_mapel_id')
-            ->filter()
-            ->toArray();
-
-        $rencana_keterampilan = K13RencanaNilaiKeterampilan::with('k13_kd_mapel')
-            ->where('pembelajaran_id', $pembelajaran->id)
-            ->get()
-            ->unique('k13_kd_mapel_id');
-
-        foreach ($rencana_keterampilan as $rencana) {
-            if (is_null($rencana->k13_kd_mapel))
-                continue;
-            if (in_array($rencana->k13_kd_mapel_id, $kd_sudah))
-                continue; // skip duplikat
-
-            K13RencanaKisi::create([
-                'pembelajaran_id' => $pembelajaran->id,
-                'k13_kd_mapel_id' => $rencana->k13_kd_mapel_id,
-                'deskripsi_penilaian' => $rencana->k13_kd_mapel->kompetensi_dasar,
-                'urutan' => $urutan++,
-            ]);
-            $imported++;
-        }
-
-        if ($imported === 0) {
-            return back()->with('toast_warning', 'Tidak ada data lama yang bisa diimport');
-        }
-
-        return redirect()->route('rencanakisi.create', ['pembelajaran_id' => $pembelajaran->id])
-            ->with('toast_success', $imported . ' indikator berhasil diimport dari data KD lama');
+        return back()->with('toast_warning', 'Fitur import dari data lama tidak tersedia.');
     }
 
     /**

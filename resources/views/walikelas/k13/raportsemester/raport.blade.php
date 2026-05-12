@@ -158,7 +158,7 @@
                     <td style="width: 28%;">Jenis Bakat</td>
                     <td colspan="2">Keterangan</td>
                 </tr>
-                @if (count($data_prestasi_siswa) == 0)
+                @if (count($data_talents_mapping) == 0)
                     <tr class="nilai">
                         <td class="center">1</td>
                         <td></td>
@@ -169,21 +169,15 @@
                         <td></td>
                         <td colspan="2" class="description"><span></span></td>
                     </tr>
-                @elseif(count($data_prestasi_siswa) == 1)
+                @elseif(count($data_talents_mapping) == 1)
                     <?php    $no = 0; ?>
-                    @foreach ($data_prestasi_siswa as $prestasi)
+                    @foreach ($data_talents_mapping as $talent)
                         <?php        $no++; ?>
                         <tr class="nilai">
                             <td class="center">{{ $no }}</td>
-                            <td>
-                                @if ($prestasi->jenis_prestasi == 1)
-                                    Akademik
-                                @elseif($prestasi->jenis_prestasi == 2)
-                                    Non Akademik
-                                @endif
-                            </td>
+                            <td><strong>{{ $talent->nama_talents }}</strong></td>
                             <td colspan="2" class="description">
-                                <span>{!! nl2br($prestasi->deskripsi) !!}</span>
+                                <span>{!! nl2br($talent->deskripsi_talents) !!}</span>
                             </td>
                         </tr>
                     @endforeach
@@ -194,19 +188,13 @@
                     </tr>
                 @else
                     <?php    $no = 0; ?>
-                    @foreach ($data_prestasi_siswa as $prestasi)
+                    @foreach ($data_talents_mapping as $talent)
                         <?php        $no++; ?>
                         <tr class="nilai">
                             <td class="center">{{ $no }}</td>
-                            <td>
-                                @if ($prestasi->jenis_prestasi == 1)
-                                    Akademik
-                                @elseif($prestasi->jenis_prestasi == 2)
-                                    Non Akademik
-                                @endif
-                            </td>
+                            <td><strong>{{ $talent->nama_talents }}</strong></td>
                             <td colspan="2" class="description">
-                                <span>{!! nl2br($prestasi->deskripsi) !!}</span>
+                                <span>{!! nl2br($talent->deskripsi_talents) !!}</span>
                             </td>
                         </tr>
                     @endforeach

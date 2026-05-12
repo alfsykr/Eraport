@@ -25,7 +25,46 @@ class TalentsMappingController extends Controller
         $data_talents = TalentsMapping::whereIn('anggota_kelas_id', $id_anggota_kelas)->get();
         $data_anggota_kelas = AnggotaKelas::whereIn('kelas_id', $id_kelas_diampu)->get();
 
-        return view('walikelas.prestasi.index', compact('title', 'data_talents', 'data_anggota_kelas'));
+        // Daftar nama talent: default + yang sudah pernah dipakai
+        $default_talents = [
+            'Competition',
+            'Responsibility',
+            'Achiever',
+            'Activator',
+            'Adaptability',
+            'Communication',
+            'Connectedness',
+            'Consistency',
+            'Developer',
+            'Discipline',
+            'Empathy',
+            'Focus',
+            'Futuristic',
+            'Harmony',
+            'Ideation',
+            'Includer',
+            'Individualization',
+            'Input',
+            'Intellection',
+            'Learner',
+            'Maximizer',
+            'Positivity',
+            'Relator',
+            'Significance',
+            'Strategic',
+            'Woo',
+        ];
+        $used_talents = TalentsMapping::whereIn('anggota_kelas_id', $id_anggota_kelas)
+            ->whereNotNull('jenis_prestasi')
+            ->pluck('jenis_prestasi')
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
+        $talent_names = array_unique(array_merge($default_talents, $used_talents));
+        sort($talent_names);
+
+        return view('walikelas.prestasi.index', compact('title', 'data_talents', 'data_anggota_kelas', 'talent_names'));
     }
 
     public function store(Request $request)
@@ -36,7 +75,7 @@ class TalentsMappingController extends Controller
             'deskripsi_talents' => 'required|min:20|max:200',
         ]);
         if ($validator->fails()) {
-            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+            return back()->with('toast_error', $validator->errors()->first())->withInput();
         } else {
             $talents = new TalentsMapping([
                 'anggota_kelas_id' => $request->anggota_kelas_id,
