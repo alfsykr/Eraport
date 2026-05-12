@@ -66,19 +66,25 @@
 
                       <div class="form-group row">
                         <label for="nama_talents" class="col-sm-3 col-form-label">Nama Talents Mapping</label>
-                        <div class="col-sm-9 pt-1">
-                          <label class="form-check-label mr-3"><input type="radio" name="nama_talents" value="1"
-                              required> Akademik</label>
-                          <label class="form-check-label mr-3"><input type="radio" name="nama_talents" value="2"
-                              required> Non Akademik</label>
+                        <div class="col-sm-9">
+                          <input type="text" class="form-control" id="nama_talents" name="nama_talents"
+                            list="talent-datalist" placeholder="Pilih dari daftar atau ketik nama baru..."
+                            autocomplete="off" required>
+                          <datalist id="talent-datalist">
+                            @foreach($talent_names as $tn)
+                              <option value="{{ $tn }}">
+                            @endforeach
+                          </datalist>
+                          <small class="text-muted">Pilih dari daftar atau ketik nama talent baru</small>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="deskripsi_talents" class="col-sm-3 col-form-label">Deskripsi Talents Mapping</label>
                         <div class="col-sm-9">
                           <textarea class="form-control" name="deskripsi_talents"
-                            placeholder="Deskripsi Talents Mapping" rows="3" minlength="20" maxlength="200" required
-                            oninvalid="this.setCustomValidity('Deskripsi harus berisi antara 20 s/d 100 karekter')"
+                            placeholder="Deskripsi Talents Mapping (min. 20 karakter)" rows="3" minlength="20"
+                            maxlength="200" required
+                            oninvalid="this.setCustomValidity('Deskripsi harus berisi antara 20 s/d 200 karakter')"
                             oninput="setCustomValidity('')"></textarea>
                         </div>
                       </div>
@@ -103,7 +109,7 @@
                       <th style="width: 20%;">Nama Siswa</th>
                       <th style="width: 5%;">L/P</th>
                       <th style="width: 5%;">Kelas</th>
-                      <th style="width: 10%;">Nama Talents Mapping</th>
+                      <th style="width: 15%;">Nama Talents Mapping</th>
                       <th>Deskripsi Talents Mapping</th>
                       <th style="width: 6%;">Hapus</th>
                     </tr>
@@ -118,13 +124,7 @@
                         <td>{{$talents->anggota_kelas->siswa->nama_lengkap}}</td>
                         <td>{{$talents->anggota_kelas->siswa->jenis_kelamin}}</td>
                         <td>{{$talents->anggota_kelas->kelas->nama_kelas}}</td>
-                        <td>
-                          @if($talents->nama_talents == 1)
-                            Akademik
-                          @else
-                            Non Akademik
-                          @endif
-                        </td>
+                        <td><strong>{{$talents->nama_talents}}</strong></td>
                         <td>{{$talents->deskripsi_talents}}</td>
                         <td class="text-center">
                           <form action="{{ route('prestasi.destroy', $talents->id) }}" method="POST">
@@ -156,3 +156,10 @@
 <!-- /.content-wrapper -->
 
 @include('layouts.main.footer')
+
+<script>
+  // Reset input nama_talents saat modal dibuka
+  $('#modal-tambah').on('shown.bs.modal', function () {
+    $('#nama_talents').val('');
+  });
+</script>

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin\K13;
 use App\AnggotaKelas;
 use App\Guru;
 use App\Http\Controllers\Controller;
-use App\K13KdMapel;
+// K13KdMapel removed - table not yet migrated
 use App\K13KkmMapel;
 use App\K13MappingMapel;
 use App\K13TglRaport;
@@ -66,12 +66,9 @@ class ValidasiController extends Controller
         $count_sikap_spiritual = 0;
         $count_sikap_sosial = 0;
 
-        $data_kd = Mapel::where('tapel_id', $tapel->id)->orderBy('nama_mapel', 'ASC')->get();
-        foreach ($data_kd as $kd) {
-            $jumlah_kd_mapel = K13KdMapel::where('mapel_id', $kd->id)->count();
-            $kd->jumlah_kd_mapel = $jumlah_kd_mapel;
-        }
-        $count_data_kd = count($data_kd);
+        // K13KdMapel (Kisi-Kisi) dinonaktifkan sementara - tabel belum ada
+        $data_kd = collect();
+        $count_data_kd = 0;
 
         $count_tgl_raport = K13TglRaport::where('tapel_id', $tapel->id)->count();
 

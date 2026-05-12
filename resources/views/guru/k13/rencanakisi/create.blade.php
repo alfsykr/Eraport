@@ -74,8 +74,8 @@
                                             style="width:100%;" required onchange="isiDeskripsiDariKD(this)">
                                             <option value="">-- Pilih Kisi-Kisi --</option>
                                             @foreach($data_kd as $kd)
-                                                <option value="{{ $kd->id }}" data-deskripsi="{{ $kd->kompetensi_dasar }}">
-                                                    {{ Str::limit($kd->kompetensi_dasar, 80) }}
+                                                <option value="{{ $kd->id }}" data-deskripsi="{{ $kd->deskripsi_penilaian }}">
+                                                    {{ Str::limit($kd->deskripsi_penilaian, 80) }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -99,9 +99,9 @@
                             @else
                                 <div class="callout callout-warning">
                                     <p><i class="fas fa-exclamation-triangle mr-1"></i>
-                                        Belum ada kisi-kisi yang tersedia untuk mata pelajaran ini.
-                                        Silakan gunakan tab <strong>"Buat Kisi-Kisi Baru"</strong> atau minta admin untuk
-                                        menambahkan kisi-kisi terlebih dahulu.
+                                        Belum ada kisi-kisi dari kelas lain untuk mata pelajaran ini.
+                                        Silakan gunakan tab <strong>"Buat Kisi-Kisi Baru"</strong> untuk membuat indikator
+                                        baru.
                                     </p>
                                 </div>
                                 <a href="{{ route('rencanakisi.index') }}" class="btn btn-secondary">Kembali</a>
