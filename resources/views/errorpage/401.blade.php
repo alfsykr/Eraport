@@ -18,10 +18,8 @@
     </div>
 
     <div class="lockscreen-footer text-center">
-      Copyright &copy; 2021 | <a href="https://qkohst.github.io/" target="_black">Qkoh St</a>.</strong>
-      Theme by AdminLTE <br> <b>E</b>-Raport | Versi 1.0
+      Copyright &copy; 2026 | <a href="https://homeschoolingalam.sch.id/" target="_black">Homeschooling Alam Depok</a>.</strong>
     </div>
   </div>
-
 
   @include('layouts.auth.footer')
