@@ -29,9 +29,9 @@ class AnggotaKelas extends Model
         return $this->hasOne('App\KehadiranSiswa');
     }
 
-    public function prestasi_siswa()
+    public function talents_mapping()
     {
-        return $this->hasMany('App\PrestasiSiswa');
+        return $this->hasMany(TalentsMapping::class);
     }
 
     public function catatan_wali_kelas()

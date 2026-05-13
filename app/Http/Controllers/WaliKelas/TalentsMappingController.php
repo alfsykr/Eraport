@@ -55,8 +55,8 @@ class TalentsMappingController extends Controller
             'Woo',
         ];
         $used_talents = TalentsMapping::whereIn('anggota_kelas_id', $id_anggota_kelas)
-            ->whereNotNull('jenis_prestasi')
-            ->pluck('jenis_prestasi')
+            ->whereNotNull('nama_talents')
+            ->pluck('nama_talents')
             ->filter()
             ->unique()
             ->values()
